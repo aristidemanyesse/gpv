@@ -105,8 +105,7 @@ class COMMANDE extends TABLE
 			$datas = $this->fourni("lignecommande");
 			$test = true;
 			foreach ($datas as $key => $ligne) {
-				$ligne->actualise();
-				if ($ligne->quantite > $this->groupecommande->reste($ligne->produit->id)) {
+				if ($ligne->quantite > $this->groupecommande->reste($ligne->produit_id, $ligne->emballage_id)) {
 					$test = false;
 					break;
 				}

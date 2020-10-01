@@ -25,9 +25,6 @@ if ($action == "newressource") {
 			$ressource = $datas[0]; ?>
 			<tr class="border-0 border-bottom " id="ligne<?= $id ?>" data-id="<?= $id ?>">
 				<td><i class="fa fa-close text-red cursor" onclick="supprimeRessource(<?= $id ?>)" style="font-size: 18px;"></i></td>
-				<td >
-					<img style="width: 40px" src="<?= $rooter->stockage("images", "ressources", $ressource->image) ?>">
-				</td>
 				<td class="text-left">
 					<h4 class="mp0 text-uppercase"><?= $ressource->name() ?></h4>
 					<small><?= $ressource->unite ?></small>
@@ -83,9 +80,6 @@ if ($action == "calcul") {
 			$total += $prix; ?>
 			<tr class="border-0 border-bottom " id="ligne<?= $id ?>" data-id="<?= $id ?>">
 				<td><i class="fa fa-close text-red cursor" onclick="supprimeRessource(<?= $id ?>)" style="font-size: 18px;"></i></td>
-				<td >
-					<img style="width: 40px" src="<?= $rooter->stockage("images", "ressources", $ressource->image) ?>">
-				</td>
 				<td class="text-left">
 					<h4 class="mp0 text-uppercase"><?= $ressource->name() ?></h4>
 					<small><?= $ressource->unite ?></small>
