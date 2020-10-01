@@ -1,0 +1,55 @@
+
+.block .col-sm-6{
+	margin-bottom: 3%;
+}
+
+.rate{
+	border-radius:  100%;
+	display: inline-block;
+	padding: 25px 27px 25px;
+	background-color: rgba(250, 177, 160);
+	color: #fff;
+	font-size: 35px;
+	font-weight: bold;
+	border: 3px dotted #ddd;
+}
+
+.ibox-title{
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+
+.ct-series-c line:nth-of-type(n+1) {
+	stroke: rgba(210, 140, 14, 0.5);
+}
+
+.ct-series-a line:nth-of-type(n+1) {
+	stroke: #bbb;
+}
+
+
+.carre{
+	height: 15px;
+	width: 15px;
+	display: inline-block;
+	margin: 0;
+	margin-right: 2%;
+	border: 1px solid #000;
+}
+
+    @-webkit-keyframes clignoter {
+        0%{color: rgba(255, 0, 0, 0.09)}
+        25%{color: rgba(255, 0, 0, 0.09)}
+        50%{color: rgba(255, 0, 0, 0.09)}
+        75%{color: rgba(255, 0, 0, 0.09)}
+    }
+
+    .rupture{
+        animation: clignoter 0.5s infinite;
+    }
+
+
+    .tab-content.loading-data .tab-pane {
+      display: block;
+  }
