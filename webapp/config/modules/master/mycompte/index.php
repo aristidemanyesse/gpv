@@ -166,7 +166,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title">Renouvellement de l'abonnement</h4>
-                <small class="font-bold">Plus d'information sur <a href="http://www.payiel.com/webservice/">http://www.payiel.com/webservice/</a></small>
+                <small class="font-bold">Plus d'information sur <a target="_blank" href="http://www.payiel.com/abonnement/">http://www.payiel.com/abonnement/</a></small>
             </div>
             <div class="modal-body">
                 <div class="ibox ">
