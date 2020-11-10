@@ -6,9 +6,9 @@ $configs =  [
 	"metadata" => [
 		"appname"      => "GPV",
 		"description"  => "applicaton de Gestion de la Production et des Ventes",
-		"organization" => "P@IYEL Developpement",
-		"email"        => "infos@shamman.com",
-		"website"      => "https://www.shamman.com",
+		"organization" => "DEVARIS 21",
+		"email"        => "info@devaris21.pro",
+		"website"      => "https://www.devaris21.pro",
 		"licence"      => "Licence complete",
 		"version"      => "2.0.0"
 	],

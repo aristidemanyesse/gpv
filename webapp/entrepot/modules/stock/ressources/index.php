@@ -96,7 +96,7 @@
                                         ?>
                                         <td class="cursor myPopover"
                                         data-toggle="popover"
-                                        data-placement="right"
+                                        data-placement="left"
                                         title="<small><b><?= $ressource->name() ?></b> | <?= datecourt($index) ?></small>"
                                         data-trigger="hover"
                                         data-html="true"
