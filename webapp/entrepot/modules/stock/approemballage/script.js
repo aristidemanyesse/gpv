@@ -120,30 +120,6 @@ $(function(){
     }
 
 
-    annuler = function(id){
-        alerty.confirm("Voulez-vous vraiment annuler cet approvisionnement ?", {
-            title: "Annuler l'approvisionnement",
-            cancelLabel : "Non",
-            okLabel : "OUI, annuler",
-        }, function(){
-            var url = "../../webapp/entrepot/modules/stock/approemballage/ajax.php";
-            alerty.prompt("Entrer votre mot de passe pour confirmer l'opération !", {
-                title: 'Récupération du mot de passe !',
-                inputType : "password",
-                cancelLabel : "Annuler",
-                okLabel : "Valider"
-            }, function(password){
-                Loader.start();
-                $.post(url, {action:"annuler", id:id, password:password}, (data)=>{
-                    if (data.status) {
-                        window.location.reload()
-                    }else{
-                        Alerter.error('Erreur !', data.message);
-                    }
-                },"json");
-            })
-        })
-    }
 
 
     terminer = function(id){

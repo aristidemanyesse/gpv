@@ -103,15 +103,18 @@ class APPROETIQUETTE extends TABLE
 			$data = $this->save();
 			if ($data->status) {
 				$this->actualise();
-				if ($this->operation_id > 0) {
-					$this->operation->supprime();
-					$this->fournisseur->dette -= $this->montant - $this->avance;
-					$this->fournisseur->save();
+				$datas = $this->fourni("reglementfournisseur");
+				if (count($datas) > 0) {
+					foreach ($datas as $key => $reglement) {
+						$reglement->supprime();
+						// $this->fournisseur->dette -= $reglement->montant;
+						// $this->fournisseur->save();
+					}
 				}else{
-						//paymenet par prelevement banquaire
+					//paymenet par prelevement banquaire
 					$this->fournisseur->acompte += $this->avance;
-					$this->fournisseur->dette -= $this->montant - $this->avance;
-					$this->fournisseur->save();
+					// $this->fournisseur->dette -= $this->montant - $this->avance;
+					// $this->fournisseur->save();
 				}
 			}
 		}else{
