@@ -114,7 +114,7 @@
                                                 <button onclick="terminer(<?= $appro->id ?>)" class="btn btn-primary btn-sm"><i class="fa fa-check"></i> Valider</button>
                                             <?php } ?>
                                             <?php if ($employe->isAutoriser("modifier-supprimer") && $appro->etat_id != Home\ETAT::ANNULEE) { ?>
-                                            <button onclick="annuler('approemballage', <?= $appro->id ?>)" class="btn btn-white btn-sm"><i class="fa fa-trash text-red"></i></button>
+                                            <button onclick="annuler('approvisionnement', <?= $appro->id ?>)" class="btn btn-white btn-sm"><i class="fa fa-trash text-red"></i></button>
                                         <?php } ?>
                                         </td>
                                     </tr>
@@ -170,7 +170,7 @@
                                         <a href="<?= $this->url("fiches", "master", "bonapprovisionnement", $appro->id) ?>" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-file-text text-blue"></i></a>
 
                                         <?php if ($employe->isAutoriser("modifier-supprimer") && $appro->etat_id != Home\ETAT::ANNULEE) { ?>
-                                            <button onclick="annuler('approemballage', <?= $appro->id ?>)" class="btn btn-white btn-sm"><i class="fa fa-trash text-red"></i></button>
+                                            <button onclick="annuler('approvisionnement', <?= $appro->id ?>)" class="btn btn-white btn-sm"><i class="fa fa-trash text-red"></i></button>
                                         <?php } ?>
                                     </td>
                                 </tr>

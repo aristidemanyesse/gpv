@@ -126,35 +126,36 @@
               <?php } ?>
 
 
-              <div id="tab-3" class="tab-pane"><br>
-                <?php foreach ($fluxcaisse as $key => $transaction) {
-                  $transaction->actualise(); ?>
-                  <div class="timeline-item">
-                    <div class="row">
-                      <div class="col-2 date" style="padding-right: 1%; padding-left: 1%;">
-                        <i data-toggle="tooltip" tiitle="Imprimer le bon de <?= $transaction->type  ?> " class="fa fa-file-text"></i>
-                        <?= heurecourt($transaction->created) ?>
-                        <br/>
-                        <small class="text-navy"><?= datecourt($transaction->created) ?></small>
-                      </div>
-                      <div class="col-10 content">
-                        <div>
-                          <span class="">Reglement N°<strong><?= $transaction->reference ?></strong></span>
-                          <span class="pull-right text-right text-green">
-                            <span class="gras" style="font-size: 16px"><?= money($transaction->montant) ?> <?= $params->devise ?> <?= ($transaction->etat_id == Home\ETAT::ENCOURS)?"*":"" ?></span> <br>
-                            <small>Par <?= $transaction->modepayement->name() ?></small><br>
-                            <?php if ($transaction->mouvement_id != null) { ?>
-                              <a href="<?= $this->url("fiches", "master", "boncaisse", $transaction->mouvement_id)  ?>" target="_blank" class="simple_tag"><i class="fa fa-file-text-o"></i> Bon de caisse</a>
-                            <?php } ?>
-                          </span>
+                    <div id="tab-3" class="tab-pane"><br>
+                      <?php foreach ($fluxcaisse as $key => $transaction) {
+                        $transaction->actualise(); ?>
+                        <div class="timeline-item">
+                          <div class="row">
+                            <div class="col-2 date" style="padding-right: 1%; padding-left: 1%;">
+                              <i data-toggle="tooltip" tiitle="Imprimer le bon de caisse" class="fa fa-file-text"></i>
+                              <?= heurecourt($transaction->created) ?>
+                              <br/>
+                              <small class="text-navy"><?= datecourt($transaction->created) ?></small>
+                            </div>
+                            <div class="col-10 content">
+                              <div>
+                                <span class="">Reglement N°<strong><?= $transaction->reference ?></strong></span>
+                                <span class="pull-right text-right text-green">
+                                  <span class="gras" style="font-size: 16px"><?= money($transaction->montant) ?> <?= $params->devise ?> <?= ($transaction->etat_id == Home\ETAT::ENCOURS)?"*":"" ?></span> <br>
+                                  <small>Par <?= $transaction->modepayement->name() ?></small><br>
+                                  <?php if ($transaction->mouvement_id != null) { ?>
+                                    <a href="<?= $this->url("fiches", "master", "boncaisse", $transaction->mouvement_id)  ?>" target="_blank" class="simple_tag"><i class="fa fa-file-text-o"></i> Bon de caisse</a>
+                                  <?php } ?>
+                                </span>
+                              </div>
+                              <p class="m-b-xs mp0"><?= $transaction->comment ?> </p>
+                              <p class="m-b-xs"><?= $transaction->structure ?> - <?= $transaction->numero ?></p>
+                            </div>
+                          </div>
                         </div>
-                        <p class="m-b-xs mp0"><?= $transaction->comment ?> </p>
-                        <p class="m-b-xs"><?= $transaction->structure ?> - <?= $transaction->numero ?></p>
-                      </div>
+                      <?php } ?>                 
                     </div>
-                  </div>
-                <?php } ?>                 
-              </div>
+
 
 
             </div>

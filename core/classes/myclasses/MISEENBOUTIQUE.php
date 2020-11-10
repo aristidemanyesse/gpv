@@ -82,13 +82,6 @@ class MISEENBOUTIQUE extends TABLE
 
 
 
-	//les livraions programmées du jour
-	public static function programmee(String $date){
-		$array = static::findBy(["DATE(datereception) ="=>$date]);
-		$array1 = static::findBy(["etat_id ="=>ETAT::ENCOURS]);
-		return array_merge($array1, $array);
-	}
-
 
 
 	public function sentenseCreate(){
