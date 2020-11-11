@@ -64,7 +64,7 @@ class TYPEPRODUIT_PARFUM extends TABLE
 
 	public function name(){
 		$this->actualise();
-		return $this->typeproduit->name()." de ".$this->parfum->name();
+		return $this->typeproduit->name()." ".$this->parfum->name();
 	}
 
 
