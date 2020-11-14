@@ -95,7 +95,15 @@
                                         <div class="ibox-title">
                                             <h5 class="text-uppercase">Exigence de production par ressource</h5>
                                             <div class="ibox-tools">
-
+                                                <div class="switch" title="Appliquer le barème de production">
+                                                    <div class="onoffswitch inline-block">
+                                                        <input type="checkbox" <?= ($params->productionAuto == Home\TABLE::OUI)?"checked":""  ?> onchange='changeProductionAuto()' class="onoffswitch-checkbox" id="productionAuto">
+                                                        <label class="onoffswitch-label" for="productionAuto">
+                                                            <span class="onoffswitch-inner"></span>
+                                                            <span class="onoffswitch-switch"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="ibox-content">
@@ -186,7 +194,7 @@
                                                                         <td class="text-center">
                                                                             <div class="row">
                                                                                 <?php if ($produit->isActive()) {
-                                                                                 foreach ($produit->getListeEmballageProduit() as $key => $emballage) {
+                                                                                   foreach ($produit->getListeEmballageProduit() as $key => $emballage) {
                                                                                     $prix = $produit->fourni("price", ["emballage_id ="=>$emballage->id])[0] ?>
                                                                                     <div class="col-md border-right">
                                                                                         <div class="" style="color: blue">

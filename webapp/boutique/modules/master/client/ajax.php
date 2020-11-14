@@ -717,7 +717,8 @@ if ($action == "livraisonCommande") {
 					$prospection->hydrater($_POST);
 					$prospection->groupecommande_id = $groupecommande->id;
 					$prospection->typeprospection_id = TYPEPROSPECTION::LIVRAISON;
-					$prospection->montant = getSession("total");
+					//$prospection->montant = getSession("total");
+					$prospection->montant = 0;
 					$data = $prospection->enregistre();
 					if ($data->status) {
 						$montant = 0;

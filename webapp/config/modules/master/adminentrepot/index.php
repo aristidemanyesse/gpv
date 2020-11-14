@@ -155,11 +155,11 @@
                                                 $item->actualise();  ?>
                                                 <div class="col-sm-6 col-md-4 col-lg-3 border-right border-bottom" style="margin-bottom: 2%">
                                                     <div class="row">
-                                                        <div class="col-9">
+                                                        <div class="col-8">
                                                             <span><?= $item->etiquette->name(); ?></span>
                                                         </div>
-                                                        <div class="col-3">
-                                                            <input type="text" title="Stock initial" number class="form-control input-xs text-center maj" step="0.1" value="<?= $item->quantite ?>" name="initialetiquetteentrepot" id="<?= $item->id ?>" >
+                                                        <div class="col-4">
+                                                            <input type="text" style="font-size: 11px" title="Stock initial" number class="form-control input-xs text-center maj" value="<?= $item->quantite ?>" name="initialetiquetteentrepot" id="<?= $item->id ?>" >
                                                         </div>
                                                     </div>
                                                 </div>

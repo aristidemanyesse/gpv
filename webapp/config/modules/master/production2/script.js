@@ -62,4 +62,15 @@ $(function(){
  //    $(this).masonry({
 	// 	itemSelector: '.bloc',
 	// });
+
+        changeProductionAuto = function(table, id){
+        var url = "../../webapp/config/modules/master/production2/ajax.php";
+        $.post(url, {action:"changeProductionAuto"}, (data)=>{
+            if (data.status) {
+                Alerter.success('Mise à jour !', "Modification effectuée avec succès !");
+            }else{
+                Alerter.error('Erreur !', data.message);
+            }
+        },"json");
+    }
 })

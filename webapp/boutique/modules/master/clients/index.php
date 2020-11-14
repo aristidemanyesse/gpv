@@ -12,7 +12,7 @@
 
         <div id="page-wrapper" class="gray-bg">
 
-          <?php include($this->rootPath("webapp/boutique/elements/templates/header.php")); ?>  
+            <?php include($this->rootPath("webapp/boutique/elements/templates/header.php")); ?>  
 
           <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-md-7">

@@ -155,7 +155,7 @@ class EMBALLAGE extends TABLE
 
 
 	public function stock(String $date1, String $date2, int $entrepot_id){
-			$item = $this->fourni("initialemballageentrepot", ["entrepot_id ="=>$entrepot_id])[0];
+		$item = $this->fourni("initialemballageentrepot", ["entrepot_id ="=>$entrepot_id])[0];
 		return $this->achat($date1, $date2, $entrepot_id) - $this->consommee($date1, $date2, $entrepot_id) - $this->perte($date1, $date2, $entrepot_id) + intval($this->initial) + $item->quantite;
 	}
 
@@ -174,6 +174,7 @@ class EMBALLAGE extends TABLE
 
 
 	public function consommee(string $date1, string $date2, int $entrepot_id = null){
+		$total = 0;
 		$paras = "";
 		if ($entrepot_id != null) {
 			$paras.= "AND entrepot_id = $entrepot_id ";
@@ -181,7 +182,11 @@ class EMBALLAGE extends TABLE
 		$requette = "SELECT SUM(ligneconditionnement.quantite) as quantite  FROM ligneconditionnement, conditionnement WHERE ligneconditionnement.emballage_id =  ? AND ligneconditionnement.conditionnement_id = conditionnement.id AND conditionnement.etat_id != ? AND DATE(conditionnement.created) >= ? AND DATE(conditionnement.created) <= ? $paras ";
 		$item = LIGNECONDITIONNEMENT::execute($requette, [$this->id, ETAT::ANNULEE, $date1, $date2]);
 		if (count($item) < 1) {$item = [new LIGNECONDITIONNEMENT()]; }
-		return $item[0]->quantite;
+
+		foreach ($this->fourni("emballage", ["isActive ="=>TABLE::OUI]) as $key => $emballage) {
+			$total += $emballage->consommee($date1, $date2, $entrepot_id) * $emballage->quantite;
+		}
+		return $item[0]->quantite + $total;
 	}
 
 
