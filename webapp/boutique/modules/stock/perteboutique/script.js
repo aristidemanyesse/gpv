@@ -34,7 +34,7 @@ $(function(){
             cancelLabel : "Non",
             okLabel : "OUI, annuler",
         }, function(){
-            var url = "../../webapp/boutique/modules/production/perteboutique/ajax.php";
+            var url = "../../webapp/boutique/modules/stock/perteboutique/ajax.php";
             alerty.prompt("Entrer votre mot de passe pour confirmer l'opération !", {
                 title: 'Récupération du mot de passe !',
                 inputType : "password",

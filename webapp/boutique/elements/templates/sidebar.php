@@ -45,10 +45,18 @@
                 <li style="margin: 3% auto"><hr class="mp0" style="background-color: #000; "></li>
 
 
-                <?php if ($employe->isAutoriser("production")) { ?>
+                <?php if ($employe->isAutoriser("stock")) { ?>
                     <li class="" id="stock">
-                        <a href="<?= $this->url($this->section, "production", "stock") ?>"><i class="fa fa-cubes"></i> <span class="nav-label">Stock des produits</span></a>
+                        <a href="<?= $this->url($this->section, "stock", "stock") ?>"><i class="fa fa-cubes"></i> <span class="nav-label">Stock des produits</span></a>
                     </li>
+*
+                    <li class="" id="perteboutique">
+                        <a href="<?= $this->url($this->section, "stock", "perteboutique") ?>"><i class="fa fa-trash"></i> <span class="nav-label">Perte à la boutique</span></a>
+                    </li>
+                    <li style="margin: 3% auto"><hr class="mp0" style="background-color: #000; "></li>
+                <?php } ?>
+
+                <?php if ($employe->isAutoriser("production")) { ?>
                     <li class="" id="miseenboutique">
                         <a href="<?= $this->url($this->section, "production", "miseenboutique") ?>"><i class="fa fa-reply"></i> <span class="nav-label">Mise en boutique</span> <?php if (count($mises__) > 0) { ?> <span class="label label-warning float-right"><?= count($mises__) ?></span> <?php } ?></a>
                     </li>
@@ -58,9 +66,6 @@
                     <!-- <li class="" id="retours">
                         <a href="<?= $this->url($this->section, "production", "retours") ?>"><i class="fa fa-long-arrow-left"></i> <span class="nav-label">Retours de produits</span></a>
                     </li> -->
-                    <li class="" id="perteboutique">
-                        <a href="<?= $this->url($this->section, "production", "perteboutique") ?>"><i class="fa fa-trash"></i> <span class="nav-label">Perte à la boutique</span></a>
-                    </li>
                     <li style="margin: 3% auto"><hr class="mp0" style="background-color: #000; "></li>
                 <?php } ?>
 
