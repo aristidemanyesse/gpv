@@ -70,7 +70,13 @@
                                 </div>
                                 <div class="col-sm text-right">
                                     <h5 class="text-muted gras mp0"><span>Reduction :</span> <?= money($vente->reduction) ?> <?= $params->devise ?></h5> 
-                                    <h5 class="text-muted gras mp0"><span>TVA (<?= start0($vente->taux_tva) ?>%) :</span> <?= money($vente->tva) ?> <?= $params->devise ?></h5> 
+                                    <h5 class="text-muted gras mp0"><span>TVA (<?= start0($vente->taux_tva) ?>%) :</span> 
+                                        <?php if ($vente->sousTVA == Home\TABLE::OUI) { ?>
+                                            <?= money($vente->tva) ?> <?= $params->devise ?>
+                                        <?php } else{ ?>
+                                            TVA N.A.
+                                        <?php } ?>
+                                    </h5> 
                                 </div>
                             </div><hr>
 

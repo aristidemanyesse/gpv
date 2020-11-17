@@ -23,6 +23,7 @@ class COMMANDE extends TABLE
 	public $montant = 0;
 	public $avance = 0;
 	public $reste = 0;
+	public $sousTVA = TABLE::OUI;
 	public $etat_id = ETAT::VALIDEE;
 	public $employe_id;
 	public $comment;

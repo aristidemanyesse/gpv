@@ -41,7 +41,7 @@
                         <div class="row">
                             <?php foreach (Home\COMPTEBANQUE::getAll() as $key => $banque) { ?>
                                 <div class="col-lg-4">
-                                    <a href="<?= $this->url("manager", "caisse", "caisse", $banque->id)  ?>" class="text-dark">
+                                    <a href="<?= $this->url("manager", "tresorerie", "caisse", $banque->id)  ?>" class="text-dark">
                                         <div class="ibox">
                                             <div class="ibox-content">
                                                 <h5><?= $banque->name() ?></h5>

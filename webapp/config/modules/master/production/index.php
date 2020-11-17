@@ -210,7 +210,7 @@
                                                     <tr>
                                                         <td ><img style="height: 25px" src="<?= $this->stockage("images", "emballages", $item->image); ?>"></td>
                                                         <td class="gras"><?= $item->name(); ?></td>
-                                                        <td class="text-center"><?= $item->quantite; ?> <b><?= $item->emballage->name(); ?></b></td>
+                                                        <td class="text-center"><?= $item->quantite; ?><br> <b><?= $item->emballage->name(); ?></b></td>
                                                         <td width="100px">
                                                             <input type="text" title="Prix Unitaire normal" number class="form-control input-xs text-center emballage" value="<?= $item->price ?>" name="price" id="<?= $item->id ?>">
                                                         </td>
@@ -268,6 +268,98 @@
                                     </div>
                                 </div>
                             </div>
+
+
+                            <div class="col-sm-5 bloc">
+                                <div class="ibox border">
+                                    <div class="ibox-title">
+                                        <h5 class="text-uppercase">Les extras d'emballages</h5>
+                                        <div class="ibox-tools">
+                                            <button class="btn_modal btn btn-xs btn-white" data-toggle="modal" data-target="#modal-package">
+                                                <i class="fa fa-plus"></i> Ajouter
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Nom</th>
+                                                    <th>unité</th>
+                                                    <th>Prix d'achat</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php $i =0; foreach (Home\PACKAGE::findBy([], [], ["name"=>"ASC"]) as $key => $item) {
+                                                    $item->actualise();  ?>
+                                                    <tr>
+                                                        <td ><img style="height: 25px" src="<?= $this->stockage("images", "packages", $item->image); ?>"></td>
+                                                        <td class="gras"><?= $item->name(); ?></td>
+                                                        <td class="gras"><?= $item->unite; ?></td>
+                                                        <td width="100px">
+                                                            <input type="text" title="Prix Unitaire d'achat" number class="form-control input-xs text-center package" value="<?= $item->price ?>" name="price" id="<?= $item->id ?>">
+                                                        </td>
+                                                        <td data-toggle="modal" data-target="#modal-package" title="modifier l'élément" onclick="modification('package', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
+                                                        <td title="supprimer le package" onclick="suppressionWithPassword('package', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-7 bloc">
+                                <div class="ibox border">
+                                    <div class="ibox-title">
+                                        <h5 class="text-uppercase">Les caractéristiques d'extras d'emballage</h5>
+                                        <div class="ibox-tools">
+                                            <button class="btn_modal btn btn-xs btn-white" data-toggle="modal" data-target="#modal-caracteristiquepackage">
+                                                <i class="fa fa-plus"></i> Ajouter
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th colspan="2">Extra d'emballage</th>
+                                                    <th></th>
+                                                    <th colspan="2">Emballage</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php $i =0; foreach (Home\CARACTERISTIQUEPACKAGE::findBy([], [], []) as $key => $item) {
+                                                    $item->actualise();  ?>
+                                                    <tr>
+                                                        <td ><img style="height: 25px" src="<?= $this->stockage("images", "packages", $item->package->image); ?>"></td>
+                                                        <td class="gras"><?= $item->quantite; ?> <?= $item->package->unite; ?></td>
+                                                        <td class="gras">de <?= $item->package->name(); ?></td>
+                                                        <td>est utilisé pour </td>
+                                                        <td class="gras"><?= $item->quantite2; ?></td>
+                                                        <td class="gras"><?= $item->emballage->name(); ?></td>
+                                                        <td data-toggle="modal" data-target="#modal-caracteristiquepackage" title="modifier l'élément" onclick="modification('caracteristiquepackage', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
+                                                        <td title="supprimer l'element'" onclick="suppressionWithPassword('caracteristiquepackage', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
 
                             <div class="col-sm-7 bloc">
                                 <div class="ibox border">

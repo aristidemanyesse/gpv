@@ -88,6 +88,7 @@ class COMPTEBANQUE extends TABLE
 		$requette = "SELECT SUM(montant) as montant FROM mouvement WHERE mouvement.typemouvement_id = ? AND mouvement.comptebanque_id = ? AND mouvement.valide = 1 AND DATE(mouvement.created) >= ? AND DATE(mouvement.created) <= ?";
 		$item = MOUVEMENT::execute($requette, [TYPEMOUVEMENT::DEPOT, $this->id, $date1, $date2]);
 		if (count($item) < 1) {$item = [new MOUVEMENT()]; }
+
 		return $item[0]->montant;
 	}
 
@@ -96,7 +97,9 @@ class COMPTEBANQUE extends TABLE
 		$requette = "SELECT SUM(montant) as montant FROM mouvement WHERE mouvement.typemouvement_id = ? AND mouvement.comptebanque_id = ? AND mouvement.valide = 1 AND DATE(mouvement.created) >= ? AND DATE(mouvement.created) <= ?";
 		$item = MOUVEMENT::execute($requette, [TYPEMOUVEMENT::RETRAIT, $this->id, $date1, $date2]);
 		if (count($item) < 1) {$item = [new MOUVEMENT()]; }
-		return $item[0]->montant;
+		
+		$datas = TRANSFERTFOND::findBy(["etat_id ="=>ETAT::ENCOURS, "comptebanque_id_source ="=>$this->id, "DATE(created) >= "=> $date1]);
+		return $item[0]->montant + comptage($datas, "montant", "somme");
 	}
 
 
@@ -129,7 +132,7 @@ class COMPTEBANQUE extends TABLE
 		$montant = intval($montant);
 		$data = $this->retrait($montant, "Retrait de ".money($montant)." ".$params->devise. " du compte pour approvisionner ".$compte->name()." - $comment");
 		if ($data->status) {
-			$data = $compte->depot($montant, "Approvionnement du compte de ".money($montant)." ".$params->devise. " à partir de ".$this->name()." - $comment");
+			$data = $compte->depot($montant, "Transfert sur le compte de ".money($montant)." ".$params->devise. " à partir de ".$this->name()." - $comment");
 		}
 		return $data;
 	}

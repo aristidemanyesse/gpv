@@ -16,8 +16,14 @@
 
 
             <div class="wrapper wrapper-content">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5 class="float-left text-uppercase"> <?= $comptebanque->name ?></h5>
+                    </div>
+                </div>
 
                 <div class="row">
+
                     <div class="col-lg-12">
                         <div class="ibox ">
                             <div class="ibox-title">
@@ -58,20 +64,24 @@
                                                 <small>Dépenses du jour</small>
                                             </div>
                                         </div><hr>
-                                        <div class="row" style="font-size: 10px">
-                                            <div class="col-sm">
-                                                <button data-toggle="modal" data-target="#modal-entree" class="btn btn-xs btn-primary dim"><i class="fa fa-long-arrow-left"></i> Faire Nouvelle entrée</button>
+                                        <?php if (count($datas1 + $datas2) == 0) { ?>
+                                            <div class="row" style="font-size: 10px">
+                                                <div class="col-sm">
+                                                    <button data-toggle="modal" data-target="#modal-entree" class="btn btn-xs btn-primary dim"><i class="fa fa-long-arrow-left"></i> Nouvelle entrée</button>
+                                                </div>
+                                                <div class="col-sm text-center">
+                                                    <button data-toggle="modal" data-target="#modal-depense" class="btn btn-xs btn-danger dim"><i class="fa fa-long-arrow-right"></i> Nouvelle dépense</button>
+                                                </div>
+                                                <div class="col-sm text-center">
+                                                    <button data-toggle="modal" data-target="#modal-attente" class="btn btn-xs btn-success dim" ><i class="fa fa-eye"></i> versemments en attente</button>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <button data-toggle="modal" data-target="#modal-transfertfond2" class="btn btn-xs btn-warning dim pull-right"><i class="fa fa-refresh"></i> Transferts de caisse</button>
+                                                </div>
                                             </div>
-                                            <div class="col-sm text-center">
-                                                <button data-toggle="modal" data-target="#modal-depense" class="btn btn-xs btn-danger dim"><i class="fa fa-long-arrow-right"></i> Faire Nouvelle dépense</button>
-                                            </div>
-                                            <div class="col-sm text-center">
-                                                <button data-toggle="modal" data-target="#modal-attente" class="btn btn-xs btn-success dim" ><i class="fa fa-eye"></i> Voir les versemments en attente</button>
-                                            </div>
-                                            <div class="col-sm">
-                                                <button data-toggle="modal" data-target="#modal-transfertfond2" class="btn btn-xs btn-warning dim pull-right"><i class="fa fa-refresh"></i> Transferts de caisse</button>
-                                            </div>
-                                        </div>
+                                        <?php }else{ ?>
+                                            <br><p class="gras text-center clignote">Veuillez contacter le responsable de ce compte pour effectuer toute quelconque opération !</p>
+                                        <?php } ?>
                                     </div>
                                     <div class="col-lg-3">
                                         <ul class="stat-list">
@@ -189,6 +199,7 @@
     </div>
 
 
+
     <div class="modal inmodal fade" id="modal-attente">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -196,147 +207,190 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title">Liste des versements en attentes</h4>
                     <div class="offset-md-4 col-md-4">
-                       <input type="text" id="search" class="form-control text-center" placeholder="Rechercher un versements"> 
-                   </div>
-               </div>
-               <div class="modal-body">
-                <table class="table table-bordered table-hover table-operation">
-                    <tbody class="tableau-attente">
-                        <?php foreach (Home\OPERATION::enAttente() as $key => $operation) {
-                            $operation->actualise(); ?>
-                            <tr>
-                                <td style="background-color: rgba(<?= hex2rgb($operation->categorieoperation->color) ?>, 0.6);" width="15"><a target="_blank" href="<?= $this->url("fiches", "master", "boncaisse", $operation->id)  ?>"><i class="fa fa-file-text-o fa-2x"></i></a></td>
-                                <td>
-                                    <h6 style="margin-bottom: 3px" class="mp0 text-uppercase gras <?= ($operation->typemouvement_id == Home\TYPEMOUVEMENT::DEPOT)?"text-green":"text-red" ?>"><?= $operation->categorieoperation->name() ?> <span><?= ($operation->etat_id == Home\ETAT::ENCOURS)?"*":"" ?></span> <span class="pull-right"><i class="fa fa-clock-o"></i> <?= datelong($operation->created) ?></span></h6>
-                                    <i><?= $operation->comment ?></i>
-                                </td>
-                                <td class="text-center gras" style="padding-top: 12px;">
-                                    <?= money($operation->montant) ?> <?= $params->devise ?>
-                                </td>
-                                <td width="110" class="text-center" >
-                                    <small><?= $operation->structure ?></small><br>
-                                    <small><?= $operation->numero ?></small>
-                                </td>
-                                <td class="text-center">
-                                    <button onclick="valider(<?= $operation->id ?>)" class="cursor simple_tag"><i class="fa fa-file-text-o"></i> Valider</button><span style="display: none">en attente</span>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div><hr><br>
+                        <input type="text" id="search" class="form-control text-center" placeholder="Rechercher un versements"> 
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5 class="text-uppercase">Payements des clients en attente de validation</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <table class="table table-bordered table-hover table-operation">
+                                <tbody class="tableau-attente">
+                                    <?php foreach ($attentes as $key => $operation) {
+                                        $operation->actualise(); ?>
+                                        <tr>
+                                            <td style="background-color: rgba(<?= hex2rgb($operation->categorieoperation->color) ?>, 0.6);" width="15"><a target="_blank" href="<?= $this->url("fiches", "master", "boncaisse", $operation->id)  ?>"><i class="fa fa-file-text-o fa-2x"></i></a></td>
+                                            <td>
+                                                <h6 style="margin-bottom: 3px" class="mp0 text-uppercase gras <?= ($operation->typemouvement_id == Home\TYPEMOUVEMENT::DEPOT)?"text-green":"text-red" ?>"><?= $operation->categorieoperation->name() ?> <span><?= ($operation->etat_id == Home\ETAT::ENCOURS)?"*":"" ?></span> <span class="pull-right"><i class="fa fa-clock-o"></i> <?= datelong($operation->created) ?></span></h6>
+                                                <i><?= $operation->comment ?></i>
+                                            </td>
+                                            <td class="text-center gras" style="padding-top: 12px;">
+                                                <?= money($operation->montant) ?> <?= $params->devise ?>
+                                            </td>
+                                            <td width="110" class="text-center" >
+                                                <small><?= $operation->structure ?></small><br>
+                                                <small><?= $operation->numero ?></small>
+                                            </td>
+                                            <td class="text-center">
+                                                <button onclick="valider(<?= $operation->id ?>)" class="cursor simple_tag"><i class="fa fa-file-text-o"></i> Valider</button><span style="display: none">en attente</span>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><br>
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5 class="text-uppercase">Transferts de fond en attente de validation</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <table class="table table-hover">
+                                <tbody class="tableau-attente">
+                                    <?php foreach ($transfertsattentes as $key => $transfert) {
+                                        $transfert->actualise(); ?>
+                                        <tr>
+                                            <td>
+                                                <h6 class="text-uppercase gras mp0">transfert de fond</h6>
+                                                <i><?= $transfert->comment ?></i>
+                                            </td>
+                                            <td><?= $transfert->comptebanque_destination->name() ?></td>
+                                            <td><i class="fa fa-long-arrow-right fa-2x"></i></td>
+                                            <td><?= $transfert->comptebanque_source->name() ?></td>
+
+                                            <td class="text-center gras" style="padding-top: 12px;">
+                                                <h5><?= money($transfert->montant) ?> <?= $params->devise ?></h5>
+                                            </td>
+                                            <td class="text-center">
+                                                <?php if ($transfert->comptebanque_id_destination == $comptebanque->id) { ?>
+                                                    <button onclick="validerTransfert(<?= $transfert->id ?>)" class="cursor simple_tag"><i class="fa fa-file-text-o"></i> Valider</button><span style="display: none">en attente</span>
+                                                <?php }else{ ?>
+                                                    <span class="label label-warning">Pas encore validé<br> à la reception</span>
+                                                <?php } ?>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div><hr><br>
+            </div>
         </div>
     </div>
-</div>
 
 
 
-<?php include($this->rootPath("webapp/manager/elements/templates/script.php")); ?>
+    <?php include($this->rootPath("webapp/manager/elements/templates/script.php")); ?>
 
-<script type="text/javascript">
-    $(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-     var data1 = [<?php foreach ($stats as $key => $lot) { ?>[gd(<?= $lot->year ?>, <?= $lot->month ?>, <?= $lot->day ?>), <?= $lot->entree ?>], <?php } ?> ];
+         var data1 = [<?php foreach ($stats as $key => $lot) { ?>[gd(<?= $lot->year ?>, <?= $lot->month ?>, <?= $lot->day ?>), <?= $lot->entree ?>], <?php } ?> ];
 
-     var data2 = [<?php foreach ($stats as $key => $lot) { ?>[gd(<?= $lot->year ?>, <?= $lot->month ?>, <?= $lot->day ?>), <?= $lot->sortie ?>], <?php } ?> ];
-     var data3 = [<?php foreach ($stats as $key => $lot) { ?>[gd(<?= $lot->year ?>, <?= $lot->month ?>, <?= $lot->day ?>), <?= $lot->solde ?>], <?php } ?> ];
-     var dataset = [
-     {
-        label: "Recettes",
-        data: data1,
-        color: "#1ab394",
-        bars: {
-            show: true,
-            align: "left",
-            barWidth: 12 * 60 * 60 * 600,
-            lineWidth:0
-        }
-
-    }, {
-        label: "Charges",
-        data: data2,
-        color: "#cc0000",
-        bars: {
-            show: true,
-            align: "right",
-            barWidth: 12 * 60 * 60 * 600,
-            lineWidth:0
-        }
-
-    },  {
-        label: "Chiffre d'Affaire",
-        data: data3,
-        yaxis: 2,
-        color: "#1C84C6",
-        lines: {
-            lineWidth:1,
-            show: true,
-            fillColor: {
-                colors: [{
-                    opacity: 0.2
-                }, {
-                    opacity: 0.4
-                }]
+         var data2 = [<?php foreach ($stats as $key => $lot) { ?>[gd(<?= $lot->year ?>, <?= $lot->month ?>, <?= $lot->day ?>), <?= $lot->sortie ?>], <?php } ?> ];
+         var data3 = [<?php foreach ($stats as $key => $lot) { ?>[gd(<?= $lot->year ?>, <?= $lot->month ?>, <?= $lot->day ?>), <?= $lot->solde ?>], <?php } ?> ];
+         var dataset = [
+         {
+            label: "Recettes",
+            data: data1,
+            color: "#1ab394",
+            bars: {
+                show: true,
+                align: "left",
+                barWidth: 12 * 60 * 60 * 600,
+                lineWidth:0
             }
-        },
-        splines: {
-            show: false,
-            tension: 0.6,
-            lineWidth: 1,
-            fill: 0.1
-        },
-    }
-    ];
 
-
-    var options = {
-        xaxis: {
-            mode: "time",
-            tickSize: [<?= $lot->nb  ?>, "day"],
-            tickLength: 0,
-            axisLabel: "Date",
-            axisLabelUseCanvas: true,
-            axisLabelFontSizePixels: 12,
-            axisLabelFontFamily: 'Arial',
-            axisLabelPadding: 10,
-            color: "#d5d5d5"
-        },
-        yaxes: [{
-            position: "left",
-            color: "#d5d5d5",
-            axisLabelUseCanvas: true,
-            axisLabelFontSizePixels: 12,
-            axisLabelFontFamily: 'Arial',
-            axisLabelPadding: 3
         }, {
-            position: "right",
-            clolor: "#d5d5d5",
-            axisLabelUseCanvas: true,
-            axisLabelFontSizePixels: 12,
-            axisLabelFontFamily: ' Arial',
-            axisLabelPadding: 67
+            label: "Charges",
+            data: data2,
+            color: "#cc0000",
+            bars: {
+                show: true,
+                align: "right",
+                barWidth: 12 * 60 * 60 * 600,
+                lineWidth:0
+            }
+
+        },  {
+            label: "Chiffre d'Affaire",
+            data: data3,
+            yaxis: 2,
+            color: "#1C84C6",
+            lines: {
+                lineWidth:1,
+                show: true,
+                fillColor: {
+                    colors: [{
+                        opacity: 0.2
+                    }, {
+                        opacity: 0.4
+                    }]
+                }
+            },
+            splines: {
+                show: false,
+                tension: 0.6,
+                lineWidth: 1,
+                fill: 0.1
+            },
         }
-        ],
-        legend: {
-            noColumns: 1,
-            labelBoxBorderColor: "#000000",
-            position: "nw"
-        },
-        grid: {
-            hoverable: false,
-            borderWidth: 0
+        ];
+
+
+        var options = {
+            xaxis: {
+                mode: "time",
+                tickSize: [<?= $lot->nb  ?>, "day"],
+                tickLength: 0,
+                axisLabel: "Date",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Arial',
+                axisLabelPadding: 10,
+                color: "#d5d5d5"
+            },
+            yaxes: [{
+                position: "left",
+                color: "#d5d5d5",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Arial',
+                axisLabelPadding: 3
+            }, {
+                position: "right",
+                clolor: "#d5d5d5",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: ' Arial',
+                axisLabelPadding: 67
+            }
+            ],
+            legend: {
+                noColumns: 1,
+                labelBoxBorderColor: "#000000",
+                position: "nw"
+            },
+            grid: {
+                hoverable: false,
+                borderWidth: 0
+            }
+        };
+
+        function gd(year, month, day) {
+            return new Date(year, month - 1, day).getTime();
         }
-    };
 
-    function gd(year, month, day) {
-        return new Date(year, month - 1, day).getTime();
-    }
+        var previousPoint = null, previousLabel = null;
 
-    var previousPoint = null, previousLabel = null;
+        $.plot($("#flot-dashboard-chart"), dataset, options);
 
-    $.plot($("#flot-dashboard-chart"), dataset, options);
-
-});
+    });
 </script>
 
 

@@ -35,7 +35,7 @@ if ($this->id != null) {
 
 		$mouvements = $comptebanque->fourni("mouvement", ["DATE(created) >= "=> $date1, "DATE(created) <= "=> $date2]);
 
-		$transferts = TRANSFERTFOND::findBy(["comptebanque_id_source="=>$comptebanque->id, "DATE(created) >= "=> $date1, "DATE(created) <= "=> $date2]);
+		$transferts = TRANSFERTFOND::findBy(["comptebanque_id_source="=>$comptebanque->id, "etat_id ="=>ETAT::VALIDEE, "DATE(created) >= "=> $date1, "DATE(created) <= "=> $date2]);
 
 		$operations = OPERATION::findBy(["DATE(created) >= "=> dateAjoute(-7)]);
 		$entrees = $depenses = [];

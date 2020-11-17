@@ -44,6 +44,31 @@ $(function(){
 
 
 
+	validerTransfert = function(id){
+		var url = "../../webapp/entrepot/modules/caisse/caisse/ajax.php";
+		alerty.confirm("Confirmez-vous être maintenant en possession effective de ladite somme ?", {
+			title: "Validation du transfert",
+			cancelLabel : "Non",
+			okLabel : "OUI, valider",
+		}, function(){
+			alerty.prompt("Entrer votre mot de passe pour confirmer l'opération !", {
+				title: 'Récupération du mot de passe !',
+				inputType : "password",
+				cancelLabel : "Annuler",
+				okLabel : "Valider"
+			}, function(password){
+				Loader.start();
+				$.post(url, {action:"validerTransfert", password:password, id:id}, (data)=>{
+					if (data.status) {
+						window.location.reload()
+					}else{
+						Alerter.error('Erreur !', data.message);
+					}
+				},"json");
+			})
+		})
+	}
+
 
 	modifierOperation = function(id){
 		var url = "../../composants/dist/shamman/traitement.php";

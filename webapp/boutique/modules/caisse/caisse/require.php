@@ -9,7 +9,13 @@ if (count($datas) == 1) {
 
 	$mouvements = $comptebanque->fourni("mouvement", ["DATE(created) >= "=> $date1, "DATE(created) <= "=> $date2]);
 
-	$transferts = TRANSFERTFOND::findBy(["comptebanque_id_source="=>$comptebanque->id, "DATE(created) >= "=> $date1, "DATE(created) <= "=> $date2]);
+	$transferts = TRANSFERTFOND::findBy(["comptebanque_id_source="=>$comptebanque->id, "etat_id ="=>ETAT::VALIDEE, "DATE(created) >= "=> $date1, "DATE(created) <= "=> $date2]);
+
+
+	$temp1 = TRANSFERTFOND::findBy(["comptebanque_id_source="=>$comptebanque->id, "etat_id ="=>ETAT::ENCOURS]);
+	$temp2 = TRANSFERTFOND::findBy(["comptebanque_id_destination="=>$comptebanque->id, "etat_id ="=>ETAT::ENCOURS]);
+	$transfertsattentes = array_merge($temp1, $temp2);
+
 
 	$entrees = $depenses = [];
 	foreach ($mouvements as $key => $value) {

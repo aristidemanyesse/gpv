@@ -133,6 +133,23 @@ class EMBALLAGE extends TABLE
 	}
 
 
+	public function packaging(int $value, int $id){
+		foreach ($this->fourni("caracteristiquepackage") as $key => $carac) {
+			$quantite = ($carac->quantite * $value) / $carac->quantite2;
+			if ($quantite > 0) {
+				$ligne = new LIGNECONDITIONNEMENTPACKAGE;
+				$ligne->conditionnement_id = $id;
+				$ligne->package_id = $carac->package_id;
+				$ligne->quantite = $quantite;
+				$ligne->enregistre();
+			}
+		}
+		$this->actualise();
+		if ($this->emballage->id > 0) {
+			$this->emballage->packaging($value * $this->quantite, $id);
+		}
+	}
+
 
 	public function isDisponible(int $a = 1){
 		$tab = [];

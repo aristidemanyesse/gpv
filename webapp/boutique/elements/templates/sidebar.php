@@ -49,7 +49,6 @@
                     <li class="" id="stock">
                         <a href="<?= $this->url($this->section, "stock", "stock") ?>"><i class="fa fa-cubes"></i> <span class="nav-label">Stock des produits</span></a>
                     </li>
-*
                     <li class="" id="perteboutique">
                         <a href="<?= $this->url($this->section, "stock", "perteboutique") ?>"><i class="fa fa-trash"></i> <span class="nav-label">Perte à la boutique</span></a>
                     </li>

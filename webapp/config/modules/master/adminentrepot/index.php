@@ -41,7 +41,7 @@
 
                             <div class="row">
 
-                                <div class="col-sm-4 bloc">
+                                <div class="col-sm-6 bloc">
                                     <div class="ibox border">
                                         <div class="ibox-title">
                                             <h5 class="text-uppercase">Stock initial d'emballage</h5>
@@ -75,7 +75,7 @@
 
 
 
-                                <div class="col-sm-4 bloc">
+                                <div class="col-sm-6 bloc">
                                     <div class="ibox border">
                                         <div class="ibox-title">
                                             <h5 class="text-uppercase">Stock initial des matières premières</h5>
@@ -110,7 +110,7 @@
 
 
 
-                                <div class="col-md-4 bloc">
+                                <div class="col-md-6 bloc">
                                     <div class="ibox border">
                                         <div class="ibox-title">
                                             <h5 class="text-uppercase">Stock initial des types de produits</h5>
@@ -135,6 +135,41 @@
                                                         </td>
                                                     </tr>
                                                 <?php }  ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-sm-6 bloc">
+                                <div class="ibox border">
+                                    <div class="ibox-title">
+                                        <h5 class="text-uppercase">Stock initial des extra emballages</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Libéllé</th>
+                                                    <th>Unité</th>
+                                                    <th>Stock initial</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach (Home\INITIALPACKAGEENTREPOT::findBy(["entrepot_id ="=>$entrepot->id]) as $key => $item) {
+                                                    $item->actualise(); ?>
+                                                    <tr>
+                                                        <td class="gras"><?= $item->package->name(); ?></td>
+                                                        <td><?= $item->package->unite; ?></td>
+                                                        <td width="110px">
+                                                            <?php if ($item->package->isActive()) { ?>
+                                                                <input type="text" title="Stock initial" number class="form-control input-xs text-center maj" value="<?= $item->quantite ?>" name="initialpackageentrepot" id="<?= $item->id ?>">
+                                                            <?php }  ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -198,7 +233,7 @@
                                                                     <td class="">
                                                                         <div class="row">
                                                                             <?php if ($produit->isActive()) {
-                                                                               foreach ($produit->getListeEmballageProduit() as $key => $emballage) {
+                                                                             foreach ($produit->getListeEmballageProduit() as $key => $emballage) {
                                                                                 $item = $produit->fourni("initialproduitentrepot", ["emballage_id ="=>$emballage->id])[0];
                                                                                 $item->actualise(); ?>
                                                                                 <div class="col-md-4 border-right border-bottom">

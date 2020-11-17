@@ -50,10 +50,21 @@
                                 <input type="hidden" name="zonedevente_id" value="<?= Home\ZONEDEVENTE::MAGASIN ?>" class="form-control">
                                 <input type="hidden" name="etat_id" value="<?= Home\ETAT::VALIDEE ?>" class="form-control">
 
-                                <div>
-                                    <label>Barème de prix <span style="color: red">*</span> </label>
-                                    <div class="input-group">
-                                        <?php Native\BINDING::html("select", "typebareme"); ?>
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <label>Barème de prix <span style="color: red">*</span> </label>
+                                        <div class="input-group">
+                                            <?php Native\BINDING::html("select", "typebareme"); ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <label>Appliquer TVA <span style="color: red">*</span> </label>
+                                        <div class="input-group">
+                                            <select class="form-control select2" name="sousTVA" style="width: 100%">
+                                                <option value="<?= Home\TABLE::OUI ?>">Oui (<?= $params->tva ?>%)</option>
+                                                <option value="<?= Home\TABLE::NON ?>">Non</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div><br>
 

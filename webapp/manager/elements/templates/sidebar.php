@@ -73,25 +73,25 @@
                 <?php } ?>
 
 
-                <?php if ($employe->isAutoriser("boutique") && $employe->isAutoriser("production")) { ?>
+                <?php if ($employe->isAutoriser("boutique") ) { ?>
                     <li id="boutiques">
-                        <a href="#"><i class="fa fa-home"></i> <span class="nav-label">Les boutiques</span><span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-hospital"></i> <span class="nav-label">Les boutiques</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                             <?php foreach ($employe->fourni("acces_boutique") as $key => $item) {
                                 $item->actualise(); ?>
-                                <li><a href="<?= $this->url($this->section, "production", "boutiques", $item->boutique->id) ?>"><?= $item->boutique->name() ?></a></li>
+                                <li><a href="<?= $this->url($this->section, "manager", "boutiques", $item->boutique->id) ?>"><?= $item->boutique->name() ?></a></li>
                             <?php } ?>
                         </ul>
                     </li>
                 <?php } ?>
 
-                <?php if ($employe->isAutoriser("entrepot") && $employe->isAutoriser("production")) { ?>
+                <?php if ($employe->isAutoriser("entrepot")) { ?>
                     <li id="entrepots">
                         <a href="#"><i class="fa fa-home"></i> <span class="nav-label">Les entrepots</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                             <?php foreach ($employe->fourni("acces_entrepot")as $key => $item) {
                                 $item->actualise(); ?>
-                                <li><a href="<?= $this->url($this->section, "production", "entrepots", $item->entrepot->id) ?>"><?= $item->entrepot->name() ?></a></li>
+                                <li><a href="<?= $this->url($this->section, "manager", "entrepots", $item->entrepot->id) ?>"><?= $item->entrepot->name() ?></a></li>
                             <?php } ?>
                         </ul>
                     </li>
@@ -123,12 +123,12 @@
             <?php } ?>
             
 
-            <?php if ($employe->isAutoriser("caisse")) { ?>
+            <?php if ($employe->isAutoriser("tresorerie")) { ?>
                    <!--  <li class="" id="caisse">
                         <a href="<?= $this->url($this->section, "caisse", "caisse") ?>"><i class="fa fa-money"></i> <span class="nav-label">La caisse</span></a>
                     </li> -->
                     <li class="" id="tresorerie">
-                        <a href="<?= $this->url($this->section, "caisse", "tresorerie", $exercicecomptable->id) ?>"><i class="fa fa-money"></i> <span class="nav-label">Trésorerie générale</span></a>
+                        <a href="<?= $this->url($this->section, "tresorerie", "tresorerie", $exercicecomptable->id) ?>"><i class="fa fa-money"></i> <span class="nav-label">Trésorerie générale</span></a>
                     </li>
                     <li style="margin: 3% auto"><hr class="mp0" style="background-color: #000; "></li>
                 <?php } ?>

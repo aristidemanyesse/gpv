@@ -98,7 +98,7 @@
 
                 <?php if ($employe->isAutoriser("caisse")) { ?>
                     <li class="" id="caisse">
-                        <a href="<?= $this->url($this->section, "caisse", "caisse") ?>"><i class="fa fa-money"></i> <span class="nav-label">La caisse</span></a>
+                        <a href="<?= $this->url($this->section, "caisse", "caisse") ?>"><i class="fa fa-money"></i> <span class="nav-label">La caisse de l'usine</span></a>
                     </li>
                     <li style="margin: 3% auto"><hr class="mp0" style="background-color: #000; "></li>
                 <?php } ?>

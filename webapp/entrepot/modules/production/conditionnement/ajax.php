@@ -92,14 +92,16 @@ if ($action == "validerConditionnement") {
 							if (count($datas) == 1) {
 								$produit = $datas[0];
 								$datas = EMBALLAGE::findBy(["id ="=>$tab[1]]);
-								$format = $datas[0];
+								$emballage = $datas[0];
 								if (count($datas) == 1) {
 									$ligne = new LIGNECONDITIONNEMENT;
 									$ligne->conditionnement_id = $conditionnement->id;
 									$ligne->produit_id = $produit->id;
-									$ligne->emballage_id = $format->id;
+									$ligne->emballage_id = $emballage->id;
 									$ligne->quantite = $value;
 									$ligne->enregistre();
+
+									$emballage->packaging($value, $conditionnement->id);							
 
 
 									$ligne = new LIGNECONSOMMATIONETIQUETTE();
@@ -107,8 +109,8 @@ if ($action == "validerConditionnement") {
 
 									$ligne->conditionnement_id = $conditionnement->id;
 									$ligne->etiquette_id = $etiquette->id;
-									$ligne->quantite = $value * $format->nombre();
-									$ligne->price = $ligne->quantite * $format->nombre() * $etiquette->price();
+									$ligne->quantite = $value * $emballage->nombre();
+									$ligne->price = $ligne->quantite * $emballage->nombre() * $etiquette->price();
 									$data = $ligne->enregistre();
 								}
 							}

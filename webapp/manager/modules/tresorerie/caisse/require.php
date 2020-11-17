@@ -1,11 +1,20 @@
 <?php 
 namespace Home;
 
-$datas = ENTREPOT::findBy(["id ="=>getSession("entrepot_connecte_id")]);
+$datas = COMPTEBANQUE::findBy(["id ="=>$this->getId()]);
 if (count($datas) == 1) {
-	$entrepot = $datas[0];
-	$entrepot->actualise();
-	$comptebanque = $entrepot->comptebanque;
+	$comptebanque = $datas[0];
+	$comptebanque->actualise();
+
+	$attentes = [];
+	$datas1 = $comptebanque->fourni("boutique");
+	$datas2 = $comptebanque->fourni("entrepot");
+	foreach ($datas1 as $key => $value) {
+		$attentes = array_merge($attentes, OPERATION::enAttente($value->id));
+	}
+	foreach ($datas2 as $key => $value) {
+		$attentes = array_merge($attentes, OPERATION::enAttente(null, $value->id));
+	}
 
 	$mouvements = $comptebanque->fourni("mouvement", ["DATE(created) >= "=> $date1, "DATE(created) <= "=> $date2]);
 
@@ -16,7 +25,7 @@ if (count($datas) == 1) {
 	$temp2 = TRANSFERTFOND::findBy(["comptebanque_id_destination="=>$comptebanque->id, "etat_id ="=>ETAT::ENCOURS]);
 	$transfertsattentes = array_merge($temp1, $temp2);
 
-	
+
 	$entrees = $depenses = [];
 	foreach ($mouvements as $key => $value) {
 		$value->actualise();

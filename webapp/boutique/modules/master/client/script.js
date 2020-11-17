@@ -141,7 +141,7 @@ $(function(){
 		});
 
 
-		$("body").on("change", "tbody.commande input", function() {
+		$("body").on("change", "tbody.commande input, select[name=sousTVA]", function() {
 			calcul()
 		})
 
@@ -179,6 +179,7 @@ $(function(){
 			formdata.append('typebareme_id', $("select[name=typebareme_id]").val());
 			formdata.append('client_id', $("input[name=client_id]").val());
 			formdata.append('commercial_id', $("select[name=commercial_id]").val());
+			formdata.append('sousTVA', $("select[name=sousTVA]").val());
 			formdata.append('recu', $("input[name=recu]").val());
 
 			formdata.append('action', "calcul");

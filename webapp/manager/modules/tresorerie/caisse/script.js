@@ -1,14 +1,4 @@
 $(function(){
-	$("select[name=exercicecomptable_id]").change(function(event) {
-		var url = "../../webapp/manager/modules/caisse/test/ajax.php";
-		var val = $(this).val();
-		var formdata = new FormData();
-		formdata.append('id', val);
-		formdata.append('action', "changer");
-		$.post({url:url, data:formdata, contentType:false, processData:false}, function(data){
-			location.href = data.url;
-		}, 'json')
-	});
 
 
 	$("#top-search").on("keyup", function() {
@@ -28,7 +18,7 @@ $(function(){
 
 
 	valider = function(id){
-		var url = "../../webapp/manager/modules/caisse/tresorerie/ajax.php";
+		var url = "../../webapp/manager/modules/tresorerie/caisse/ajax.php";
 		alerty.confirm("Confirmez-vous être maintenant en possession effective de ladite somme ?", {
 			title: "Validation de l'opération",
 			cancelLabel : "Non",
@@ -53,6 +43,30 @@ $(function(){
 	}
 
 
+	validerTransfert = function(id){
+		var url = "../../webapp/manager/modules/tresorerie/caisse/ajax.php";
+		alerty.confirm("Confirmez-vous être maintenant en possession effective de ladite somme ?", {
+			title: "Validation du transfert",
+			cancelLabel : "Non",
+			okLabel : "OUI, valider",
+		}, function(){
+			alerty.prompt("Entrer votre mot de passe pour confirmer l'opération !", {
+				title: 'Récupération du mot de passe !',
+				inputType : "password",
+				cancelLabel : "Annuler",
+				okLabel : "Valider"
+			}, function(password){
+				Loader.start();
+				$.post(url, {action:"validerTransfert", password:password, id:id}, (data)=>{
+					if (data.status) {
+						window.location.reload()
+					}else{
+						Alerter.error('Erreur !', data.message);
+					}
+				},"json");
+			})
+		})
+	}
 
 
 	modifierOperation = function(id){
@@ -80,29 +94,5 @@ $(function(){
 			})
 		})
 	}
-
-
-
-	$("#formCloture").submit(function(event) {
-		var url = "../../webapp/manager/modules/caisse/test/ajax.php";
-		alerty.confirm("Voulez-vous vraiment clôturer l'exercice comptable en cours ?", {
-			title: "Clôture de l'exercice comptable",
-			cancelLabel : "Non",
-			okLabel : "OUI, clôturer",
-		}, function(){
-			var formdata = new FormData($("#formCloture")[0]);
-			formdata.append('action', "cloturer");
-			Loader.start();
-			$.post({url:url, data:formdata, contentType:false, processData:false}, function(data){
-				if (data.status) {
-					window.location.reload();
-				}else{
-					Alerter.error('Erreur !', data.message);
-				}
-			}, 'json')
-		})
-		return false;
-	});
-
 
 })
