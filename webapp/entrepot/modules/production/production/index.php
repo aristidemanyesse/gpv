@@ -120,7 +120,9 @@
                                         </table>
                                     </td>
                                     <td>
-                                        <a href="<?= $this->url("entrepot", "rapports", "coutproduction", $production->id) ?>" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-file-text text-blue"></i></a>
+                                        <?php if ($employe->isAutoriser("rapports")) { ?>
+                                            <a href="<?= $this->url("entrepot", "rapports", "coutproduction", $production->id) ?>" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-file-text text-blue"></i></a>
+                                        <?php } ?>
                                         
                                         <?php if ($employe->isAutoriser("modifier-supprimer") && $production->etat_id != Home\ETAT::ANNULEE) { ?>
                                             <button onclick="annuler('production', <?= $production->id ?>)" class="btn btn-white btn-sm"><i class="fa fa-trash text-red"></i></button>
@@ -166,7 +168,9 @@
                                         </table>
                                     </td>
                                     <td>
-                                        <a href="<?= $this->url("entrepot", "rapports", "coutproduction", $production->id) ?>" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-file-text text-blue"></i></a>
+                                        <?php if ($employe->isAutoriser("rapports")) { ?>
+                                            <a href="<?= $this->url("entrepot", "rapports", "coutproduction", $production->id) ?>" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-file-text text-blue"></i></a>
+                                        <?php } ?>
                                         
                                         <?php if ($employe->isAutoriser("modifier-supprimer") && $production->etat_id != Home\ETAT::ANNULEE) { ?>
                                             <button onclick="annuler('production', <?= $production->id ?>)" class="btn btn-white btn-sm"><i class="fa fa-trash text-red"></i></button>

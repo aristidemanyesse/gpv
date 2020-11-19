@@ -32,8 +32,8 @@
                     <div class="col-sm-4 col-md-3 col-lg-2 border-left border-bottom">
                         <div class="p-xs">
                             <i class="fa fa-flask fa-2x"></i>
-                            <h5 class="m-xs gras <?= ($stock > $params->ruptureStock)?"":"clignote" ?>"><?= round($stock, 2) ?> </h5>
-                            <h6 class="no-margins text-uppercase gras <?= ($stock > $params->ruptureStock)?"":"clignote" ?>"><?= $emballage->name() ?> </h6>
+                            <h5 class="m-xs gras <?= ($stock > $emballage->stkAlert)?"":"clignote" ?>"><?= round($stock, 2) ?> </h5>
+                            <h6 class="no-margins text-uppercase gras <?= ($stock > $emballage->stkAlert)?"":"clignote" ?>"><?= $emballage->name() ?> </h6>
                             <small>Es: <?= money($prix) ?> <?= $params->devise ?></small>
                         </div>
                     </div>

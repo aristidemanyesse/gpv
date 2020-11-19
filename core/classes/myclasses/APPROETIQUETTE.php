@@ -96,7 +96,7 @@ class APPROETIQUETTE extends TABLE
 
 	public function annuler(){
 		$data = new RESPONSE;
-		if ($this->etat_id == ETAT::ENCOURS) {
+		if ($this->etat_id != ETAT::ANNULEE) {
 			$this->etat_id = ETAT::ANNULEE;
 			$this->datelivraison = date("Y-m-d H:i:s");
 			$this->historique("L'approvisionnement d'etiquette en reference $this->reference vient d'être annulée !");

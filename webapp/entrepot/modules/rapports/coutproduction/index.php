@@ -80,18 +80,15 @@
                                     <tr>
                                         <td colspan="2">
                                             <div class="row justify-content-center">
-                                                <?php foreach ($ligne->typeproduit_parfum->fourni("exigenceproduction") as $key => $exi) {
-                                                    foreach ($exi->fourni("ligneexigenceproduction") as $key => $lig) {
-                                                        $lig->actualise();
-                                                        if ($lig->quantite > 0) {
-                                                            $qua = round(($lig->quantite * $ligne->quantite / $exi->quantite), 2);
-                                                            $prix = $qua * $lig->ressource->price(); ?>
+                                                <?php foreach ($production->fourni("ligneconsommation") as $key => $lign) {
+                                                        $lign->actualise();
+                                                        if ($lign->quantite > 0) {
+                                                            $prix = $lign->quantite * $lign->ressource->price(); ?>
                                                             <div class="col-sm border-right">
-                                                                <?= $lig->ressource->name() ?>: <i><b><?= $qua ?> <?= $lig->ressource->abbr ?></b> (<?= money($prix) ?> <?= $params->devise ?>)</i>
+                                                                <?= $lign->ressource->name() ?>: <i><b><?= $lign->quantite ?> <?= $lign->ressource->abbr ?></b> (<?= money($prix) ?> <?= $params->devise ?>)</i>
                                                             </div>
                                                             <?php 
                                                             $total+= $prix; }
-                                                        }
                                                     } ?>
                                                 </div>
                                             </td>

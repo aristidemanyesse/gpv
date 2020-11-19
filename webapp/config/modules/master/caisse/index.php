@@ -158,46 +158,61 @@
                                         </div>
                                     </div>
 
+                                </div>
+                            </div><br><hr>
 
 
-                                    <div class="ibox border">
-                                        <div class="ibox-title">
-                                            <h5 class="text-uppercase">Creation & attribution des caisses</h5>
-                                            <div class="ibox-tools">
-                                                <a class="btn_modal" data-toggle="modal" data-target="#modal-comptebanque">
-                                                    <i class="fa fa-plus"></i> Nouveau compte
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="ibox-content">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Libéllé du compte</th>
-                                                        <th>Etablissement</th>
-                                                        <th>N° de compte</th>
-                                                        <th></th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php $i =0; foreach (Home\COMPTEBANQUE::getAll() as $key => $item) { ?>
-                                                        <tr>
-                                                            <td class="gras"><?= $item->name(); ?></td>
-                                                            <td class="gras"><?= $item->etablissement; ?></td>
-                                                            <td class="gras"><?= $item->numero; ?></td>
-                                                            <td data-toggle="modal" data-target="#modal-comptebanque" title="modifier la categorie" onclick="modification('comptebanque', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
-                                                            <td title="supprimer la categorie" onclick="suppressionWithPassword('comptebanque', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
-                                                        </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                            <div class="ibox border">
+                                <div class="ibox-title">
+                                    <h5 class="text-uppercase">Creation & attribution des caisses</h5>
+                                    <div class="ibox-tools">
+                                        <a class="btn_modal" data-toggle="modal" data-target="#modal-comptebanque">
+                                            <i class="fa fa-plus"></i> Nouveau compte
+                                        </a>
                                     </div>
-
-
+                                </div>
+                                <div class="ibox-content">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Libéllé du compte</th>
+                                                <th>Etablissement</th>
+                                                <th>N° de compte</th>
+                                                <th>Affiliation boutique</th>
+                                                <th>Affiliation entrepôt</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php $i =0; foreach (Home\COMPTEBANQUE::getAll() as $key => $item) { ?>
+                                                <tr>
+                                                    <td class="gras"><?= $item->name(); ?></td>
+                                                    <td class="gras"><?= $item->etablissement; ?></td>
+                                                    <td class="gras"><?= $item->numero; ?></td>
+                                                    <td>
+                                                        <ul>
+                                                            <?php foreach ($item->fourni("boutique") as $key => $elem) { ?>
+                                                                <li><?= $elem->name() ?></li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            <?php foreach ($item->fourni("entrepot") as $key => $elem) { ?>
+                                                                <li><?= $elem->name() ?></li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                    </td>
+                                                    <td data-toggle="modal" data-target="#modal-comptebanque" title="modifier la categorie" onclick="modification('comptebanque', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
+                                                    <td title="supprimer la categorie" onclick="suppressionWithPassword('comptebanque', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 

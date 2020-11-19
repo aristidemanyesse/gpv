@@ -17,6 +17,9 @@ class TRANSFERTFOND extends TABLE
 	public $comptebanque_id_destination;
 	public $comment;
 	public $employe_id;
+	public $etat_id = ETAT::ENCOURS;
+	public $employe_id_validation;
+	public $datevalidation;
 
 
 
@@ -28,12 +31,8 @@ class TRANSFERTFOND extends TABLE
 				$source = $datas[0];
 				$datas = COMPTEBANQUE::findBy(["id ="=>$this->comptebanque_id_destination]);
 				if (count($datas) == 1) {
-					$destinataire = $datas[0];
-					$data = $source->transaction($this->montant, $destinataire, $this->comment);
-					if ($data->status) {
-						$this->employe_id = getSession("employe_connecte_id");
-						$data = $this->save() ;
-					}	
+					$this->employe_id = getSession("employe_connecte_id");
+					$data = $this->save() ;	
 				}else{
 					$data->status = false;
 					$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer !!";
@@ -45,6 +44,27 @@ class TRANSFERTFOND extends TABLE
 		}else{
 			$data->status = false;
 			$data->message = "Vous ne pouvez pas faire un transfert de caisse sur le même compte, veuillez recommencer !!";
+		}
+		return $data;
+	}
+
+
+
+	public function valider(){
+		$data = new RESPONSE;
+		if ($this->etat_id == ETAT::ENCOURS) {
+			$this->actualise();
+			$data = $this->comptebanque_source->transaction($this->montant, $this->comptebanque_destination, $this->comment);
+			if ($data->status) {
+				$this->etat_id = ETAT::VALIDEE;
+				$this->datevalidationa = date("Y-m-d H:i:s");
+				$this->employe_id_validation = getSession("employe_connecte_id");
+				$this->historique("Le transfert de fond de".$this->comptebanque_source->name()." vers ".$this->comptebanque_destination->name()." vient d'être validé !");
+				$data = $this->save();
+			}
+		}else{
+			$data->status = false;
+			$data->message = "Vous ne pouvez plus valider ce transfert de fond !";
 		}
 		return $data;
 	}

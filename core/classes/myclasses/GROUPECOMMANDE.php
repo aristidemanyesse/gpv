@@ -29,6 +29,16 @@ class GROUPECOMMANDE extends TABLE
 	}
 
 
+	public static function encours(int $boutique_id = null){
+		if ($boutique_id == null) {
+			return static::findBy(["etat_id ="=>ETAT::ENCOURS]);
+		}else{
+			return static::findBy(["boutique_id ="=>$boutique_id, "etat_id ="=>ETAT::ENCOURS]);
+		}
+	}
+
+
+
 	public static function etat(){
 		foreach (static::findBy(["etat_id ="=>ETAT::ENCOURS]) as $key => $groupe) {
 			$test = false;

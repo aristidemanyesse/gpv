@@ -51,3 +51,16 @@ if ($action == "changement") {
 	}
 	echo json_encode($data);
 }
+
+
+//disponiblité des elements
+if ($action === "changeProductionAuto") {
+	$params = PARAMS::findLastId();
+	if ($params->productionAuto == TABLE::OUI) {
+		$params->productionAuto = TABLE::NON;
+	}else{
+		$params->productionAuto = TABLE::OUI;
+	}
+	$data = $params->save();
+	echo json_encode($data);
+}

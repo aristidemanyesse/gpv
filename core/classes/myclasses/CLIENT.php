@@ -21,6 +21,7 @@ class CLIENT extends TABLE
 	public $contact;
 	public $email;
 	public $adresse;
+	public $forAll = TABLE::NON;
 
 	public $seuilCredit = 0;
 	public $palier_id;
@@ -243,6 +244,20 @@ class CLIENT extends TABLE
 		return $total;
 	}
 
+	///////////////////////////////////////////////////////////////////////////
+
+	public function getCommandes(string $date1, string $date2){
+		$requette = "SELECT * FROM commande WHERE groupecommande_id IN (SELECT id FROM groupecommande WHERE client_id = ? AND etat_id != ?) AND DATE(commande.created) >= ? AND DATE(commande.created) <= ? AND commande.etat_id != ?";
+		return COMMANDE::execute($requette, [$this->id, ETAT::ANNULEE, $date1, $date2, ETAT::ANNULEE]);
+	}
+
+
+	public function getLivraisons(string $date1, string $date2){
+		$requette = "SELECT * FROM prospection WHERE groupecommande_id IN (SELECT id FROM groupecommande WHERE client_id = ? AND etat_id != ?) AND DATE(prospection.created) >= ? AND DATE(prospection.created) <= ? AND prospection.etat_id != ?";
+		return PROSPECTION::execute($requette, [$this->id, ETAT::ANNULEE, $date1, $date2, ETAT::ANNULEE]);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
 
 	public static function stats(string $date1 = "2020-04-01", string $date2){
 		$tableaux = [];

@@ -55,7 +55,7 @@
                                                     <tr>
                                                         <th>Nom</th>
                                                         <th>Lieu</th>
-                                                         <th>Compte attribué</th>
+                                                        <th>Compte attribué</th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
@@ -67,7 +67,10 @@
                                                         <tr>
                                                             <td class="gras"><?= $item->name(); ?></td>
                                                             <td><?= $item->lieu; ?></td>
-                                                            <td class="gras"><?= $item->comptebanque->name(); ?></td>
+                                                            <td onclick="modification('boutique', <?= $item->id ?>)" data-toggle="modal" data-target="#modal-boutiquecompte" class="gras cursor">
+                                                                <?= $item->comptebanque->name(); ?>
+                                                                <i class="fa fa-pencil text-warning cursor"  title="modifier la compte d'affiliation"></i>
+                                                            </td>
                                                             <td>
                                                                 <a href="<?= $this->url("config", "master", "adminboutique", $item->id)  ?>" class="btn_modal btn btn-xs btn-white">
                                                                     <i class="fa fa-wrench"></i> Admin
@@ -111,7 +114,10 @@
                                                         <tr>
                                                             <td class="gras"><?= $item->name(); ?></td>
                                                             <td><?= $item->lieu; ?></td>
-                                                            <td class="gras"><?= $item->comptebanque->name(); ?></td>
+                                                            <td onclick="modification('entrepot', <?= $item->id ?>)" data-toggle="modal" data-target="#modal-entrepotcompte" class="gras cursor">
+                                                                <?= $item->comptebanque->name(); ?>
+                                                                <i class="fa fa-pencil text-warning cursor"  title="modifier la compte d'affiliation"></i>
+                                                            </td>
                                                             <td>
                                                                 <a href="<?= $this->url("config", "master", "adminentrepot", $item->id)  ?>" class="btn_modal btn btn-xs btn-white">
                                                                     <i class="fa fa-wrench"></i> Admin
@@ -135,7 +141,7 @@
                                 <div class="ibox-title">
                                     <h5 class="text-uppercase">Attribution des accès des boutiques et des usines</h5>
                                     <div class="ibox-tools">
-                                       
+
                                     </div>
                                 </div>
                                 <div class="ibox-content">
@@ -148,7 +154,11 @@
                                         </thead>
                                         <tbody>
                                             <?php $i =0; foreach (Home\EMPLOYE::findBy([], [], ["name"=>"ASC", "is_new"=>"ASC",]) as $key => $item) {
-                                                $item->actualise();  ?>
+                                                $item->actualise(); 
+                                                $datas = $item->fourni("acces_boutique");
+                                                $datas2 = $item->fourni("acces_entrepot");
+                                                $boutiques = Home\BOUTIQUE::getAll();
+                                                $entrepots = Home\ENTREPOT::getAll(); ?>
                                                 <tr>
                                                     <td >
                                                         <span class="gras text-uppercase"><?= $item->name() ?></span><br>
@@ -158,7 +168,10 @@
                                                     </td>
                                                     <td class="" >
                                                         <div class="row">
-                                                            <?php $datas = $item->fourni("acces_boutique");
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                                                <label class="cursor gras text-blue"><input employe_id="<?= $item->id ?>" type="checkbox" <?= (count($datas) == count($boutiques))?"checked":""  ?> class="TBoutique i-checks"> Toutes les boutiques</label>
+                                                            </div>
+                                                            <?php 
                                                             $lots = [];
                                                             foreach ($datas as $key => $rem) {
                                                                 $rem->actualise();
@@ -167,7 +180,7 @@
                                                                     <label class="cursor"><input type="checkbox" class="i-checks boutique" employe_id="<?= $rem->employe_id ?>" boutique_id="<?= $rem->boutique->id ?>" checked name="<?= $rem->boutique->name() ?>"> <?= $rem->boutique->name() ?></label>
                                                                 </div>
                                                             <?php } ?>
-                                                            <?php foreach (Home\BOUTIQUE::getAll() as $key => $boutique) {
+                                                            <?php foreach ($boutiques as $key => $boutique) {
                                                                 if (!in_array($boutique->id, $lots)) {
                                                                     ?>
                                                                     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
@@ -177,17 +190,22 @@
                                                             } ?>  
                                                         </div> <hr class="mp3"><hr class="mp3"> 
 
+
                                                         <div class="row">
-                                                            <?php $datas = $item->fourni("acces_entrepot");
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                                                <label class="cursor gras text-blue"><input employe_id="<?= $item->id ?>" type="checkbox" <?= (count($datas2) == count($entrepots))?"checked":""  ?> class="TEntrepot i-checks"> Tous les entrepôts</label>
+                                                            </div>
+
+                                                            <?php 
                                                             $lots = [];
-                                                            foreach ($datas as $key => $rem) {
+                                                            foreach ($datas2 as $key => $rem) {
                                                                 $rem->actualise();
                                                                 $lots[] = $rem->entrepot->id; ?>
                                                                 <div class="col-6 col-sm-4 col-md-3 col-lg-2">
                                                                     <label class="cursor"><input type="checkbox" class="i-checks entrepot" employe_id="<?= $rem->employe_id ?>" entrepot_id="<?= $rem->entrepot->id ?>" checked name="<?= $rem->entrepot->name() ?>"> <?= $rem->entrepot->name() ?></label>
                                                                 </div>
                                                             <?php } ?>
-                                                            <?php foreach (Home\ENTREPOT::getAll() as $key => $entrepot) {
+                                                            <?php foreach ($entrepots as $key => $entrepot) {
                                                                 if (!in_array($entrepot->id, $lots)) {
                                                                     ?>
                                                                     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
@@ -222,6 +240,64 @@
             <?php include($this->rootPath("composants/assets/modals/modal-params.php") );  ?>
             <?php include($this->rootPath("composants/assets/modals/modal-boutique.php") );  ?>
             <?php include($this->rootPath("composants/assets/modals/modal-entrepot.php") );  ?>
+
+
+
+            <div class="modal inmodal fade" id="modal-entrepotcompte">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Affiliation au compte</h4>
+                        </div>
+                        <form method="POST" class="formShamman" classname="entrepot">
+                            <div class="modal-body">
+                                <div class="">
+                                    <label>Choisir le compte d'affiliation </label>
+                                    <div class="form-group">
+                                        <?php Native\BINDING::html("select", "comptebanque"); ?>
+                                    </div>
+                                </div>
+                            </div><hr>
+                            <div class="container">
+                                <input type="hidden" name="id">
+                                <button type="button" class="btn btn-sm  btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Annuler</button>
+                                <button class="btn btn-sm btn-primary pull-right dim"><i class="fa fa-check"></i> enregistrer</button>
+                            </div>
+                            <br>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="modal inmodal fade" id="modal-boutiquecompte">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Affiliation au compte</h4>
+                        </div>
+                        <form method="POST" class="formShamman" classname="boutique">
+                            <div class="modal-body">
+                                <div class="">
+                                    <label>Choisir le compte d'affiliation </label>
+                                    <div class="form-group">
+                                        <?php Native\BINDING::html("select", "comptebanque"); ?>
+                                    </div>
+                                </div>
+                            </div><hr>
+                            <div class="container">
+                                <input type="hidden" name="id">
+                                <button type="button" class="btn btn-sm  btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Annuler</button>
+                                <button class="btn btn-sm btn-primary pull-right dim"><i class="fa fa-check"></i> enregistrer</button>
+                            </div>
+                            <br>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
 
         </body>

@@ -41,7 +41,7 @@
 
                             <div class="row">
 
-                                <div class="col-sm-4 bloc">
+                                <div class="col-sm-6 bloc">
                                     <div class="ibox border">
                                         <div class="ibox-title">
                                             <h5 class="text-uppercase">Stock initial d'emballage</h5>
@@ -57,15 +57,17 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php $i =0; foreach (Home\INITIALEMBALLAGEENTREPOT::findBy(["entrepot_id ="=>$entrepot->id]) as $key => $item) {
-                                                        $item->actualise();  ?>
-                                                        <tr>
-                                                            <td ><img style="height: 25px" src="<?= $this->stockage("images", "emballages", $item->image); ?>"></td>
-                                                            <td class="gras"><?= $item->emballage->name(); ?></td>
-                                                            <td width="110px">
-                                                                <input type="text" title="Stock initial" number class="form-control input-xs text-center maj" value="<?= $item->quantite ?>" name="initialemballageentrepot" id="<?= $item->id ?>" >
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
+                                                        $item->actualise();
+                                                        if ($item->emballage->comptable == Home\TABLE::OUI) { ?>
+                                                            <tr>
+                                                                <td ><img style="height: 25px" src="<?= $this->stockage("images", "emballages", $item->image); ?>"></td>
+                                                                <td class="gras"><?= $item->emballage->name(); ?></td>
+                                                                <td width="110px">
+                                                                    <input type="text" title="Stock initial" number class="form-control input-xs text-center maj" value="<?= $item->quantite ?>" name="initialemballageentrepot" id="<?= $item->id ?>" >
+                                                                </td>
+                                                            </tr>
+                                                        <?php  }  
+                                                    } ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -75,7 +77,7 @@
 
 
 
-                                <div class="col-sm-4 bloc">
+                                <div class="col-sm-6 bloc">
                                     <div class="ibox border">
                                         <div class="ibox-title">
                                             <h5 class="text-uppercase">Stock initial des matières premières</h5>
@@ -110,7 +112,7 @@
 
 
 
-                                <div class="col-md-4 bloc">
+                                <div class="col-md-6 bloc">
                                     <div class="ibox border">
                                         <div class="ibox-title">
                                             <h5 class="text-uppercase">Stock initial des types de produits</h5>
@@ -143,6 +145,41 @@
 
 
 
+                            <div class="col-sm-6 bloc">
+                                <div class="ibox border">
+                                    <div class="ibox-title">
+                                        <h5 class="text-uppercase">Stock initial des extra emballages</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Libéllé</th>
+                                                    <th>Unité</th>
+                                                    <th>Stock initial</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach (Home\INITIALPACKAGEENTREPOT::findBy(["entrepot_id ="=>$entrepot->id]) as $key => $item) {
+                                                    $item->actualise(); ?>
+                                                    <tr>
+                                                        <td class="gras"><?= $item->package->name(); ?></td>
+                                                        <td><?= $item->package->unite; ?></td>
+                                                        <td width="110px">
+                                                            <?php if ($item->package->isActive()) { ?>
+                                                                <input type="text" title="Stock initial" number class="form-control input-xs text-center maj" value="<?= $item->quantite ?>" name="initialpackageentrepot" id="<?= $item->id ?>">
+                                                            <?php }  ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
 
                             <div class="col-sm-12 bloc">
                                 <div class="ibox border">
@@ -151,15 +188,15 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row">
-                                            <?php $i =0; foreach (Home\INITIALETIQUETTEENTREPOT::findBy(["entrepot_id ="=>$entrepot->id]) as $key => $item) {
+                                            <?php foreach (Home\INITIALETIQUETTEENTREPOT::findBy(["entrepot_id ="=>$entrepot->id]) as $key => $item) {
                                                 $item->actualise();  ?>
                                                 <div class="col-sm-6 col-md-4 col-lg-3 border-right border-bottom" style="margin-bottom: 2%">
                                                     <div class="row">
-                                                        <div class="col-9">
+                                                        <div class="col-8">
                                                             <span><?= $item->etiquette->name(); ?></span>
                                                         </div>
-                                                        <div class="col-3">
-                                                            <input type="text" title="Stock initial" number class="form-control input-xs text-center maj" step="0.1" value="<?= $item->quantite ?>" name="initialetiquetteentrepot" id="<?= $item->id ?>" >
+                                                        <div class="col-4">
+                                                            <input type="text" style="font-size: 11px" title="Stock initial" number class="form-control input-xs text-center maj" value="<?= $item->quantite ?>" name="initialetiquetteentrepot" id="<?= $item->id ?>" >
                                                         </div>
                                                     </div>
                                                 </div>

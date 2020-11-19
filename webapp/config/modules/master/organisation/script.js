@@ -1,5 +1,28 @@
 $(function(){
 	
+    $(".TBoutique").on('ifChecked', function(event){
+        id = $(this).attr("employe_id");
+        $('input.i-checks.boutique[employe_id='+id+']').iCheck('check');
+    });
+
+    $(".TBoutique").on('ifUnchecked', function(event){ 
+        id = $(this).attr("employe_id");
+        $('input.i-checks.boutique[employe_id='+id+']').iCheck('uncheck');
+    });
+
+
+
+    $(".TEntrepot").on('ifChecked', function(event){
+        id = $(this).attr("employe_id");
+        $('input.i-checks.entrepot[employe_id='+id+']').iCheck('check');
+    });
+
+    $(".TEntrepot").on('ifUnchecked', function(event){ 
+        id = $(this).attr("employe_id");
+        $('input.i-checks.entrepot[employe_id='+id+']').iCheck('uncheck');
+    });
+
+
     $('input.i-checks.boutique').on('ifChanged', function(event){
         var url = "../../webapp/config/modules/master/organisation/ajax.php";
         var $this = $(this);

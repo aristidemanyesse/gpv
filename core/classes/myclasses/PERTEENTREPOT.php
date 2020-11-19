@@ -17,6 +17,7 @@ class PERTEENTREPOT extends TABLE
 	public $typeproduit_parfum_id;
 	public $produit_id;
 	public $emballage_id;
+	public $package_id;
 	public $ressource_id;
 	public $etiquette_id;
 	public $quantite;
@@ -53,6 +54,14 @@ class PERTEENTREPOT extends TABLE
 				}elseif ($this->emballage_id != null) {
 					$item = new EMBALLAGE;
 					$item->id = $this->emballage_id;
+					$item->actualise();
+					if ($item->comptable == TABLE::OUI) {
+						$stock = $item->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), getSession("entrepot_connecte_id"));
+					}
+
+				}elseif ($this->package_id != null) {
+					$item = new PACKAGE;
+					$item->id = $this->package_id;
 					$item->actualise();
 					$stock = $item->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), getSession("entrepot_connecte_id"));
 

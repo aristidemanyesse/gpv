@@ -60,25 +60,7 @@
                                         <input type="date" name="datelivraison" value="<?= dateAjoute(2) ?>" class="form-control">
                                     </div>
                                 </div><br>
-                                <div>
-                                    <label>zone de livraison <span style="color: red">*</span> </label>
-                                    <div class="input-group">
-                                        <?php Native\BINDING::html("select", "zonedevente"); ?>
-                                    </div>
-                                </div><br>
-                                <div>
-                                    <label>Lieu de livraison <span style="color: red">*</span> </label>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                                        <input type="text" name="lieu" class="form-control" required>
-                                    </div>
-                                </div><br>
-                                <div>
-                                    <label>Mode de payement <span style="color: red">*</span> </label>                                
-                                    <div class="input-group">
-                                        <?php Native\BINDING::html("select", "modepayement"); ?>
-                                    </div>
-                                </div><br>
+
                                 <div class="no_modepayement_facultatif">
                                     <div>
                                         <label>Montant avancé<span style="color: red">*</span> </label>

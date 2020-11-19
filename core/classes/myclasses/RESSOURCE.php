@@ -15,6 +15,7 @@ class RESSOURCE extends TABLE
 	public $unite;
 	public $abbr;
 	public $price = 0;
+	public $stkAlert = 0;
 	public $isActive = TABLE::OUI;
 
 

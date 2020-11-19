@@ -23,7 +23,7 @@
                             </table>
 
                             <div class="text-center">
-                                <?php foreach (Home\RESSOURCE::getAll() as $key => $ressource) { ?>
+                                <?php foreach (Home\EMBALLAGE::getAll() as $key => $ressource) { ?>
                                     <button class="btn btn-white dim newressource" data-id="<?= $ressource->id ?>" data-toggle="tooltip" title="<?= $ressource->unite ?>"><?= $ressource->name(); ?></button>
                                 <?php }  ?>
                             </div>

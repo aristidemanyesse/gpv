@@ -35,9 +35,12 @@
                 <li class="" id="dashboard">
                     <a href="<?= $this->url($this->section, "master", "dashboard") ?>"><i class="fa fa-tachometer"></i> <span class="nav-label">Tableau de bord</span></a>
                 </li>
-                <li class="" id="stock">
-                    <a href="<?= $this->url($this->section, "master", "stock") ?>"><i class="fa fa-cubes"></i> <span class="nav-label">Stock des produits</span></a>
-                </li>
+
+                <?php if ($employe->isAutoriser("stock")) { ?>
+                    <li class="" id="stock">
+                        <a href="<?= $this->url($this->section, "stock", "stock") ?>"><i class="fa fa-cubes"></i> <span class="nav-label">Stock des produits</span></a>
+                    </li>
+                <?php } ?>
                 <li style="margin: 3% auto"><hr class="mp0" style="background-color: #000; "></li>
 
 
@@ -70,6 +73,7 @@
                         <ul class="nav nav-second-level collapse">
                             <li id="approressource"><a href="<?= $this->url($this->section, "stock", "approressource") ?>">Appro de ressources</a></li>
                             <li id="approemballage"><a href="<?= $this->url($this->section, "stock", "approemballage") ?>">Appro d'emballages</a></li>
+                            <li id="appropackage"><a href="<?= $this->url($this->section, "stock", "appropackage") ?>">Appro d'extras</a></li>
                             <li id="approetiquette"><a href="<?= $this->url($this->section, "stock", "approetiquette") ?>">Appro d'etiquettes</a></li>
                         </ul>
                     </li>
@@ -78,6 +82,7 @@
                         <ul class="nav nav-second-level collapse">
                             <li id="ressources"><a href="<?= $this->url($this->section, "stock", "ressources") ?>">Stock de ressources</a></li>
                             <li id="emballages"><a href="<?= $this->url($this->section, "stock", "emballages") ?>">Stock d'emballages</a></li>
+                            <li id="packages"><a href="<?= $this->url($this->section, "stock", "packages") ?>">Stock d'extras</a></li>
                             <li id="etiquettes"><a href="<?= $this->url($this->section, "stock", "etiquettes") ?>">Stock d'etiquettes</a></li>
                         </ul>
                     </li>
@@ -95,7 +100,7 @@
 
                 <?php if ($employe->isAutoriser("caisse")) { ?>
                     <li class="" id="caisse">
-                        <a href="<?= $this->url($this->section, "caisse", "caisse") ?>"><i class="fa fa-money"></i> <span class="nav-label">La caisse</span></a>
+                        <a href="<?= $this->url($this->section, "caisse", "caisse") ?>"><i class="fa fa-money"></i> <span class="nav-label">La caisse de l'usine</span></a>
                     </li>
                     <li style="margin: 3% auto"><hr class="mp0" style="background-color: #000; "></li>
                 <?php } ?>

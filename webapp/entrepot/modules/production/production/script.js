@@ -48,6 +48,11 @@ $(function(){
                 tableau.push(item);
             }       
         });
+
+        $("#modal-production"+id+" .conso input").each(function(index, el) {
+            formdata.append($(this).attr("name"), $(this).val());
+        });
+
         formdata.append('listeproduits', tableau);
 
         alerty.confirm("Voulez-vous vraiment confirmer cette production ?", {
@@ -71,7 +76,7 @@ $(function(){
     // nouvelleProduction = function(){
 
     //     var formdata = new FormData($("#formProduction")[0]);
-        
+
     //     tableau = new Array();
     //     $("#modal-production tr input").each(function(index, el) {
     //         var id = $(this).attr('data-id');
