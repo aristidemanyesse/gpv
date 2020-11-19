@@ -10,7 +10,7 @@ class TYPEBAREME extends TABLE
 	public static $namespace = __NAMESPACE__;
 
 	const NORMAL = 1;
-	const GROS = 2;
+	const GROS = 2; // Prix d'echantillion
 	const SPECIAL = 3;
 	const AUTOSHIP = 4;
 	const INSCRIPTION = 5;

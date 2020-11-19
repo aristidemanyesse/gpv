@@ -1,6 +1,7 @@
 <?php
 namespace Home;
-use Native\RESPONSE;/**
+use Native\RESPONSE;
+/**
  * 
  */
 class TYPECOMMANDE extends TABLE
