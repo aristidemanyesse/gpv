@@ -199,20 +199,28 @@
                                                     <th></th>
                                                     <th>Nom</th>
                                                     <th>Composé de </th>
-                                                    <th>Prix d'achat</th>
+                                                    <th>P.Achat</th>
+                                                    <th>StkeAlert</th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php $i =0; foreach (Home\EMBALLAGE::findBy([], [], ["name"=>"ASC"]) as $key => $item) {
-                                                    $item->actualise();  ?>
+                                                    $item->actualise(); ?>
                                                     <tr>
                                                         <td ><img style="height: 25px" src="<?= $this->stockage("images", "emballages", $item->image); ?>"></td>
-                                                        <td class="gras"><?= $item->name(); ?></td>
+                                                        <td class="gras"><?= $item->name(); ?><br><small><?= ($item->comptable == Home\TABLE::NON)?"Emballage non comptable":"" ?></small></td>
                                                         <td class="text-center"><?= $item->quantite; ?><br> <b><?= $item->emballage->name(); ?></b></td>
-                                                        <td width="100px">
-                                                            <input type="text" title="Prix Unitaire normal" number class="form-control input-xs text-center emballage" value="<?= $item->price ?>" name="price" id="<?= $item->id ?>">
+                                                        <td width="80px">
+                                                            <?php if ($item->comptable == Home\TABLE::OUI) {  ?>
+                                                                <input type="text" title="Prix Unitaire normal" number class="form-control input-xs text-center emballage" value="<?= $item->price ?>" name="price" id="<?= $item->id ?>">
+                                                            <?php } ?>
+                                                        </td>
+                                                        <td width="80px">
+                                                            <?php if ($item->comptable == Home\TABLE::OUI) {  ?>
+                                                                <input type="text" title="Stock d'alerte" number class="form-control input-xs text-center emballage" value="<?= $item->stkAlert ?>" name="stkAlert" id="<?= $item->id ?>">
+                                                            <?php } ?>
                                                         </td>
                                                         <td data-toggle="modal" data-target="#modal-emballage" title="modifier l'élément" onclick="modification('emballage', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
                                                         <td title="supprimer la format d'emballage" onclick="suppressionWithPassword('emballage', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
@@ -288,6 +296,7 @@
                                                     <th>Nom</th>
                                                     <th>unité</th>
                                                     <th>Prix d'achat</th>
+                                                    <th>Stk Alert</th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
@@ -301,6 +310,9 @@
                                                         <td class="gras"><?= $item->unite; ?></td>
                                                         <td width="100px">
                                                             <input type="text" title="Prix Unitaire d'achat" number class="form-control input-xs text-center package" value="<?= $item->price ?>" name="price" id="<?= $item->id ?>">
+                                                        </td>
+                                                        <td width="100px">
+                                                            <input type="text" title="Stock d'alerte" number class="form-control input-xs text-center package" value="<?= $item->stkAlert ?>" name="stkAlert" id="<?= $item->id ?>">
                                                         </td>
                                                         <td data-toggle="modal" data-target="#modal-package" title="modifier l'élément" onclick="modification('package', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
                                                         <td title="supprimer le package" onclick="suppressionWithPassword('package', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
@@ -380,6 +392,7 @@
                                                     <th>Abbr</th>
                                                     <th>stockable ?</th>
                                                     <th>Prix d'achat</th>
+                                                    <th>StkAlert</th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
@@ -405,6 +418,11 @@
                                                         <td width="110px">
                                                             <input type="text" title="Prix Unitaire normal" number class="form-control input-xs text-center ressource" step="0.1" value="<?= $item->price ?>" name="price" id="<?= $item->id ?>" >
                                                         </td>
+                                                            <td width="110px">
+                                                        <?php if ($item->isActive()) { ?>
+                                                                <input type="text" title="Stock d'alerte" number class="form-control input-xs text-center ressource" step="0.1" value="<?= $item->stkAlert ?>" name="stkAlert" id="<?= $item->id ?>" >
+                                                        <?php } ?>
+                                                            </td>
                                                         <td data-toggle="modal" data-target="#modal-ressource" title="modifier l'élément" onclick="modification('ressource', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
                                                         <td title="supprimer la ressource" onclick="suppressionWithPassword('ressource', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
                                                     </tr>
@@ -430,8 +448,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>Nom</th>
-                                                    <th>Qté initial</th>
                                                     <th>Prix d'achat</th>
+                                                    <th>Stk Alert</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -440,9 +458,11 @@
                                                     $item->actualise();  ?>
                                                     <tr>
                                                         <td class="gras"><?= $item->name(); ?></td>
-                                                        <td class="text-center"><?= $item->initial; ?> unités</td>
                                                         <td width="110px">
-                                                            <input type="text" title="Prix Unitaire normal" number class="form-control input-xs text-center etiquette" value="<?= $item->price ?>" name="price" id="<?= $item->id ?>">
+                                                            <input type="text" title="Prix d'achat" number class="form-control input-xs text-center etiquette" value="<?= $item->price ?>" name="price" id="<?= $item->id ?>">
+                                                        </td>
+                                                        <td width="110px">
+                                                            <input type="text" title="Stock d'alerte" number class="form-control input-xs text-center etiquette" value="<?= $item->stkAlert ?>" name="stkAlert" id="<?= $item->id ?>">
                                                         </td>
                                                         <td title="supprimer la format d'etiquette" onclick="suppressionWithPassword('etiquette', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
                                                     </tr>
@@ -452,85 +472,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-                            <div class="col-sm-7 bloc">
-                                <div class="ibox border">
-                                    <div class="ibox-title">
-                                        <h5 class="text-uppercase">Les paliers de reductions</h5>
-                                        <div class="ibox-tools">
-                                            <button class="btn_modal btn btn-xs btn-white" data-toggle="modal" data-target="#modal-palier">
-                                                <i class="fa fa-plus"></i> Ajouter
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Libéllé</th>
-                                                    <th>Prix min</th>
-                                                    <th>Prix max</th>
-                                                    <th>Reduction</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach (Home\PALIER::getAll() as $key => $item) {
-                                                    $item->actualise(); ?>
-                                                    <tr>
-                                                        <td class="gras"><?= $item->name(); ?></td>
-                                                        <td><?= money($item->min) ?> <?= $params->devise ?></td>
-                                                        <td><?= money($item->max) ?> <?= $params->devise ?></td>
-                                                        <td><?= $item->reduction; ?> <?= ($item->typereduction_id == Home\TYPEREDUCTION::BRUT)?$params->devise:"%"  ?></td>
-                                                        <td data-toggle="modal" data-target="#modal-palier" title="modifier l'élément" onclick="modification('palier', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
-                                                        <td title="supprimer le palier" onclick="suppressionWithPassword('palier', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
-                                                    </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            <div class="col-sm-4 bloc">
-                                <div class="ibox border">
-                                    <div class="ibox-title">
-                                        <h5 class="text-uppercase">Les zones de vente</h5>
-                                        <div class="ibox-tools">
-                                            <button class="btn_modal btn btn-xs btn-white" data-toggle="modal" data-target="#modal-zonedevente">
-                                                <i class="fa fa-plus"></i> Ajouter
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Libéllé</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php $i =0; foreach (Home\ZONEDEVENTE::findBy([], [], ["name"=>"ASC"]) as $key => $item) { ?>
-                                                    <tr>
-                                                        <td class="gras"><?= $item->name(); ?></td>
-                                                        <td data-toggle="modal" data-target="#modal-zonedevente" title="modifier la zone de livraison" onclick="modification('zonedevente', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
-                                                        <td title="supprimer la zone de livraison" onclick="suppressionWithPassword('zonedevente', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
-                                                    </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-
 
                         </div>
                     </div>
@@ -547,8 +488,6 @@
 
         <?php include($this->rootPath("webapp/config/elements/templates/script.php")); ?>
         <?php include($this->relativePath("modals.php")); ?>
-
-        <?php include($this->rootPath("composants/assets/modals/modal-params.php") );  ?>
 
 
     </body>

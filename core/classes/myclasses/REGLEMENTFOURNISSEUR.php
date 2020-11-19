@@ -17,6 +17,7 @@ class REGLEMENTFOURNISSEUR extends TABLE
 	public $etat_id = ETAT::VALIDEE;
 	public $approvisionnement_id;
 	public $approemballage_id;
+	public $appropackage_id;
 	public $approetiquette_id;
 	public $modepayement_id;
 	public $entrepot_id;

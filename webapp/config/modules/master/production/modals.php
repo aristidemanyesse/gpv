@@ -6,35 +6,7 @@
 
 <?php include($this->rootPath("composants/assets/modals/modal-parfum.php") );  ?>
 <?php include($this->rootPath("composants/assets/modals/modal-ressource.php") );  ?>
-<?php include($this->rootPath("composants/assets/modals/modal-palier.php") );  ?>
 
-
-<div class="modal inmodal fade" id="modal-zonedevente">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title">zone de vente</h4>
-			</div>
-			<form method="POST" class="formShamman" classname="zonedevente">
-				<div class="modal-body">
-					<div class="">
-						<label>Libéllé </label>
-						<div class="form-group">
-							<input type="text" class="form-control" name="name" required>
-						</div>
-					</div>
-				</div><hr>
-				<div class="container">
-					<input type="hidden" name="id">
-					<button type="button" class="btn btn-sm  btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Annuler</button>
-					<button class="btn btn-sm btn-primary pull-right dim"><i class="fa fa-check"></i> enregistrer</button>
-				</div>
-				<br>
-			</form>
-		</div>
-	</div>
-</div>
 
 
 <div class="modal inmodal fade" id="modal-typeproduit">
@@ -171,12 +143,21 @@
 			<form method="POST" class="formShamman" classname="emballage">
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-sm-12">
+						<div class="col-sm-7">
 							<label>Nom du format d'emballage </label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="name" required>
 							</div>
 						</div>
+						<div class="col-sm-5">
+                            <label>Emballage comptant ?</label>
+                            <div class="form-group">
+                                <select class="select2 form-control" name="comptable" style="width: 100%" required="">
+                                    <option value="<?= Home\TABLE::OUI ?>">Oui</option>
+                                    <option value="<?= Home\TABLE::NON ?>">Non</option>
+                                </select>
+                            </div>
+                        </div> 
 					</div>
 					<div class="row">
 						<div class="col-sm-6">

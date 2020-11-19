@@ -117,13 +117,13 @@
                 <div class="ibox-content">
                     <div class="row">
                         <?php foreach ($typeproduits as $key => $type) { ?>
-                            <div class="col-md border-right">
+                            <div class="col-md-12">
                                 <h6 class="text-uppercase text-center gras" style="color: "><?= $type->name();  ?></h6>
                                 <ul class="list-group clear-list m-t">
                                     <?php foreach ($type->fourni("typeproduit_parfum", ["isActive ="=>Home\TABLE::OUI]) as $key => $pro) {
                                         $pro->actualise(); ?>
                                         <li class="list-group-item" style="padding-bottom: 5px">
-                                            <small><?= $pro->name();  ?></small>          
+                                            <h5 class="text-uppercase d-inline"><?= $pro->name();  ?></h5>          
                                             <small class="float-right">
                                                 <table class="table table-bordered">
                                                     <tbody>
@@ -131,9 +131,17 @@
                                                             <?php foreach ($quantites as $key => $qua) {
                                                                 $produit = new Home\PRODUIT();
                                                                 $datas = Home\PRODUIT::findBy(["isActive="=>Home\TABLE::OUI, "typeproduit_parfum_id="=>$pro->id,"quantite_id="=> $qua->id]);
-                                                                if (count($datas) > 0) { $produit = $datas[0]; } ?>
-                                                                <td style="padding: 4px; width: 50px;" class="text-center"><span class="gras"><?= $produit->conditionnement($date1, $date2, Home\EMBALLAGE::PRIMAIRE, null) ?></span><br><span><?= $qua->name() ?></span></td>
-                                                            <?php } ?>
+                                                                if (count($datas) > 0) { 
+                                                                    $produit = $datas[0];
+                                                                    $produit->actualise();
+                                                                }
+                                                                foreach ($produit->getListeEmballageProduit() as $key => $emballage) { ?>
+                                                                    <td class="text-center">
+                                                                        <h5 class="gras"><?= start0($produit->conditionnement($date1, $date2, $emballage->id, null)) ?></h5>
+                                                                        <span><img src="<?= $this->stockage("images", "emballages", $emballage->image)  ?>" style="width: 25px;"> <?= $emballage->name() ?></span>
+                                                                    </td>
+                                                                <?php }
+                                                            } ?>
                                                         </tr>
                                                     </tbody>
                                                 </table>

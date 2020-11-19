@@ -41,11 +41,13 @@
                             <div class="row">
                                 <div class="col-sm-3 border-right">
                                     <h5 class="text-uppercase gras text-center">C.A. par Boutique</h5>
-                                    <ul class="list-group clear-list m-t">
+                                    <ul class="list-group clear-list m-t scroll" style="height: 220px; overflow-y: scroll;">
                                         <?php foreach ($boutiques as $key => $item) {  ?>
                                             <li class="list-group-item">
-                                                <i class="fa fa-home" style="color: "></i> <span><?= $item->name()  ?></span>          
-                                                <i class=" float-right"><?= money($item->vendu) ?> <?= $params->devise ?></i>
+                                                <a title="plus de details sur cette boutique" href="<?= $this->url("manager", "rapports", "rapportventeboutique", $item->id)  ?>" target="_blank">
+                                                    <i class="fa fa-home" style="color: "></i> <span><?= $item->name()  ?></span>          
+                                                    <i class=" float-right"><?= money($item->vendu) ?> <?= $params->devise ?></i>
+                                                </a>
                                             </li>
                                         <?php } ?>
                                         <li class="list-group-item"></li>

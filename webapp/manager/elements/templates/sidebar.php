@@ -89,7 +89,7 @@
                     <li id="entrepots">
                         <a href="#"><i class="fa fa-home"></i> <span class="nav-label">Les entrepots</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
-                            <?php foreach ($employe->fourni("acces_entrepot")as $key => $item) {
+                            <?php foreach ($employe->fourni("acces_entrepot") as $key => $item) {
                                 $item->actualise(); ?>
                                 <li><a href="<?= $this->url($this->section, "manager", "entrepots", $item->entrepot->id) ?>"><?= $item->entrepot->name() ?></a></li>
                             <?php } ?>

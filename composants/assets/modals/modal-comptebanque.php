@@ -9,14 +9,14 @@
             <form method="POST" class="formShamman" classname="comptebanque">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-8">
                             <label>Nom du compte <span1>*</span1></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="name" required>
                             </div>
                         </div>  
-                        <div class="col-sm-6">
-                            <label>Solde du compte <span1>*</span1></label>
+                        <div class="col-sm-4">
+                            <label>Solde initial <span1>*</span1></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="initial" required>
                             </div>

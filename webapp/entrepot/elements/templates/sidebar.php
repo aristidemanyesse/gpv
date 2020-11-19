@@ -73,6 +73,7 @@
                         <ul class="nav nav-second-level collapse">
                             <li id="approressource"><a href="<?= $this->url($this->section, "stock", "approressource") ?>">Appro de ressources</a></li>
                             <li id="approemballage"><a href="<?= $this->url($this->section, "stock", "approemballage") ?>">Appro d'emballages</a></li>
+                            <li id="appropackage"><a href="<?= $this->url($this->section, "stock", "appropackage") ?>">Appro d'extras</a></li>
                             <li id="approetiquette"><a href="<?= $this->url($this->section, "stock", "approetiquette") ?>">Appro d'etiquettes</a></li>
                         </ul>
                     </li>
@@ -81,6 +82,7 @@
                         <ul class="nav nav-second-level collapse">
                             <li id="ressources"><a href="<?= $this->url($this->section, "stock", "ressources") ?>">Stock de ressources</a></li>
                             <li id="emballages"><a href="<?= $this->url($this->section, "stock", "emballages") ?>">Stock d'emballages</a></li>
+                            <li id="packages"><a href="<?= $this->url($this->section, "stock", "packages") ?>">Stock d'extras</a></li>
                             <li id="etiquettes"><a href="<?= $this->url($this->section, "stock", "etiquettes") ?>">Stock d'etiquettes</a></li>
                         </ul>
                     </li>
@@ -112,6 +114,6 @@
 
 <style type="text/css">
     li.dropdown-divider{
-       !important;
-   }
+     !important;
+ }
 </style>

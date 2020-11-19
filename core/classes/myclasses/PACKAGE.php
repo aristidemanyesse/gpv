@@ -16,34 +16,30 @@ class PACKAGE extends TABLE
 	public $unite ;
 	public $isActive = TABLE::OUI;
 	public $price = 0;
+	public $stkAlert = 0;
 	public $image ;
 
 
 	public function enregistre(){
 		$data = new RESPONSE;
-		if ($this->initial >= 0) {
-			if ($this->name != "") {
-				$data = $this->save();
-				if ($data->status) {
-					
-					$this->uploading($this->files);
-					
-					foreach (ENTREPOT::getAll() as $key => $exi) {
-						$ligne = new INITIALPACKAGEENTREPOT();
-						$ligne->entrepot_id = $exi->id;
-						$ligne->package_id = $this->id;
-						$ligne->quantite = 0;
-						$ligne->enregistre();
-					}
-
+		if ($this->name != "") {
+			$data = $this->save();
+			if ($data->status) {
+				
+				$this->uploading($this->files);
+				
+				foreach (ENTREPOT::getAll() as $key => $exi) {
+					$ligne = new INITIALPACKAGEENTREPOT();
+					$ligne->entrepot_id = $exi->id;
+					$ligne->package_id = $this->id;
+					$ligne->quantite = 0;
+					$ligne->enregistre();
 				}
-			}else{
-				$data->status = false;
-				$data->message = "Veuillez à bien renseigner le nime de l'package !";
+
 			}
 		}else{
 			$data->status = false;
-			$data->message = "Veuillez à bien renseigner le stock initial !";
+			$data->message = "Veuillez à bien renseigner le nime de l'package !";
 		}
 		return $data;
 	}
@@ -120,7 +116,7 @@ class PACKAGE extends TABLE
 
 	public function stock(String $date1, String $date2, int $entrepot_id){
 		$item = $this->fourni("initialpackageentrepot", ["entrepot_id ="=>$entrepot_id])[0];
-		return $this->achat($date1, $date2, $entrepot_id) - $this->consommee($date1, $date2, $entrepot_id) - $this->perte($date1, $date2, $entrepot_id) + intval($this->initial) + $item->quantite;
+		return $this->achat($date1, $date2, $entrepot_id) - $this->consommee($date1, $date2, $entrepot_id) - $this->perte($date1, $date2, $entrepot_id) + $item->quantite;
 	}
 
 
@@ -143,13 +139,10 @@ class PACKAGE extends TABLE
 		if ($entrepot_id != null) {
 			$paras.= "AND entrepot_id = $entrepot_id ";
 		}
-		$requette = "SELECT SUM(ligneconditionnement.quantite) as quantite  FROM ligneconditionnement, conditionnement WHERE ligneconditionnement.package_id =  ? AND ligneconditionnement.conditionnement_id = conditionnement.id AND conditionnement.etat_id != ? AND DATE(conditionnement.created) >= ? AND DATE(conditionnement.created) <= ? $paras ";
-		$item = LIGNECONDITIONNEMENT::execute($requette, [$this->id, ETAT::ANNULEE, $date1, $date2]);
-		if (count($item) < 1) {$item = [new LIGNECONDITIONNEMENT()]; }
+		$requette = "SELECT SUM(ligneconsommationpackage.quantite) as quantite  FROM ligneconsommationpackage, conditionnement WHERE ligneconsommationpackage.package_id =  ? AND ligneconsommationpackage.conditionnement_id = conditionnement.id AND conditionnement.etat_id != ? AND DATE(conditionnement.created) >= ? AND DATE(conditionnement.created) <= ? $paras ";
+		$item = LIGNECONSOMMATIONPACKAGE::execute($requette, [$this->id, ETAT::ANNULEE, $date1, $date2]);
+		if (count($item) < 1) {$item = [new LIGNECONSOMMATIONPACKAGE()]; }
 
-		foreach ($this->fourni("package", ["isActive ="=>TABLE::OUI]) as $key => $package) {
-			$total += $package->consommee($date1, $date2, $entrepot_id) * $package->quantite;
-		}
 		return $item[0]->quantite + $total;
 	}
 
@@ -171,13 +164,13 @@ class PACKAGE extends TABLE
 
 	public function price(){
 		$requette = "SELECT SUM(quantite_recu) as quantite, SUM(transport) as transport, SUM(ligneappropackage.price) as price FROM ligneappropackage, appropackage WHERE ligneappropackage.package_id = ? AND ligneappropackage.appropackage_id = appropackage.id AND appropackage.etat_id = ? ";
-		$datas = LIGNEAPPROVISIONNEMENT::execute($requette, [$this->id, ETAT::VALIDEE]);
-		if (count($datas) < 1) {$datas = [new LIGNEAPPROVISIONNEMENT()]; }
+		$datas = LIGNEAPPROPACKAGE::execute($requette, [$this->id, ETAT::VALIDEE]);
+		if (count($datas) < 1) {$datas = [new LIGNEAPPROPACKAGE()]; }
 		$item = $datas[0];
 
 		$requette = "SELECT SUM(quantite_recu) as quantite FROM ligneappropackage, appropackage WHERE ligneappropackage.appropackage_id = appropackage.id AND appropackage.id IN (SELECT appropackage_id FROM ligneappropackage WHERE ligneappropackage.package_id = ? ) AND appropackage.etat_id = ? ";
-		$datas = LIGNEAPPROVISIONNEMENT::execute($requette, [$this->id, ETAT::VALIDEE]);
-		if (count($datas) < 1) {$datas = [new LIGNEAPPROVISIONNEMENT()]; }
+		$datas = LIGNEAPPROPACKAGE::execute($requette, [$this->id, ETAT::VALIDEE]);
+		if (count($datas) < 1) {$datas = [new LIGNEAPPROPACKAGE()]; }
 		$ligne = $datas[0];
 
 		if ($item->quantite == 0) {

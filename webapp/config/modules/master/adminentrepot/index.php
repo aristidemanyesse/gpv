@@ -57,15 +57,17 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php $i =0; foreach (Home\INITIALEMBALLAGEENTREPOT::findBy(["entrepot_id ="=>$entrepot->id]) as $key => $item) {
-                                                        $item->actualise();  ?>
-                                                        <tr>
-                                                            <td ><img style="height: 25px" src="<?= $this->stockage("images", "emballages", $item->image); ?>"></td>
-                                                            <td class="gras"><?= $item->emballage->name(); ?></td>
-                                                            <td width="110px">
-                                                                <input type="text" title="Stock initial" number class="form-control input-xs text-center maj" value="<?= $item->quantite ?>" name="initialemballageentrepot" id="<?= $item->id ?>" >
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
+                                                        $item->actualise();
+                                                        if ($item->emballage->comptable == Home\TABLE::OUI) { ?>
+                                                            <tr>
+                                                                <td ><img style="height: 25px" src="<?= $this->stockage("images", "emballages", $item->image); ?>"></td>
+                                                                <td class="gras"><?= $item->emballage->name(); ?></td>
+                                                                <td width="110px">
+                                                                    <input type="text" title="Stock initial" number class="form-control input-xs text-center maj" value="<?= $item->quantite ?>" name="initialemballageentrepot" id="<?= $item->id ?>" >
+                                                                </td>
+                                                            </tr>
+                                                        <?php  }  
+                                                    } ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -186,7 +188,7 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row">
-                                            <?php $i =0; foreach (Home\INITIALETIQUETTEENTREPOT::findBy(["entrepot_id ="=>$entrepot->id]) as $key => $item) {
+                                            <?php foreach (Home\INITIALETIQUETTEENTREPOT::findBy(["entrepot_id ="=>$entrepot->id]) as $key => $item) {
                                                 $item->actualise();  ?>
                                                 <div class="col-sm-6 col-md-4 col-lg-3 border-right border-bottom" style="margin-bottom: 2%">
                                                     <div class="row">
@@ -233,7 +235,7 @@
                                                                     <td class="">
                                                                         <div class="row">
                                                                             <?php if ($produit->isActive()) {
-                                                                             foreach ($produit->getListeEmballageProduit() as $key => $emballage) {
+                                                                               foreach ($produit->getListeEmballageProduit() as $key => $emballage) {
                                                                                 $item = $produit->fourni("initialproduitentrepot", ["emballage_id ="=>$emballage->id])[0];
                                                                                 $item->actualise(); ?>
                                                                                 <div class="col-md-4 border-right border-bottom">

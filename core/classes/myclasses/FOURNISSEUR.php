@@ -241,6 +241,9 @@ class FOURNISSEUR extends AUTH
 		foreach ($this->fourni("approetiquette", ["etat_id !="=>ETAT::ANNULEE]) as $key => $appro) {
 			$total += $appro->reste();	
 		}
+		foreach ($this->fourni("appropackage", ["etat_id !="=>ETAT::ANNULEE]) as $key => $appro) {
+			$total += $appro->reste();	
+		}
 		return $total;
 	}
 

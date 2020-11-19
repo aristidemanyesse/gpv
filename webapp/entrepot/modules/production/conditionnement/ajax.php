@@ -51,9 +51,9 @@ if ($action == "validerConditionnement") {
 				$datas = EMBALLAGE::findBy(["id ="=>$tab[1]]);
 				if (count($datas) == 1) {
 					$produit->actualise();
-					$format = $datas[0];
-					if ($format->isDisponible($value)) {
-						$quantite += $format->nombre() * $produit->quantite->name* $value;
+					$emballage = $datas[0];
+					if ($emballage->isDisponible($value)) {
+						$quantite += $emballage->nombre() * $produit->quantite->name* $value;
 					}else{
 						$test = false;
 						break;
@@ -67,10 +67,12 @@ if ($action == "validerConditionnement") {
 		foreach (getSession("emballages-disponibles") as $key => $value) {
 			$datas = EMBALLAGE::findBy(["id ="=>$key]);
 			if (count($datas) == 1) {
-				$format = $datas[0];
-				if ($format->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), getSession("entrepot_connecte_id")) < $value) {
-					$test = false;
-					break;
+				$emballage = $datas[0];
+				if ($emballage->comptable == TABLE::OUI) {
+					if ($emballage->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), getSession("entrepot_connecte_id")) < $value) {
+						$test = false;
+						break;
+					}
 				}
 			}else{
 				$test = false;
@@ -123,11 +125,11 @@ if ($action == "validerConditionnement") {
 			}
 		}else{
 			$data->status = false;
-			$data->message = "La quantite totale des emballages dépassent la quantité de production, Veuillez vérifier les données !";
+			$data->message = "La quantite totale de <b>".$emballage->name()."</b> n'est pas suffisante pour effectuer ce conditionnement, Veuillez vérifier votre stock ou les données saisies!";
 		}
 	}else{
 		$data->status = false;
-		$data->message = "Vous ne disposez pas de suffisemment d'emballages pour ce packaging, Veuillez vérifier les données !";
+		$data->message = "Vous ne disposez pas de suffisemment de <b>".$emballage->name()."</b> pour ce packaging, Veuillez vérifier les données !";
 	}
 
 	echo json_encode($data);

@@ -149,7 +149,7 @@ class PRODUIT extends TABLE
 		if ($emballage_id != null) {
 			$paras.= "AND emballage_id = $emballage_id ";
 		}
-		$requette = "SELECT SUM(ligneconditionnement.quantite) as quantite  FROM conditionnement, ligneconditionnement WHERE ligneconditionnement.produit_id = ? AND ligneconditionnement.conditionnement_id = conditionnement.id AND conditionnement.etat_id != ? AND conditionnement.created >= ? AND conditionnement.created <= ? $paras";
+		$requette = "SELECT SUM(ligneconditionnement.quantite) as quantite  FROM conditionnement, ligneconditionnement WHERE ligneconditionnement.produit_id = ? AND ligneconditionnement.conditionnement_id = conditionnement.id AND conditionnement.etat_id != ? AND DATE(conditionnement.created) >= ? AND DATE(conditionnement.created) <= ? $paras";
 		$item = LIGNECONDITIONNEMENT::execute($requette, [$this->id, $emballage_id, ETAT::ANNULEE, $date1, $date2]);
 		if (count($item) < 1) {$item = [new LIGNECONDITIONNEMENT()]; }
 		return $item[0]->quantite;
@@ -161,7 +161,7 @@ class PRODUIT extends TABLE
 		if ($entrepot_id != null) {
 			$paras.= "AND entrepot_id = $entrepot_id ";
 		}
-		$requette = "SELECT SUM(ligneconditionnement.quantite) as quantite  FROM conditionnement, ligneconditionnement WHERE ligneconditionnement.produit_id = ? AND ligneconditionnement.emballage_id = ? AND ligneconditionnement.conditionnement_id = conditionnement.id AND conditionnement.etat_id != ? AND conditionnement.created >= ? AND conditionnement.created <= ? $paras";
+		$requette = "SELECT SUM(ligneconditionnement.quantite) as quantite  FROM conditionnement, ligneconditionnement WHERE ligneconditionnement.produit_id = ? AND ligneconditionnement.emballage_id = ? AND ligneconditionnement.conditionnement_id = conditionnement.id AND conditionnement.etat_id != ? AND DATE(conditionnement.created) >= ? AND DATE(conditionnement.created) <= ? $paras";
 		$item = LIGNECONDITIONNEMENT::execute($requette, [$this->id, $emballage_id, ETAT::ANNULEE, $date1, $date2]);
 		if (count($item) < 1) {$item = [new LIGNECONDITIONNEMENT()]; }
 		return $item[0]->quantite;
@@ -173,7 +173,7 @@ class PRODUIT extends TABLE
 		if ($entrepot_id != null) {
 			$paras.= "AND entrepot_id = $entrepot_id ";
 		}
-		$requette = "SELECT SUM(quantite) as quantite  FROM lignemiseenboutique, miseenboutique WHERE lignemiseenboutique.produit_id = ? AND lignemiseenboutique.emballage_id = ? AND lignemiseenboutique.miseenboutique_id = miseenboutique.id AND miseenboutique.etat_id != ?  AND lignemiseenboutique.created >= ? AND lignemiseenboutique.created <= ? $paras ";
+		$requette = "SELECT SUM(quantite) as quantite  FROM lignemiseenboutique, miseenboutique WHERE lignemiseenboutique.produit_id = ? AND lignemiseenboutique.emballage_id = ? AND lignemiseenboutique.miseenboutique_id = miseenboutique.id AND miseenboutique.etat_id != ?  AND DATE(lignemiseenboutique.created) >= ? AND DATE(lignemiseenboutique.created) <= ? $paras ";
 		$item = LIGNEMISEENBOUTIQUE::execute($requette, [$this->id, $emballage_id, ETAT::ANNULEE, $date1, $date2]);
 		if (count($item) < 1) {$item = [new LIGNEMISEENBOUTIQUE()]; }
 		return $item[0]->quantite;

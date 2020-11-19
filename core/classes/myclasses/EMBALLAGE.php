@@ -18,68 +18,64 @@ class EMBALLAGE extends TABLE
 	public $quantite ;
 	public $emballage_id ;
 	public $isActive = TABLE::OUI;
-	public $initial = 0;
+	public $comptable = TABLE::OUI;
 	public $price = 0;
+	public $stkAlert = 0;
 	public $image ;
 
 
 	public function enregistre(){
 		$data = new RESPONSE;
-		if ($this->initial >= 0) {
-			if ($this->name != "") {
-				$data = $this->save();
-				if ($data->status) {
-					
-					$this->uploading($this->files);
-					foreach (PRODUIT::getAll() as $key => $produit) {
-						$item = new PRICE;
-						$item->produit_id = $produit->id;
-						$item->emballage_id = $this->id;
-						$item->prix = 200;
-						$item->prix_gros = 200;
-						$item->enregistre();
-					}
+		if ($this->name != "") {
+			$data = $this->save();
+			if ($data->status) {
 
-					foreach (ENTREPOT::getAll() as $key => $exi) {
-						$ligne = new INITIALEMBALLAGEENTREPOT();
-						$ligne->entrepot_id = $exi->id;
+				$this->uploading($this->files);
+				foreach (PRODUIT::getAll() as $key => $produit) {
+					$item = new PRICE;
+					$item->produit_id = $produit->id;
+					$item->emballage_id = $this->id;
+					$item->prix = 200;
+					$item->prix_gros = 200;
+					$item->enregistre();
+				}
+
+				foreach (ENTREPOT::getAll() as $key => $exi) {
+					$ligne = new INITIALEMBALLAGEENTREPOT();
+					$ligne->entrepot_id = $exi->id;
+					$ligne->emballage_id = $this->id;
+					$ligne->quantite = 0;
+					$ligne->enregistre();
+				}
+
+
+				foreach (BOUTIQUE::getAll() as $key => $exi) {
+					foreach (PRODUIT::getAll() as $key => $prod) {
+						$ligne = new INITIALPRODUITBOUTIQUE();
+						$ligne->boutique_id = $exi->id;
+						$ligne->produit_id = $prod->id;
 						$ligne->emballage_id = $this->id;
 						$ligne->quantite = 0;
 						$ligne->enregistre();
 					}
-
-
-					foreach (BOUTIQUE::getAll() as $key => $exi) {
-						foreach (PRODUIT::getAll() as $key => $prod) {
-							$ligne = new INITIALPRODUITBOUTIQUE();
-							$ligne->boutique_id = $exi->id;
-							$ligne->produit_id = $prod->id;
-							$ligne->emballage_id = $this->id;
-							$ligne->quantite = 0;
-							$ligne->enregistre();
-						}
-					}
-
-
-					foreach (ENTREPOT::getAll() as $key => $exi) {
-						foreach (PRODUIT::getAll() as $key => $prod) {
-							$ligne = new INITIALPRODUITENTREPOT();
-							$ligne->entrepot_id = $exi->id;
-							$ligne->produit_id = $prod->id;
-							$ligne->emballage_id = $this->id;
-							$ligne->quantite = 0;
-							$ligne->enregistre();
-						}
-					}
-					
 				}
-			}else{
-				$data->status = false;
-				$data->message = "Veuillez à bien renseigner le nime de l'emballage !";
+
+
+				foreach (ENTREPOT::getAll() as $key => $exi) {
+					foreach (PRODUIT::getAll() as $key => $prod) {
+						$ligne = new INITIALPRODUITENTREPOT();
+						$ligne->entrepot_id = $exi->id;
+						$ligne->produit_id = $prod->id;
+						$ligne->emballage_id = $this->id;
+						$ligne->quantite = 0;
+						$ligne->enregistre();
+					}
+				}
+
 			}
 		}else{
 			$data->status = false;
-			$data->message = "Veuillez à bien renseigner le stock initial !";
+			$data->message = "Veuillez à bien renseigner le nime de l'emballage !";
 		}
 		return $data;
 	}
@@ -137,7 +133,7 @@ class EMBALLAGE extends TABLE
 		foreach ($this->fourni("caracteristiquepackage") as $key => $carac) {
 			$quantite = ($carac->quantite * $value) / $carac->quantite2;
 			if ($quantite > 0) {
-				$ligne = new LIGNECONDITIONNEMENTPACKAGE;
+				$ligne = new LIGNECONSOMMATIONPACKAGE;
 				$ligne->conditionnement_id = $id;
 				$ligne->package_id = $carac->package_id;
 				$ligne->quantite = $quantite;
@@ -153,17 +149,18 @@ class EMBALLAGE extends TABLE
 
 	public function isDisponible(int $a = 1){
 		$tab = [];
+		$test = true;
 		if (getSession("emballages-disponibles") != null) {
 			$tab = getSession("emballages-disponibles");
 		}
-		$this->actualise();
-		if ($this->emballage_id == null) {
-			$test = ($this->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), getSession("entrepot_connecte_id")) >=  $a);
-			$tab[$this->id] = (isset($tab[$this->id]))? intval($tab[$this->id]) + intval($a) : intval($a);
-			session("emballages-disponibles", $tab);
-			return $test;
+		if ($this->comptable == TABLE::OUI) {
+			$this->actualise();
+			if ($this->emballage_id == null) {
+				$test = ($this->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), getSession("entrepot_connecte_id")) >=  $a);
+			}else{
+				$test = (($this->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), getSession("entrepot_connecte_id")) >=  $a) && $this->emballage->isDisponible($this->emballage->quantite * $a));
+			}
 		}
-		$test = (($this->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), getSession("entrepot_connecte_id")) >=  $a) && $this->emballage->isDisponible($this->emballage->quantite * $a));
 		$tab[$this->id] = (isset($tab[$this->id]))? intval($tab[$this->id]) + intval($a) : intval($a);
 		session("emballages-disponibles", $tab);
 		return $test;
@@ -173,7 +170,7 @@ class EMBALLAGE extends TABLE
 
 	public function stock(String $date1, String $date2, int $entrepot_id){
 		$item = $this->fourni("initialemballageentrepot", ["entrepot_id ="=>$entrepot_id])[0];
-		return $this->achat($date1, $date2, $entrepot_id) - $this->consommee($date1, $date2, $entrepot_id) - $this->perte($date1, $date2, $entrepot_id) + intval($this->initial) + $item->quantite;
+		return $this->achat($date1, $date2, $entrepot_id) - $this->consommee($date1, $date2, $entrepot_id) - $this->perte($date1, $date2, $entrepot_id) + $item->quantite;
 	}
 
 
@@ -224,13 +221,13 @@ class EMBALLAGE extends TABLE
 
 	public function price(){
 		$requette = "SELECT SUM(quantite_recu) as quantite, SUM(transport) as transport, SUM(ligneapproemballage.price) as price FROM ligneapproemballage, approemballage WHERE ligneapproemballage.emballage_id = ? AND ligneapproemballage.approemballage_id = approemballage.id AND approemballage.etat_id = ? ";
-		$datas = LIGNEAPPROVISIONNEMENT::execute($requette, [$this->id, ETAT::VALIDEE]);
-		if (count($datas) < 1) {$datas = [new LIGNEAPPROVISIONNEMENT()]; }
+		$datas = LIGNEAPPROEMBALLAGE::execute($requette, [$this->id, ETAT::VALIDEE]);
+		if (count($datas) < 1) {$datas = [new LIGNEAPPROEMBALLAGE()]; }
 		$item = $datas[0];
 
 		$requette = "SELECT SUM(quantite_recu) as quantite FROM ligneapproemballage, approemballage WHERE ligneapproemballage.approemballage_id = approemballage.id AND approemballage.id IN (SELECT approemballage_id FROM ligneapproemballage WHERE ligneapproemballage.emballage_id = ? ) AND approemballage.etat_id = ? ";
-		$datas = LIGNEAPPROVISIONNEMENT::execute($requette, [$this->id, ETAT::VALIDEE]);
-		if (count($datas) < 1) {$datas = [new LIGNEAPPROVISIONNEMENT()]; }
+		$datas = LIGNEAPPROEMBALLAGE::execute($requette, [$this->id, ETAT::VALIDEE]);
+		if (count($datas) < 1) {$datas = [new LIGNEAPPROEMBALLAGE()]; }
 		$ligne = $datas[0];
 
 		if ($item->quantite == 0) {
