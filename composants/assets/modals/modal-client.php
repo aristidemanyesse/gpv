@@ -9,18 +9,27 @@
             <form method="POST" class="formShamman" classname="client">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-sm-4">
                             <label>Type de client <span1>*</span1></label>
                             <div class="form-group">
                                 <?php Native\BINDING::html("select", "typeclient"); ?>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-sm-4">
                             <label>Nom & prénoms de client <span1>*</span1></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="name" required>
                             </div>
-                        </div>                        
+                        </div>  
+                        <div class="col-sm-4">
+                            <label>Visible par toutes les boutiques ?</label>
+                            <div class="form-group">
+                                <select class="select2 form-control" name="forAll" style="width: 100%" required="">
+                                    <option value="<?= Home\TABLE::NON ?>">Non, seulement ma boutique</option>
+                                    <option value="<?= Home\TABLE::OUI ?>">Oui, par toutes les boutiques</option>
+                                </select>
+                            </div>
+                        </div>                      
                     </div>
 
                     <div class="row">

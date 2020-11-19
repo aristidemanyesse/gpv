@@ -19,7 +19,8 @@ class VENTE extends TABLE
 	public $etat_id            = ETAT::ENCOURS;
 	public $employe_id         = null;
 	public $reglementclient_id = null;
-	
+	public $sousTVA = TABLE::OUI;
+
 	public $montant            = 0;
 	public $rendu              = 0;
 	public $recu               = 0;

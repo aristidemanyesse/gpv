@@ -147,7 +147,7 @@ $item->save();
 
 
 $datas = ["master", "manager", "boutique", "entrepot", "config",
- "production", "ventes", "stock", "caisse", "rapports",
+ "production", "ventes", "stock", "caisse", "rapports", "tresorerie",
   "modifier-supprimer", "roles", "mycompte"];
 foreach ($datas as $key => $value) {
 	$item = new ROLE();
@@ -173,6 +173,7 @@ $item->email = "info@payiel.com";
 $item->devise = "Fcfa";
 $item->tva = 0;
 $item->seuilCredit = 0;
+$item->productionAuto = TABLE::OUI;
 $item->minImmobilisation = 350000;
 $item->setProtected(1);
 $item->enregistre();

@@ -21,7 +21,9 @@ foreach (QUANTITE::findBy(["isActive ="=>TABLE::OUI]) as $key => $item) {
 	$quantites[] = $item;
 }
 
-foreach (BOUTIQUE::getAll() as $key => $item) {
+foreach ($employe->fourni("acces_boutique") as $key => $acces) {
+	$acces->actualise();
+	$item = $acces->boutique;
 	$item->vendu = PRODUIT::totalVendu($date1, $date2, $item->id);
 	$boutiques[] = $item;
 }

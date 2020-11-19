@@ -204,6 +204,7 @@ if ($action == "calcul") {
 	foreach ($listeproduits as $key => $value) {
 		$data = explode("-", $value);
 		$id = $data[0];
+		$emballage_id = "";
 		if (isset($data[1])) {
 			$emballage_id = $data[1];
 		}
@@ -274,7 +275,7 @@ if ($action == "calcul") {
 
 	$total = $montant - $redis;
 
-	$tva = ($total * $params->tva) / 100;
+	$tva = ($sousTVA == TABLE::OUI) ? ($total * $params->tva) / 100 : 0;
 	$total += $tva;
 
 
@@ -286,7 +287,11 @@ if ($action == "calcul") {
 	session("rendu", intval($recu) - $total);
 
 	$data = new \stdclass();
-	$data->tva = money(getSession("tva"))." ".$params->devise;
+	if ($sousTVA == TABLE::OUI) {
+		$data->tva = money(getSession("tva"))." ".$params->devise;
+	}else{
+		$data->tva = "TVA non appliquée";
+	}
 	$data->montant = money(getSession("montant"))." ".$params->devise;
 	$data->reduction = money(getSession("reduction"))." ".$params->devise;
 	$data->total = money(getSession("total"))." ".$params->devise;
@@ -717,7 +722,8 @@ if ($action == "livraisonCommande") {
 					$prospection->hydrater($_POST);
 					$prospection->groupecommande_id = $groupecommande->id;
 					$prospection->typeprospection_id = TYPEPROSPECTION::LIVRAISON;
-					$prospection->montant = getSession("total");
+					//$prospection->montant = getSession("total");
+					$prospection->montant = 0;
 					$data = $prospection->enregistre();
 					if ($data->status) {
 						$montant = 0;

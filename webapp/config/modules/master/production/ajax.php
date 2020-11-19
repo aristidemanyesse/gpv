@@ -31,3 +31,14 @@ if ($action == "changementEmballage") {
 	}
 	echo json_encode($data);
 }
+
+
+if ($action == "changementPackage") {
+	$datas = PACKAGE::findBy(["id ="=>$id]);
+	if (count($datas) == 1) {
+		$package = $datas[0];
+		$package->$name = $val;
+		$data = $package->save();
+	}
+	echo json_encode($data);
+}

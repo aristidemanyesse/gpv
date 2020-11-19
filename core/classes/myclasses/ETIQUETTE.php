@@ -14,28 +14,22 @@ class ETIQUETTE extends TABLE
 
 
 	public $produit_id;
-	public $initial = 0;
 	public $price = 0;
+	public $stkAlert = 0;
 
 
 	public function enregistre(){
 		$data = new RESPONSE;
 		$datas = PRODUIT::findBy(["id ="=>$this->produit_id]);
 		if (count($datas) == 1) {
-			if ($this->initial >= 0) {
-				$data = $this->save();
+			$data = $this->save();
 
-				foreach (ENTREPOT::getAll() as $key => $exi) {
-					$ligne = new INITIALETIQUETTEENTREPOT();
-					$ligne->entrepot_id = $exi->id;
-					$ligne->etiquette_id = $this->id;
-					$ligne->quantite = 0;
-					$ligne->enregistre();
-				}
-
-			}else{
-				$data->status = false;
-				$data->message = "Veuillez à bien renseigner le initial initial !";
+			foreach (ENTREPOT::getAll() as $key => $exi) {
+				$ligne = new INITIALETIQUETTEENTREPOT();
+				$ligne->entrepot_id = $exi->id;
+				$ligne->etiquette_id = $this->id;
+				$ligne->quantite = 0;
+				$ligne->enregistre();
 			}
 		}else{
 			$data->status = false;
@@ -49,12 +43,15 @@ class ETIQUETTE extends TABLE
 	public function name()
 	{
 		$this->actualise();
-		return $this->produit->name();
+		if ($this->produit->id > 0) {
+			return $this->produit->name();
+		}
+		return "";
 	}
 
 	public function stock(String $date1, String $date2, int $entrepot_id){
 		$item = $this->fourni("initialetiquetteentrepot", ["entrepot_id ="=>$entrepot_id])[0];
-		return $this->achat($date1, $date2, $entrepot_id) + intval($this->initial) - $this->consommee($date1, $date2, $entrepot_id) - $this->consommee($date1, $date2, $entrepot_id) + $item->quantite;
+		return $this->achat($date1, $date2, $entrepot_id) - $this->consommee($date1, $date2, $entrepot_id) - $this->consommee($date1, $date2, $entrepot_id) + $item->quantite;
 	}
 
 
@@ -98,13 +95,13 @@ class ETIQUETTE extends TABLE
 
 	public function price(){
 		$requette = "SELECT SUM(quantite_recu) as quantite, SUM(transport) as transport, SUM(ligneapproetiquette.price) as price FROM ligneapproetiquette, approetiquette WHERE ligneapproetiquette.etiquette_id = ? AND ligneapproetiquette.approetiquette_id = approetiquette.id AND approetiquette.etat_id = ? ";
-		$datas = LIGNEAPPROVISIONNEMENT::execute($requette, [$this->id, ETAT::VALIDEE]);
-		if (count($datas) < 1) {$datas = [new LIGNEAPPROVISIONNEMENT()]; }
+		$datas = LIGNEAPPROETIQUETTE::execute($requette, [$this->id, ETAT::VALIDEE]);
+		if (count($datas) < 1) {$datas = [new LIGNEAPPROETIQUETTE()]; }
 		$item = $datas[0];
 
 		$requette = "SELECT SUM(quantite_recu) as quantite FROM ligneapproetiquette, approetiquette WHERE ligneapproetiquette.approetiquette_id = approetiquette.id AND approetiquette.id IN (SELECT approetiquette_id FROM ligneapproetiquette WHERE ligneapproetiquette.etiquette_id = ? ) AND approetiquette.etat_id = ? ";
-		$datas = LIGNEAPPROVISIONNEMENT::execute($requette, [$this->id, ETAT::VALIDEE]);
-		if (count($datas) < 1) {$datas = [new LIGNEAPPROVISIONNEMENT()]; }
+		$datas = LIGNEAPPROETIQUETTE::execute($requette, [$this->id, ETAT::VALIDEE]);
+		if (count($datas) < 1) {$datas = [new LIGNEAPPROETIQUETTE()]; }
 		$ligne = $datas[0];
 
 		if ($item->quantite == 0) {

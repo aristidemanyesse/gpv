@@ -119,9 +119,7 @@
                                                 </tbody>  
                                             </table>
                                         </td>
-                                        <td>
-                                            <a href="<?= $this->url("fiches", "master", "bonconditionnement", $conditionnement->id) ?>" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-file-text text-blue"></i></a>
-                                            
+                                        <td>                                          
                                             <?php if ($employe->isAutoriser("modifier-supprimer") && $conditionnement->etat_id != Home\ETAT::ANNULEE) { ?>
                                                 <button onclick="annuler('conditionnement', <?= $conditionnement->id ?>)" class="btn btn-white btn-sm"><i class="fa fa-trash text-red"></i></button>
                                             <?php } ?>
@@ -167,8 +165,6 @@
                                             </table>
                                         </td>
                                         <td>
-                                            <a href="<?= $this->url("fiches", "master", "bonconditionnement", $conditionnement->id) ?>" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-file-text text-blue"></i></a>
-
                                             <?php if ($employe->isAutoriser("modifier-supprimer") && $conditionnement->etat_id != Home\ETAT::ANNULEE) { ?>
                                                 <button onclick="annuler('conditionnement', <?= $conditionnement->id ?>)" class="btn btn-white btn-sm"><i class="fa fa-trash text-red"></i></button>
                                             <?php } ?>

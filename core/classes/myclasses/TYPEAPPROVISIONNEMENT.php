@@ -12,6 +12,7 @@ class TYPEAPPROVISIONNEMENT extends TABLE
 	const RESSOURCE      = 1;
 	const EMBALLAGE = 2;
 	const ETIQUETTE = 3;
+	const PACKAGE = 4;
 	
 	public $name;
 

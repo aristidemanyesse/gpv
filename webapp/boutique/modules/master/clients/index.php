@@ -12,7 +12,7 @@
 
         <div id="page-wrapper" class="gray-bg">
 
-          <?php include($this->rootPath("webapp/boutique/elements/templates/header.php")); ?>  
+            <?php include($this->rootPath("webapp/boutique/elements/templates/header.php")); ?>  
 
           <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-md-7">
@@ -52,7 +52,7 @@
                     <div class="col-lg-3 clients">
                         <div class="contact-box ">
                             <a href="<?= $this->url("boutique", "master", "client", $client->id) ?>">
-                                <h3 class="mp0"><strong><?= $client->name() ?></strong></h3>
+                                <h4 class="gras"><?= $client->name() ?></h4>
                                 <address>
                                     <i class="fa fa-home"></i>&nbsp; <?= $client->typeclient->name() ?><br>
                                     <i class="fa fa-map-marker"></i>&nbsp; <?= $client->adresse ?><br>

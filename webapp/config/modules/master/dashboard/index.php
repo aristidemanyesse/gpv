@@ -176,6 +176,23 @@
 
                             <div class="row justify-content-center">
                                 <div class="col-lg-3">
+                                    <a href="<?= $this->url("config", "master", "vente")  ?>">
+                                        <div class="ibox">
+                                            <div class="ibox-content">
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <h3 class="text-uppercase gras text-navy">Paramètres de vente</h3>
+                                                        <h5 class="no-margins text-muted">Zone de vente, prix, palier, etc...</h5>
+                                                    </div>
+                                                    <div class="col-3 text-right">
+                                                        <i class="fa fa-dollar fa-5x text-muted"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-lg-3">
                                     <a href="<?= $this->url("config", "master", "Historiques")  ?>">
                                         <div class="ibox">
                                             <div class="ibox-content">
