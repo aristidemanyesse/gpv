@@ -25,7 +25,7 @@ class LIGNECONDITIONNEMENT extends TABLE
 			if (count($datas) == 1) {
 				$datas = EMBALLAGE::findBy(["id ="=>$this->emballage_id]);
 				if (count($datas) == 1) {
-					if ($this->quantite >= 0) {
+					if ($this->quantite > 0) {
 						$data = $this->save();
 					}else{
 						$data->status = false;
