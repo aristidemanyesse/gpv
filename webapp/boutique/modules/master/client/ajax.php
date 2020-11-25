@@ -242,7 +242,7 @@ if ($action == "calcul") {
 	}
 
 	$redis = 0;
-	if (!isset($typecommande_id) || (isset($typecommande_id) && $typebareme_id == TYPECOMMANDE::NORMAL)) {
+	if (!isset($typecommande_id) || (isset($typecommande_id) && $typebareme_id == TYPEBAREME::NORMAL)) {
 		if ($params->prixParPalier == TABLE::OUI) {
 			$datas = PALIER::findBy(["min <= "=>$montant], [], ["min"=>"DESC"]);
 			if (count($datas) > 0) {
@@ -513,138 +513,144 @@ if ($action == "validerCommande") {
 		$listeproduits = explode(",", $listeproduits);
 		if (count($listeproduits) > 0) {
 
-			if ($typecommande_id == TYPECOMMANDE::NORMAL || ($typecommande_id == TYPECOMMANDE::AUTOSHIP && $code != "")) {
+			if ($lieu != "") {
 
-				if (getSession("total") > 0) {
-					if ($modepayement_id == MODEPAYEMENT::PRELEVEMENT_ACOMPTE || ($modepayement_id != MODEPAYEMENT::PRELEVEMENT_ACOMPTE && intval($avance) <= getSession("total") && intval($avance) > 0)) {
-						if ($modepayement_id == MODEPAYEMENT::PRELEVEMENT_ACOMPTE) {
-							$avance = $client->acompte ;
-						}
+				if ($typecommande_id != TYPECOMMANDE::AUTOSHIP || ($typecommande_id == TYPECOMMANDE::AUTOSHIP && $code != "")) {
 
-						$seuil	= ($client->seuilCredit > 0) ? $client->seuilCredit : $params->seuilCredit;
+					if (getSession("total") > 0) {
+						if ($modepayement_id == MODEPAYEMENT::PRELEVEMENT_ACOMPTE || ($modepayement_id != MODEPAYEMENT::PRELEVEMENT_ACOMPTE && intval($avance) <= getSession("total") && intval($avance) > 0)) {
+							if ($modepayement_id == MODEPAYEMENT::PRELEVEMENT_ACOMPTE) {
+								$avance = $client->acompte ;
+							}
 
-						if ((getSession("total") - intval($avance) + $client->resteAPayer()) <= $seuil ) {
-							if (getSession("commande-encours") != null) {
-								$datas = GROUPECOMMANDE::findBy(["id ="=>getSession("commande-encours")]);
-								if (count($datas) > 0) {
-									$groupecommande = $datas[0];
-									$groupecommande->etat_id = ETAT::ENCOURS;
-									$groupecommande->save();
+							$seuil	= ($client->seuilCredit > 0) ? $client->seuilCredit : $params->seuilCredit;
+
+							if ((getSession("total") - intval($avance) + $client->resteAPayer()) <= $seuil ) {
+								if (getSession("commande-encours") != null) {
+									$datas = GROUPECOMMANDE::findBy(["id ="=>getSession("commande-encours")]);
+									if (count($datas) > 0) {
+										$groupecommande = $datas[0];
+										$groupecommande->etat_id = ETAT::ENCOURS;
+										$groupecommande->save();
+									}else{
+										$groupecommande = new GROUPECOMMANDE();
+										$groupecommande->hydrater($_POST);
+										$groupecommande->enregistre();
+									}
 								}else{
 									$groupecommande = new GROUPECOMMANDE();
 									$groupecommande->hydrater($_POST);
 									$groupecommande->enregistre();
 								}
-							}else{
-								$groupecommande = new GROUPECOMMANDE();
-								$groupecommande->hydrater($_POST);
-								$groupecommande->enregistre();
-							}
 
-							$commande = new COMMANDE();
-							$commande->hydrater($_POST);
-							$commande->groupecommande_id = $groupecommande->id;
-							$data = $commande->enregistre();
-							if ($data->status) {
-								foreach ($listeproduits as $key => $value) {
-									$lot = explode("-", $value);
-									$id = $lot[0];
-									$emballage_id = $lot[1];
-									$qte = end($lot);
-									$datas = PRICE::findBy(["produit_id = "=>$id, "emballage_id = "=>$emballage_id]);
-									if (count($datas) == 1) {
-										$price = $datas[0];
+								$commande = new COMMANDE();
+								$commande->hydrater($_POST);
+								$commande->groupecommande_id = $groupecommande->id;
+								$data = $commande->enregistre();
+								if ($data->status) {
+									foreach ($listeproduits as $key => $value) {
+										$lot = explode("-", $value);
+										$id = $lot[0];
+										$emballage_id = $lot[1];
+										$qte = end($lot);
+										$datas = PRICE::findBy(["produit_id = "=>$id, "emballage_id = "=>$emballage_id]);
+										if (count($datas) == 1) {
+											$price = $datas[0];
 
-										if (isset($typecommande_id)) {
-											$datas = TYPECOMMANDE::findBy(["id ="=>$typecommande_id]);
-											if (count($datas) == 1) {
-												$typcom = $datas[0];
-												if ($typcom->typebareme_id != null) {
-													$typebareme_id = $typcom->typebareme_id;
+											if (isset($typecommande_id)) {
+												$datas = TYPECOMMANDE::findBy(["id ="=>$typecommande_id]);
+												if (count($datas) == 1) {
+													$typcom = $datas[0];
+													if ($typcom->typebareme_id != null) {
+														$typebareme_id = $typcom->typebareme_id;
+													}
 												}
 											}
+
+											if ($typebareme_id == TYPEBAREME::NORMAL) {
+												$prix = $price->prix * intval($qte);
+
+											}elseif ($typebareme_id == TYPEBAREME::GROS){
+												$prix = $price->prix_gros * intval($qte);
+
+											}elseif ($typebareme_id == TYPEBAREME::SPECIAL){
+												$prix = $price->prix_special * intval($qte);
+
+											}elseif ($typebareme_id == TYPEBAREME::AUTOSHIP){
+												$prix = $price->prix_autoship * intval($qte);
+
+											}else{
+												$prix = $price->prix_inscription * intval($qte);
+											}
+
+											$lignecommande = new LIGNECOMMANDE;
+											$lignecommande->commande_id = $commande->id;
+											$lignecommande->produit_id = $id;
+											$lignecommande->emballage_id = $emballage_id;
+											$lignecommande->quantite = $qte;
+											$lignecommande->price =  $prix;
+											$lignecommande->enregistre();	
 										}
-										
-										if ($typebareme_id == TYPEBAREME::NORMAL) {
-											$prix = $price->prix * intval($qte);
+									}
 
-										}elseif ($typebareme_id == TYPEBAREME::GROS){
-											$prix = $price->prix_gros * intval($qte);
+									$total =  getSession("total");
 
-										}elseif ($typebareme_id == TYPEBAREME::SPECIAL){
-											$prix = $price->prix_special * intval($qte);
-
-										}elseif ($typebareme_id == TYPEBAREME::AUTOSHIP){
-											$prix = $price->prix_autoship * intval($qte);
-
+									if ($modepayement_id == MODEPAYEMENT::PRELEVEMENT_ACOMPTE ) {
+										if ($client->acompte >= $total) {
+											$commande->avance = $total;
 										}else{
-											$prix = $price->prix_inscription * intval($qte);
+											$commande->avance = $client->acompte;
+										}
+										$lot = $client->debiter($total);
+
+									}else{
+
+										if ($total > intval($avance)) {
+											$client->dette($total - intval($avance));
 										}
 
-										$lignecommande = new LIGNECOMMANDE;
-										$lignecommande->commande_id = $commande->id;
-										$lignecommande->produit_id = $id;
-										$lignecommande->emballage_id = $emballage_id;
-										$lignecommande->quantite = $qte;
-										$lignecommande->price =  $prix;
-										$lignecommande->enregistre();	
+										$payement = new REGLEMENTCLIENT();
+										$payement->hydrater($_POST);
+										$payement->montant = $commande->avance;
+										$payement->client_id = $client_id;
+										$payement->commande_id = $commande->id;
+										$payement->comment = "Réglement de la facture pour la commande N°".$commande->reference;
+										$lot = $payement->enregistre();
 									}
+
+									$commande->tva = getSession("tva");
+									$commande->reduction = getSession("reduction");
+									$commande->montant = $total;
+									$commande->reste = $commande->montant - $commande->avance;
+
+									$commande->acompteClient = $client->acompte;
+									$data = $commande->save();
+
+									$commande->detteClient = $client->resteAPayer();
+									$data = $commande->save();
+
+									$data->url2 = $data->setUrl("fiches", "master", "boncommande", $data->lastid);
 								}
 
-								$total =  getSession("total");
-
-								if ($modepayement_id == MODEPAYEMENT::PRELEVEMENT_ACOMPTE ) {
-									if ($client->acompte >= $total) {
-										$commande->avance = $total;
-									}else{
-										$commande->avance = $client->acompte;
-									}
-									$lot = $client->debiter($total);
-
-								}else{
-
-									if ($total > intval($avance)) {
-										$client->dette($total - intval($avance));
-									}
-
-									$payement = new REGLEMENTCLIENT();
-									$payement->hydrater($_POST);
-									$payement->montant = $commande->avance;
-									$payement->client_id = $client_id;
-									$payement->commande_id = $commande->id;
-									$payement->comment = "Réglement de la facture pour la commande N°".$commande->reference;
-									$lot = $payement->enregistre();
-								}
-
-								$commande->tva = getSession("tva");
-								$commande->reduction = getSession("reduction");
-								$commande->montant = $total;
-								$commande->reste = $commande->montant - $commande->avance;
-
-								$commande->acompteClient = $client->acompte;
-								$data = $commande->save();
-								
-								$commande->detteClient = $client->resteAPayer();
-								$data = $commande->save();
-
-								$data->url2 = $data->setUrl("fiches", "master", "boncommande", $data->lastid);
+							}else{
+								$data->status = false;
+								$data->message = "Le crédit restant cumulé des commandes ne doit pas excéder ".money($seuil)." ".$params->devise." pour ce client ";
 							}
-
 						}else{
 							$data->status = false;
-							$data->message = "Le crédit restant cumulé des commandes ne doit pas excéder ".money($seuil)." ".$params->devise." pour ce client ";
+							$data->message = "Le montant de l'avance de la commande est incorrect, verifiez-le!";
 						}
 					}else{
 						$data->status = false;
-						$data->message = "Le montant de l'avance de la commande est incorrect, verifiez-le!";
+						$data->message = "Veuillez verifier le montant de la commande !";
 					}
 				}else{
 					$data->status = false;
-					$data->message = "Veuillez verifier le montant de la commande !";
+					$data->message = "Veuillez saisir le code pour la commande autoship !";
 				}
 			}else{
 				$data->status = false;
-				$data->message = "Veuillez saisir le code pour la commande autoship !";
+				$data->message = "veuillez indiquer la destination de livraison précise de la commande *!";
 			}
 		}else{
 			$data->status = false;
