@@ -26,7 +26,7 @@ class CONDITIONNEMENT extends TABLE
 		if (count($datas) == 1) {
 			$datas = TYPEPRODUIT_PARFUM::findBy(["id ="=>$this->typeproduit_parfum_id]);
 			if (count($datas) == 1) {
-				if ($this->quantite >= 0) {
+				if ($this->quantite > 0) {
 					$this->reference = "COND/".date('dmY')."-".strtoupper(substr(uniqid(), 5, 6));
 					$data = $this->save();
 				}else{

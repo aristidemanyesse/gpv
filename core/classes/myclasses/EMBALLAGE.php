@@ -245,8 +245,8 @@ class EMBALLAGE extends TABLE
 	public static function ruptureEntrepot(int $entrepot_id = null){
 		$params = PARAMS::findLastId();
 		$datas = static::findBy(["isActive ="=>TABLE::OUI]);
-		foreach ($datas as $key => $item) {
-			if ($item->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), $entrepot_id) > $params->ruptureStock) {
+		foreach ($datas as $key => $emballage) {
+			if ($emballage->stock(PARAMS::DATE_DEFAULT, dateAjoute(1), $entrepot_id) > $emballage->stkAlert) {
 				unset($datas[$key]);
 			}
 		}

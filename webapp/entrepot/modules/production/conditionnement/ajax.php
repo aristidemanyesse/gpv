@@ -53,7 +53,7 @@ if ($action == "validerConditionnement") {
 					$produit->actualise();
 					$emballage = $datas[0];
 					if ($emballage->isDisponible($value)) {
-						$quantite += $emballage->nombre() * $produit->quantite->name* $value;
+						$quantite += $emballage->nombre() * $produit->quantite->name * $value;
 					}else{
 						$test = false;
 						break;
@@ -63,6 +63,7 @@ if ($action == "validerConditionnement") {
 		}
 	}
 	if ($test) {
+		echo $quantite;
 		$test = true;
 		foreach (getSession("emballages-disponibles") as $key => $value) {
 			$datas = EMBALLAGE::findBy(["id ="=>$key]);
@@ -80,6 +81,7 @@ if ($action == "validerConditionnement") {
 			}
 		}
 		if ($test) {
+			var_dump(getSession("emballages-disponibles"));
 			if ($quantite <= $produit->typeproduit_parfum->enStock(PARAMS::DATE_DEFAULT, dateAjoute(1), getSession("entrepot_connecte_id"))) {
 				$conditionnement = new CONDITIONNEMENT();
 				$conditionnement->hydrater($_POST);
