@@ -31,7 +31,7 @@
                                     Commandes en cours <span class="label label-success float-right"><?= start0(count($groupes__)); ?></span> 
                                 </li>
                                 <li class="list-group-item">
-                                    Livraisons en cours <span class="label label-success float-right"><?= start0(count(Home\PROSPECTION::findBy(["etat_id ="=>Home\ETAT::ENCOURS, "typeprospection_id ="=>Home\TYPEPROSPECTION::LIVRAISON]))); ?></span> 
+                                    Livraisons en cours <span class="label label-success float-right"><?= start0(count($livraisons__)); ?></span> 
                                 </li>
                                 <li class="list-group-item">
                                     Prospections en cours <span class="label label-success float-right"><?= start0(count($prospections__)); ?></span> 
