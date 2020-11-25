@@ -59,7 +59,7 @@
                                         <h5><span>Livraison prévue pour le:</span> <span class="text-uppercase"><?= datecourt($commande->datelivraison) ?></span></h5><br>
 
                                         <?php if ($commande->typecommande_id == Home\TYPECOMMANDE::AUTOSHIP) { ?>
-                                            <h4><span>Code Autoship :</span> <span class="text-uppercase text-orange"><?= $commande->code ?></span></h4>                   
+                                            <h4><span>Code / Pseudo / KSCI :</span> <span class="text-uppercase text-orange"><?= $commande->code ?></span></h4>                   
                                         <?php } ?>
                                     </div>
                                 </div><br><br>

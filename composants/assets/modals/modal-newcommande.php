@@ -53,7 +53,7 @@
                                     </div>
                                 </div><br>
                                 <div class="code">
-                                    <label>Saisir le code correspondant <span style="color: red">*</span> </label>
+                                    <label>Saisir le Code / Pseudo / KSCI correspondant <span style="color: red">*</span> </label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-key"></i></span>
                                         <input type="text" name="code" class="form-control" uppercase>
