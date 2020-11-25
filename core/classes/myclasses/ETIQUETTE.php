@@ -117,10 +117,9 @@ class ETIQUETTE extends TABLE
 
 
 	public static function rupture(){
-		$params = PARAMS::findLastId();
 		$datas = static::findBy(["isActive ="=>TABLE::OUI]);
 		foreach ($datas as $key => $item) {
-			if ($item->enEntrepot(dateAjoute()) > $params->ruptureStock) {
+			if ($item->enEntrepot(dateAjoute()) > $item->stkAlert) {
 				unset($datas[$key]);
 			}
 		}
