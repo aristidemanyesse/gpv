@@ -228,7 +228,7 @@ class PRODUIT extends TABLE
 		if ($boutique_id != null) {
 			$paras.= "AND boutique_id = $boutique_id ";
 		}
-		$requette = "SELECT SUM(quantite) as quantite  FROM lignemiseenboutique, miseenboutique WHERE lignemiseenboutique.produit_id = ? AND lignemiseenboutique.emballage_id = ? AND lignemiseenboutique.miseenboutique_id = miseenboutique.id AND miseenboutique.etat_id != ?  AND lignemiseenboutique.created >= ? AND lignemiseenboutique.created <= ? $paras ";
+		$requette = "SELECT SUM(quantite) as quantite  FROM lignemiseenboutique, miseenboutique WHERE lignemiseenboutique.produit_id = ? AND lignemiseenboutique.emballage_id = ? AND lignemiseenboutique.miseenboutique_id = miseenboutique.id AND miseenboutique.etat_id != ?  AND DATE(lignemiseenboutique.created) >= ? AND DATE(lignemiseenboutique.created) <= ? $paras ";
 		$item = LIGNEMISEENBOUTIQUE::execute($requette, [$this->id, $emballage_id, ETAT::ANNULEE, $date1, $date2]);
 		if (count($item) < 1) {$item = [new LIGNEMISEENBOUTIQUE()]; }
 		return $item[0]->quantite;
@@ -322,7 +322,7 @@ class PRODUIT extends TABLE
 		if ($boutique_id != null) {
 			$paras.= "AND boutique_id = $boutique_id ";
 		}
-		$requette = "SELECT SUM(quantite) as quantite  FROM lignedevente, vente WHERE lignedevente.produit_id = ? AND lignedevente.emballage_id = ? AND lignedevente.vente_id = vente.id AND vente.etat_id != ? AND lignedevente.created >= ? AND lignedevente.created <= ? $paras ";
+		$requette = "SELECT SUM(quantite) as quantite  FROM lignedevente, vente WHERE lignedevente.produit_id = ? AND lignedevente.emballage_id = ? AND lignedevente.vente_id = vente.id AND vente.etat_id != ? AND DATE(lignedevente.created) >= ? AND DATE(lignedevente.created) <= ? $paras ";
 		$item = LIGNEDEVENTE::execute($requette, [$this->id, $emballage_id, ETAT::ANNULEE, $date1, $date2]);
 		if (count($item) < 1) {$item = [new LIGNEDEVENTE()]; }
 		return $item[0]->quantite;

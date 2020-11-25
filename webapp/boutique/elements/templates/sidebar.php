@@ -26,7 +26,7 @@
             </li>
 
             <?php 
-            $groupes__ = Home\GROUPECOMMANDE::encours();
+            $groupes__ = Home\GROUPECOMMANDE::encours($boutique->id);
             $prospections__ = $boutique->fourni("prospection", ["etat_id ="=>Home\ETAT::ENCOURS, "typeprospection_id ="=>Home\TYPEPROSPECTION::PROSPECTION]);
             $livraisons__ = $boutique->fourni("prospection", ["etat_id ="=>Home\ETAT::ENCOURS, "typeprospection_id ="=>Home\TYPEPROSPECTION::LIVRAISON]);
             $mises__ = $boutique->fourni("miseenboutique", ["etat_id ="=>Home\ETAT::ENCOURS]) + $boutique->fourni("miseenboutique", ["etat_id ="=>Home\ETAT::PARTIEL]);
