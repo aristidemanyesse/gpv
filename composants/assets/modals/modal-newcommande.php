@@ -47,10 +47,21 @@
                         <div class="ibox-content"  style="background-color: #fafafa">
                             <form id="formCommande">
                                 <input type="hidden" name="typecommande_id" value="<?= Home\TYPECOMMANDE::NORMAL ?>">
-                                <div>
-                                    <label>Barème de prix (Seulement commande noramle) <span style="color: red">*</span> </label>
-                                    <div class="input-group">
-                                        <?php Native\BINDING::html("select", "typebareme"); ?>
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <label>Barème de prix (commande normale)<span style="color: red">*</span> </label>
+                                        <div class="input-group">
+                                            <?php Native\BINDING::html("select", "typebareme"); ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <label>Appliquer TVA <span style="color: red">*</span> </label>
+                                        <div class="input-group">
+                                            <select class="form-control select2" name="sousTVA" style="width: 100%">
+                                                <option value="<?= Home\TABLE::OUI ?>">Oui (<?= $params->tva ?>%)</option>
+                                                <option value="<?= Home\TABLE::NON ?>">Non</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div><br>
                                 <div>
@@ -60,7 +71,25 @@
                                         <input type="date" name="datelivraison" value="<?= dateAjoute(2) ?>" class="form-control">
                                     </div>
                                 </div><br>
-
+                                <div>
+                                    <label>zone de livraison <span style="color: red">*</span> </label>
+                                    <div class="input-group">
+                                        <?php Native\BINDING::html("select", "zonedevente"); ?>
+                                    </div>
+                                </div><br>
+                                <div>
+                                    <label>Lieu de livraison <span style="color: red">*</span> </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                                        <input type="text" name="lieu" class="form-control" required>
+                                    </div>
+                                </div><br>
+                                <div>
+                                    <label>Mode de payement <span style="color: red">*</span> </label>                                
+                                    <div class="input-group">
+                                        <?php Native\BINDING::html("select", "modepayement"); ?>
+                                    </div>
+                                </div><br>
                                 <div class="no_modepayement_facultatif">
                                     <div>
                                         <label>Montant avancé<span style="color: red">*</span> </label>
