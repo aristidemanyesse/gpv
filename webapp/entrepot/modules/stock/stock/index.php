@@ -35,16 +35,17 @@
                                                     <li class="list-group-item">
                                                         <div class="row">
                                                             <div class="col-md-3">
-                                                                <i class="fa fa-flask"></i> <small><?= $produit->quantite->name() ?></small>
+                                                                <h5><i class="fa fa-flask"></i> <?= $produit->quantite->name() ?></h5>
+                                                                <a class="btn btn-white btn-xs " href="<?= $this->url("entrepot", "stock", "produits", $produit->id)  ?>">+ de details</a>
                                                             </div>  
                                                             <div class="col-md-9">
                                                                 <div class="row text-center">
                                                                     <?php foreach ($produit->getListeEmballageProduit() as $key => $emballage) {
                                                                         $a = $produit->enEntrepot(Home\PARAMS::DATE_DEFAULT, dateAjoute(1), $emballage->id, $entrepot->id);
-                                                                        if ($a > 0) {
+                                                                        if ($a > -1500) {
                                                                             $prods[] = $produit; ?>
-                                                                            <div class="col-sm-4 cursor border-right border-bottom" data-toggle="modal" onclick="session('produit_id', <?= $produit->id ?>)" data-target="#modal-transfertstockentrepot<?= $produit->id  ?>">
-                                                                                <span class="gras <?= ($a >= $params->ruptureStock)?"":"text-red clignote" ?>"><?= start0($a) ?></span><br>
+                                                                            <div class="col-sm-4 cursor border-right border-bottom">
+                                                                                <span class="gras <?= ($a >= $params->ruptureStock)?"":"text-red clignote" ?>"><?= money($a) ?></span><br>
                                                                                 <span class="">     
                                                                                     <img style="height: 15px" src="<?= $this->stockage("images", "emballages", $emballage->image)  ?>"> <small><?= $emballage->name() ?></small>
                                                                                 </span> 
@@ -80,13 +81,6 @@
 
 
     <?php include($this->rootPath("webapp/entrepot/elements/templates/script.php")); ?>
-
-
-    <?php foreach ($prods as $key => $produit) {
-        include($this->rootPath("composants/assets/modals/modal-transfertstockentrepot.php")); 
-    }  ?>
-
-
 
 
 

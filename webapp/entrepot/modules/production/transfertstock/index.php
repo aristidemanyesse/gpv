@@ -16,18 +16,19 @@
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-sm-9">
-                    <h2 class="text-uppercase text-blue gras">Les transferts de stock en entrepot</h2>
+                    <h2 class="text-uppercase text-blue gras">Les conversion de stock en entrepot</h2>
                     <div class="container">
                     </div>
                 </div>
                 <div class="col-sm-3 text-right">
+                    <button style="margin-top: 5%;" type="button" data-toggle=modal data-target='#modal-listeproduits' class="btn btn-primary btn-sm dim float-right"><i class="fa fa-plus"></i> Nouvelle conversion </button>
                 </div>
             </div>
 
             <div class="wrapper wrapper-content">
                 <div class="ibox">
                     <div class="ibox-title">
-                        <h5>Toutes les transferts de stock survenues dans cet entrepot</h5>
+                        <h5>Toutes les conversion de stock survenues dans cet entrepot</h5>
                         <div class="ibox-tools">
                          <form id="formFiltrer" method="POST">
                             <div class="row" style="margin-top: -1%">
@@ -102,7 +103,7 @@
                         </table>
 
                     <?php }else{ ?>
-                        <h1 style="margin: 6% auto;" class="text-center text-muted"><i class="fa fa-folder-open-o fa-3x"></i> <br> Aucun conditionnement pour le moment</h1>
+                        <h1 style="margin: 6% auto;" class="text-center text-muted"><i class="fa fa-folder-open-o fa-3x"></i> <br> Aucune conversion pour le moment</h1>
                     <?php } ?>
 
                 </div>
@@ -114,6 +115,39 @@
 
     </div>
 </div>
+
+
+
+<div class="modal inmodal fade" id="modal-listeproduits">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Nouvelle conversion de stock</h4>
+                <small>Veuillez selectionner le type de produit à convertir</small>
+            </div>
+            <div class="modal-body"><br>
+                <div class="row justify-content-center">
+                    <?php foreach ($produits as $key => $produit) {
+                        $produit->actualise(); ?>
+                        <div class="col-sm-4 cursor" onclick="session('produit_id', <?= $produit->id ?>)" data-toggle="modal" data-target="#modal-transfertstockentrepot<?= $produit->id ?>">
+                            <div class="card text-center p-2">
+                                <i class="fa fa-cubes fa-2x"></i>
+                                <h5><?= $produit->name();  ?></h5>
+                            </div>
+                        </div>
+                    <?php }  ?>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<?php foreach ($produits as $key => $produit) {
+    include($this->rootPath("composants/assets/modals/modal-transfertstockentrepot.php")); 
+}  ?>
 
 
 <?php include($this->rootPath("webapp/entrepot/elements/templates/script.php")); ?>

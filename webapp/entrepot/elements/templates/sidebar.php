@@ -55,7 +55,7 @@
                         <a href="<?= $this->url($this->section, "production", "miseenboutique") ?>"><i class="fa fa-reply"></i> <span class="nav-label">Mise en boutique <?php if (count($mises__) > 0) { ?> <span class="label label-warning float-right"><?= count($mises__) ?></span> <?php } ?></span></a>
                     </li>
                     <li class="" id="transfertstock">
-                        <a href="<?= $this->url($this->section, "production", "transfertstock") ?>"><i class="fa fa-refresh"></i> <span class="nav-label">Transfert de stock</span></a>
+                        <a href="<?= $this->url($this->section, "production", "transfertstock") ?>"><i class="fa fa-refresh"></i> <span class="nav-label">Conversion de stock</span></a>
                     </li>
                     <li class="" id="perteentrepot">
                         <a href="<?= $this->url($this->section, "production", "perteentrepot") ?>"><i class="fa fa-trash"></i> <span class="nav-label">Perte en entrepot</span></a>

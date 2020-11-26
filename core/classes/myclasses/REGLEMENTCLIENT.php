@@ -77,7 +77,7 @@ class REGLEMENTCLIENT extends TABLE
 
 						}else{
 							$data->status = false;
-							$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer !!";
+							$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer 12 !!";
 						}
 					}else{
 						$data->status = false;
@@ -141,7 +141,7 @@ class REGLEMENTCLIENT extends TABLE
 
 						}else{
 							$data->status = false;
-							$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer !!";
+							$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer -- !!";
 						}
 					}else{
 						$data->status = false;
@@ -157,7 +157,7 @@ class REGLEMENTCLIENT extends TABLE
 						}
 					}else{
 						$data->status = false;
-						$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer !!";
+						$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer99 !!";
 					}
 				}
 			}else{
@@ -166,7 +166,7 @@ class REGLEMENTCLIENT extends TABLE
 			}
 		}else{
 			$data->status = false;
-			$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer !!";
+			$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer1 !!";
 		}
 		return $data;
 	}

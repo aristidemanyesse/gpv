@@ -4,8 +4,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title text-blue">Transfert de stock en entrepot</h4>
-                <small class="font-bold text-blue">Renseigner ces champs pour enregistrer les informations</small>
+                <h4 class="modal-title text-blue">Conversion de stock en entrepot</h4>
+                <small class="font-bold text-blue">Renseigner selectionner le produit pour commencer la conversion</small>
             </div>
             <form method="POST" class="formShamman" classname="transfertstockentrepot">
                 <div class="modal-body">
