@@ -27,7 +27,7 @@
                             <div class="row">
                                 <?php foreach ($type->fourni("typeproduit_parfum", ["isActive ="=>Home\TABLE::OUI]) as $key => $pro) {
                                     $pro->actualise(); ?>
-                                    <div class="col-md-4 border-right">
+                                    <div class="col-md-2 border-right">
                                         <h6 class="text-uppercase text-center gras" ><?= $pro->name() ?> </h6>
                                         <ul class="list-group clear-list m-t">
                                             <?php foreach ($pro->fourni("produit", ["isActive ="=>Home\TABLE::OUI]) as $key => $produit) {
