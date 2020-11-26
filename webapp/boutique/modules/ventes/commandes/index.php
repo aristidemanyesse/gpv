@@ -156,12 +156,11 @@
 <script type="text/javascript" src="<?= $this->relativePath("../../master/client/script.js") ?>"></script>
 
 
-<?php foreach ($encours as $key => $groupe) {
-  foreach ($groupe->fourni("commande") as $key => $commande) {
-    $commande->actualise();
-    include($this->rootPath("composants/assets/modals/modal-reglercommande.php"));
-}
-} 
+<?php   
+    foreach ($commandes as $key => $commande) {
+        $commande->actualise();
+        include($this->rootPath("composants/assets/modals/modal-reglercommande.php"));
+    } 
 ?>
 
 </body>

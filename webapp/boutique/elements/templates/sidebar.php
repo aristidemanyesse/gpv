@@ -30,6 +30,7 @@
             $prospections__ = $boutique->fourni("prospection", ["etat_id ="=>Home\ETAT::ENCOURS, "typeprospection_id ="=>Home\TYPEPROSPECTION::PROSPECTION]);
             $livraisons__ = $boutique->fourni("prospection", ["etat_id ="=>Home\ETAT::ENCOURS, "typeprospection_id ="=>Home\TYPEPROSPECTION::LIVRAISON]);
             $mises__ = $boutique->fourni("miseenboutique", ["etat_id ="=>Home\ETAT::ENCOURS]) + $boutique->fourni("miseenboutique", ["etat_id ="=>Home\ETAT::PARTIEL]);
+            $transferts__ = $boutique->fourni("transfertboutique", ["etat_id ="=>Home\ETAT::ENCOURS]) + $boutique->fourni("transfertboutique", ["etat_id ="=>Home\ETAT::PARTIEL]) + Home\TRANSFERTBOUTIQUE::findBy(["boutique_id_destination = "=>$boutique->id, "etat_id ="=>Home\ETAT::ENCOURS], [], ["created"=>"DESC"]) + Home\TRANSFERTBOUTIQUE::findBy(["boutique_id_destination = "=>$boutique->id, "etat_id ="=>Home\ETAT::PARTIEL], [], ["created"=>"DESC"]);;
 
             ?>
             <ul class="nav metismenu" id="side-menu">
@@ -59,8 +60,11 @@
                     <li class="" id="miseenboutique">
                         <a href="<?= $this->url($this->section, "production", "miseenboutique") ?>"><i class="fa fa-reply"></i> <span class="nav-label">Mise en boutique</span> <?php if (count($mises__) > 0) { ?> <span class="label label-warning float-right"><?= count($mises__) ?></span> <?php } ?></a>
                     </li>
+                    <li class="" id="transfertboutique">
+                        <a href="<?= $this->url($this->section, "production", "transfertboutique") ?>"><i class="fa fa-share"></i> <span class="nav-label">Transferts en boutique</span> <?php if (count($transferts__) > 0) { ?> <span class="label label-warning float-right"><?= count($transferts__) ?></span> <?php } ?></a>
+                    </li>
                     <li class="" id="transfertstock">
-                        <a href="<?= $this->url($this->section, "production", "transfertstock") ?>"><i class="fa fa-refresh"></i> <span class="nav-label">Transfert de stock</span></a>
+                        <a href="<?= $this->url($this->section, "production", "transfertstock") ?>"><i class="fa fa-refresh"></i> <span class="nav-label">Conversion de stock</span></a>
                     </li>
                     <!-- <li class="" id="retours">
                         <a href="<?= $this->url($this->section, "production", "retours") ?>"><i class="fa fa-long-arrow-left"></i> <span class="nav-label">Retours de produits</span></a>

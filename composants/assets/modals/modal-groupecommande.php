@@ -110,7 +110,7 @@
                                                         <small>Avance <?= money($ligne->avance) ?> <?= $params->devise  ?> <small style="font-weight: normal;;" data-toggle="tooltip" title="Payement par <?= $reglement->modepayement->name();  ?>">(<?= $reglement->modepayement->initial;  ?>)</small></small>
                                                     </td>
                                                     <td data-toggle="tooltip" title="imprimer le facture">
-                                                        <a target="_blank" href="<?= $rooter->url("fiches", "master", "boncaisse", $reglement->id) ?>"><i class="fa fa-file-text fa-2x d-block"></i></a>
+                                                        <a target="_blank" href="<?= $rooter->url("fiches", "master", "boncaisse", $reglement->mouvement->id) ?>"><i class="fa fa-file-text fa-2x d-block"></i></a>
                                                     </td>
 
                                                 <?php }

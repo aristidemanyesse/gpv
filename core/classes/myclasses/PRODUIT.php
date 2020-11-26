@@ -228,11 +228,12 @@ class PRODUIT extends TABLE
 		if ($boutique_id != null) {
 			$paras.= "AND boutique_id = $boutique_id ";
 		}
-		$requette = "SELECT SUM(quantite) as quantite  FROM lignemiseenboutique, miseenboutique WHERE lignemiseenboutique.produit_id = ? AND lignemiseenboutique.emballage_id = ? AND lignemiseenboutique.miseenboutique_id = miseenboutique.id AND miseenboutique.etat_id != ?  AND DATE(lignemiseenboutique.created) >= ? AND DATE(lignemiseenboutique.created) <= ? $paras ";
-		$item = LIGNEMISEENBOUTIQUE::execute($requette, [$this->id, $emballage_id, ETAT::ANNULEE, $date1, $date2]);
+		$requette = "SELECT SUM(quantite) as quantite  FROM lignemiseenboutique, miseenboutique WHERE lignemiseenboutique.produit_id = ? AND lignemiseenboutique.emballage_id = ? AND lignemiseenboutique.miseenboutique_id = miseenboutique.id AND miseenboutique.etat_id = ?  AND DATE(lignemiseenboutique.created) >= ? AND DATE(lignemiseenboutique.created) <= ? $paras ";
+		$item = LIGNEMISEENBOUTIQUE::execute($requette, [$this->id, $emballage_id, ETAT::VALIDEE, $date1, $date2]);
 		if (count($item) < 1) {$item = [new LIGNEMISEENBOUTIQUE()]; }
 		return $item[0]->quantite;
 	}
+
 
 	public function perteBoutique(string $date1, string $date2, int $emballage_id, int $boutique_id = null){
 		$paras = "";
@@ -266,9 +267,34 @@ class PRODUIT extends TABLE
 
 
 
+	public function transfertBoutiqueEntrant(string $date1, string $date2, int $emballage_id, int $boutique_id = null){
+		$paras = "";
+		if ($boutique_id != null) {
+			$paras.= "AND boutique_id_destination = $boutique_id ";
+		}
+		$requette = "SELECT SUM(quantite) as quantite  FROM lignetransfertboutique, transfertboutique WHERE lignetransfertboutique.produit_id = ? AND lignetransfertboutique.emballage_id = ? AND lignetransfertboutique.transfertboutique_id = transfertboutique.id AND transfertboutique.etat_id = ?  AND DATE(lignetransfertboutique.created) >= ? AND DATE(lignetransfertboutique.created) <= ? $paras ";
+		$item = LIGNETRANSFERTBOUTIQUE::execute($requette, [$this->id, $emballage_id, ETAT::VALIDEE, $date1, $date2]);
+		if (count($item) < 1) {$item = [new LIGNETRANSFERTBOUTIQUE()]; }
+		return $item[0]->quantite;
+	}
+
+
+	public function transfertBoutiqueSortant(string $date1, string $date2, int $emballage_id, int $boutique_id = null){
+		$paras = "";
+		if ($boutique_id != null) {
+			$paras.= "AND boutique_id = $boutique_id ";
+		}
+		$requette = "SELECT SUM(quantite) as quantite  FROM lignetransfertboutique, transfertboutique WHERE lignetransfertboutique.produit_id = ? AND lignetransfertboutique.emballage_id = ? AND lignetransfertboutique.transfertboutique_id = transfertboutique.id AND transfertboutique.etat_id = ?  AND DATE(lignetransfertboutique.created) >= ? AND DATE(lignetransfertboutique.created) <= ? $paras ";
+		$item = LIGNETRANSFERTBOUTIQUE::execute($requette, [$this->id, $emballage_id, ETAT::VALIDEE, $date1, $date2]);
+		if (count($item) < 1) {$item = [new LIGNETRANSFERTBOUTIQUE()]; }
+		return $item[0]->quantite;
+	}
+
+
+
 	public function enBoutique(string $date1, string $date2, int $emballage_id, int $boutique_id = null){
 		$item = $this->fourni("initialproduitboutique", ["emballage_id ="=>$emballage_id, "boutique_id ="=>$boutique_id])[0];
-		$total = $this->totalMiseEnBoutique($date1, $date2, $emballage_id, $boutique_id) - ($this->enProspection($emballage_id, $boutique_id) + $this->livree($date1, $date2, $emballage_id, $boutique_id) + $this->vendu($date1, $date2, $emballage_id, $boutique_id) + $this->perteProspection($date1, $date2, $emballage_id, $boutique_id) + $this->perteBoutique($date1, $date2, $emballage_id, $boutique_id)) + $item->quantite + $this->transfertBoutique($date1, $date2, $emballage_id, $boutique_id);
+		$total = $this->totalMiseEnBoutique($date1, $date2, $emballage_id, $boutique_id) + $this->transfertBoutiqueEntrant($date1, $date2, $emballage_id, $boutique_id) - ($this->enProspection($emballage_id, $boutique_id) + $this->livree($date1, $date2, $emballage_id, $boutique_id) + $this->vendu($date1, $date2, $emballage_id, $boutique_id) + $this->perteProspection($date1, $date2, $emballage_id, $boutique_id) + $this->perteBoutique($date1, $date2, $emballage_id, $boutique_id) - $this->transfertBoutiqueSortant($date1, $date2, $emballage_id, $boutique_id)) + $this->transfertBoutique($date1, $date2, $emballage_id, $boutique_id) + $item->quantite;
 		return $total;
 	}
 
