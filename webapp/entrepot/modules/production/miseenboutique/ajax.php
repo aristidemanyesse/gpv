@@ -108,7 +108,8 @@ if ($action == "validerMiseenboutique") {
 			$tests = $array;
 			foreach ($tests as $key => $value) {
 				foreach ($mise->lignemiseenboutiques as $cle => $lgn) {
-					if (($lgn->id == $key) && ($lgn->quantite_demande >= $value)) {
+					$lgn->actualise();
+					if (($lgn->id == $key) && ($lgn->quantite_demande >= $value) && ($lgn->produit->enEntrepot(PARAMS::DATE_DEFAULT, dateAjoute(1), $lgn->emballage_id, getSession("entrepot_connecte_id")) >= $value)) {
 						unset($tests[$key]);
 					}
 				}
@@ -127,7 +128,7 @@ if ($action == "validerMiseenboutique") {
 				$data = $mise->accepter();
 			}else{
 				$data->status = false;
-				$data->message = "Veuillez à bien vérifier les quantités des différents produits, certaines sont incorrectes !";
+				$data->message = "Veuillez à bien vérifier les quantités des différents produits, certaines sont incorrectes (<b>".$lgn->produit->name()."</b>) !";
 			}			
 		}else{
 			$data->status = false;

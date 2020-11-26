@@ -23,6 +23,7 @@ class COMMANDE extends TABLE
 	public $montant = 0;
 	public $avance = 0;
 	public $reste = 0;
+	public $isRegle = TABLE::NON;
 	public $sousTVA = TABLE::OUI;
 	public $etat_id = ETAT::VALIDEE;
 	public $employe_id;
@@ -79,6 +80,7 @@ class COMMANDE extends TABLE
 				$reglementclient = new REGLEMENTCLIENT();
 				$reglementclient->recouvrement = TABLE::OUI;
 				$reglementclient->commande_id = $this->id;
+				$reglementclient->client_id = $this->groupecommande->client_id;
 				$reglementclient->montant = ($this->groupecommande->client->acompte >= $this->reste())? $this->reste() : $this->groupecommande->client->acompte;
 				$reglementclient->modepayement_id = MODEPAYEMENT::PRELEVEMENT_ACOMPTE;
 				$reglementclient->comment = "Recouvrement de commande N°$this->reference ";
@@ -97,6 +99,7 @@ class COMMANDE extends TABLE
 		}
 		return $data ;
 	}
+
 
 
 	public function annuler(){
