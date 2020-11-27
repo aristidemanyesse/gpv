@@ -45,8 +45,8 @@
                         </div>
                         <div class="ibox-content"  style="background-color: #fafafa">
                             <form id="formVente">
+                                <input type="hidden" name="typecommande_id" value="-1" class="form-control">
                                 <input type="hidden" name="typevente_id" value="<?= Home\TYPEVENTE::DIRECT ?>" class="form-control">
-                                <input type="hidden" name="commercial_id" value="<?= Home\COMMERCIAL::MAGASIN ?>" class="form-control">
                                 <input type="hidden" name="zonedevente_id" value="<?= Home\ZONEDEVENTE::MAGASIN ?>" class="form-control">
                                 <input type="hidden" name="etat_id" value="<?= Home\ETAT::VALIDEE ?>" class="form-control">
 

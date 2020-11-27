@@ -88,8 +88,8 @@ class PRODUIT extends TABLE
 
 
 	public function getListeEmballageProduit(){
-		$requette = "SELECT emballage.* FROM caracteristiqueemballage, emballage WHERE caracteristiqueemballage.emballage_id = emballage.id AND typeproduit_id IN ('', ?) AND parfum_id IN ('', ?) AND quantite_id IN ('', ?)";
-		return EMBALLAGE::execute($requette, [$this->typeproduit_parfum->typeproduit->id, $this->typeproduit_parfum->parfum->id, $this->quantite->id]);
+		$requette = "SELECT emballage.* FROM caracteristiqueemballage, emballage WHERE caracteristiqueemballage.emballage_id = emballage.id AND typeproduit_id IN ('', ?) AND parfum_id IN ('', ?) AND quantite_id IN ('', ?) AND emballage.valide = ?";
+		return EMBALLAGE::execute($requette, [$this->typeproduit_parfum->typeproduit->id, $this->typeproduit_parfum->parfum->id, $this->quantite->id, TABLE::OUI]);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////
