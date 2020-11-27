@@ -46,7 +46,19 @@
                         </div>
                         <div class="ibox-content"  style="background-color: #fafafa">
                             <form id="formCommande">
-                                <input type="hidden" name="typecommande_id" value="<?= Home\TYPECOMMANDE::NORMAL ?>">
+                                <div>
+                                    <label>Type de commande <span style="color: red">*</span> </label>
+                                    <div class="input-group">
+                                        <?php Native\BINDING::html("select", "typecommande"); ?>
+                                    </div>
+                                </div><br>
+                                <div class="code">
+                                    <label>Saisir le Code / Pseudo / KSCI correspondant <span style="color: red">*</span> </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                        <input type="text" name="code" class="form-control" uppercase>
+                                    </div>
+                                </div><br>
                                 <div class="row">
                                     <div class="col-sm-7">
                                         <label>Barème de prix (commande normale)<span style="color: red">*</span> </label>

@@ -249,18 +249,24 @@ if ($action == "calcul") {
 				$palier = $datas[0];
 			}
 
-			$datas = CLIENT::findBy(["id ="=>$client_id]);
-			if (count($datas) == 0) {
-				$datas = COMMERCIAL::findBy(["id ="=>$commercial_id]);
-			}
+			if (!isset($typevente_id)) {
+				$datas = [];
+				if (isset($client_id) || isset($commercial_id)) {
+					$datas = CLIENT::findBy(["id ="=>$client_id]);
+					if (count($datas) == 0) {
+						$datas = COMMERCIAL::findBy(["id ="=>$commercial_id]);
+					}
+				}
 
-			if (count($datas) > 0) {
-				$item = $datas[0];
-				$item->actualise();
-				if ($item->palier_id > 0) {
-					$palier = $item->palier;
+				if (count($datas) > 0) {
+					$item = $datas[0];
+					$item->actualise();
+					if ($item->palier_id > 0) {
+						$palier = $item->palier;
+					}
 				}
 			}
+			
 
 			if (isset($palier)) {
 				if ($palier->typereduction_id == TYPEREDUCTION::BRUT) {

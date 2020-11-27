@@ -177,6 +177,8 @@ $(function(){
 			});
 			formdata.append('listeproduits', tableau);
 			formdata.append('typebareme_id', $("select[name=typebareme_id]").val());
+			formdata.append('typecommande_id', $("select[name=typecommande_id]").val());
+			formdata.append('typevente_id', $("input[name=typevente_id]").val());
 			formdata.append('client_id', $("input[name=client_id]").val());
 			formdata.append('commercial_id', $("select[name=commercial_id]").val());
 			formdata.append('sousTVA', $("select[name=sousTVA]").val());

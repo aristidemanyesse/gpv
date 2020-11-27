@@ -1,7 +1,8 @@
 <?php 
 namespace Home;
 
-
+unset_session("produits");
+unset_session("commande-encours");
 
 $title = "GPV | Tableau de bord";
 
