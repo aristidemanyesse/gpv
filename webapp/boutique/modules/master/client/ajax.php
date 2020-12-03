@@ -249,7 +249,8 @@ if ($action == "calcul") {
 				$palier = $datas[0];
 			}
 
-			if (!isset($typevente_id)) {
+
+			if (!is_numeric($typevente_id)) {
 				$datas = [];
 				if (isset($client_id) || isset($commercial_id)) {
 					$datas = CLIENT::findBy(["id ="=>$client_id]);
