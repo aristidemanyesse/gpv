@@ -4,7 +4,7 @@ namespace Home;
 //n'oublie pas de configurer la date par defaut PARAMS
 //n'oublie pas d'importer la base de données des marques de vehicules
 
-$datas = ["Au magasin", "Dans tout Bassam"];
+$datas = ["A la boutique"];
 foreach ($datas as $key => $value) {
 	$item = new ZONEDEVENTE();
 	$item->name = $value;
@@ -34,7 +34,7 @@ foreach ($datas as $key => $value) {
 }
 
 
-$datas = ["Commande normale", "Commande autoship"];
+$datas = ["Commande normale", "Commande autoship", "Commande Inscription"];
 foreach ($datas as $key => $value) {
 	$item = new TYPECOMMANDE();
 	$item->name = $value;
@@ -271,7 +271,7 @@ $item->save();
 
 
 
-$datas = ["Prix normal", "Prix de gros", "Prix spécial"];
+$datas = ["Prix normal", "Prix Echantillon", "Prix spécial", "Prix Autoship", "Prix Inscription"];
 foreach ($datas as $key => $value) {
 	$item = new TYPEBAREME();
 	$item->name = $value;
