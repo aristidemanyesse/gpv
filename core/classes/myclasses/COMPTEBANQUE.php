@@ -57,22 +57,23 @@ class COMPTEBANQUE extends TABLE
 	}
 
 
-	public function retrait(int $montant, string $comment){
+	public function retrait(int $montant, string $comment, int $a = TABLE::NON){
 		$data  = new RESPONSE;
 		$params = PARAMS::findLastId();
 		$montant = intval($montant);
 		if ($montant > 0) {
-			if ($this->solde(PARAMS::DATE_DEFAULT, dateAjoute()) >= $montant) {
+			if (($this->solde(PARAMS::DATE_DEFAULT, dateAjoute()) >= $montant) || $a == TABLE::OUI) {
 				$mouvement = new MOUVEMENT();
 				$mouvement->name = "Retrait sur le compte";
 				$mouvement->typemouvement_id = TYPEMOUVEMENT::RETRAIT;
 				$mouvement->comptebanque_id = $this->id;
 				$mouvement->montant = $montant;
 				$mouvement->comment = $comment;
+				$mouvement->transaction = $a;
 				$data = $mouvement->enregistre();
 			}else{
 				$data->status = false;
-				$data->message = "Le montant que vous essayez de retirer est plus élévé que le solde du compte !";
+				$data->message = "Le montant que vous essayez de retirer est plus élévé que le solde du compte nnb!";
 			}
 		}else{
 			$data->status = false;
@@ -93,14 +94,20 @@ class COMPTEBANQUE extends TABLE
 	}
 
 
+
 	public function getOut(string $date1, string $date2){
 		$requette = "SELECT SUM(montant) as montant FROM mouvement WHERE mouvement.typemouvement_id = ? AND mouvement.comptebanque_id = ? AND mouvement.valide = 1 AND DATE(mouvement.created) >= ? AND DATE(mouvement.created) <= ?";
 		$item = MOUVEMENT::execute($requette, [TYPEMOUVEMENT::RETRAIT, $this->id, $date1, $date2]);
 		if (count($item) < 1) {$item = [new MOUVEMENT()]; }
-		
-		$datas = TRANSFERTFOND::findBy(["etat_id ="=>ETAT::ENCOURS, "comptebanque_id_source ="=>$this->id, "DATE(created) >= "=> $date1]);
-		return $item[0]->montant + comptage($datas, "montant", "somme");
+		return $item[0]->montant + $this->attente($date1, $date2);
 	}
+
+
+	public function attente(string $date1, string $date2){
+		$datas = TRANSFERTFOND::findBy(["etat_id ="=>ETAT::ENCOURS, "comptebanque_id_source ="=>$this->id, "DATE(created) >= "=> $date1]);
+		return comptage($datas, "montant", "somme");
+	}
+
 
 
 	public function solde(string $date1=null, string $date2=null){
@@ -130,7 +137,7 @@ class COMPTEBANQUE extends TABLE
 	public function transaction(int $montant, COMPTEBANQUE $compte, string $comment){
 		$params = PARAMS::findLastId();
 		$montant = intval($montant);
-		$data = $this->retrait($montant, "Retrait de ".money($montant)." ".$params->devise. " du compte pour approvisionner ".$compte->name()." - $comment");
+		$data = $this->retrait($montant, "Retrait de ".money($montant)." ".$params->devise. " du compte pour approvisionner ".$compte->name()." - $comment", TABLE::OUI);
 		if ($data->status) {
 			$data = $compte->depot($montant, "Transfert sur le compte de ".money($montant)." ".$params->devise. " à partir de ".$this->name()." - $comment");
 		}

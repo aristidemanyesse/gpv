@@ -138,7 +138,7 @@ class OPERATION extends TABLE
 
 
 
-	public static function entree(string $date1 = "2020-04-01", string $date2, int $boutique_id = null, int $entrepot_id = null){
+	public static function entree(string $date1, string $date2, int $boutique_id = null, int $entrepot_id = null){
 		$paras = "";
 		if ($boutique_id != null) {
 			$paras = "AND boutique_id = $boutique_id ";
@@ -154,7 +154,7 @@ class OPERATION extends TABLE
 
 
 
-	public static function sortie(string $date1 = "2020-04-01", string $date2, int $boutique_id = null, int $entrepot_id = null){
+	public static function sortie(string $date1, string $date2, int $boutique_id = null, int $entrepot_id = null){
 		$paras = "";
 		if ($boutique_id != null) {
 			$paras = "AND boutique_id = $boutique_id ";
@@ -171,7 +171,7 @@ class OPERATION extends TABLE
 
 
 
-	public static function resultat(string $date1 = "2020-04-01", string $date2, int $boutique_id = null, int $entrepot_id = null){
+	public static function resultat(string $date1, string $date2, int $boutique_id = null, int $entrepot_id = null){
 		return static::entree($date1, $date2, $boutique_id, $entrepot_id) - static::sortie($date1, $date2, $boutique_id, $entrepot_id);
 	}
 
@@ -256,7 +256,7 @@ class OPERATION extends TABLE
 
 
 
-	// public static function stats(string $date1 = "2020-04-01", string $date2){
+	// public static function stats(string $date1, string $date2){
 	// 	$tableaux = [];
 	// 	$nb = ceil(dateDiffe($date1, $date2) / 12);
 	// 	$index = $date1;

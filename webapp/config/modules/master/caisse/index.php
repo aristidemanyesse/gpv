@@ -180,6 +180,7 @@
                                                 <th>N° de compte</th>
                                                 <th>Affiliation boutique</th>
                                                 <th>Affiliation entrepôt</th>
+                                                <th>Solde initial</th>
                                                 <th></th>
                                                 <th></th>
                                             </tr>
@@ -204,6 +205,7 @@
                                                             <?php } ?>
                                                         </ul>
                                                     </td>
+                                                    <td class="gras"><?= money($item->initial); ?> <?= $params->devise ?></td>
                                                     <td data-toggle="modal" data-target="#modal-comptebanque" title="modifier la categorie" onclick="modification('comptebanque', <?= $item->id ?>)"><i class="fa fa-pencil text-blue cursor"></i></td>
                                                     <td title="supprimer la categorie" onclick="suppressionWithPassword('comptebanque', <?= $item->id ?>)"><i class="fa fa-close cursor text-danger"></i></td>
                                                 </tr>
