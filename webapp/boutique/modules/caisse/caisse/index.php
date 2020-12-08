@@ -338,6 +338,8 @@
                                     </td>
                                     <td class="text-center">
                                         <?php if ($transfert->comptebanque_id_destination == $comptebanque->id) { ?>
+                                            <button onclick="annuler('tranfertfond', <?= $tranfert->id ?>)" class="cursor simple_tag"><i class="fa fa-close text-red"></i></button>
+
                                             <button onclick="validerTransfert(<?= $transfert->id ?>)" class="cursor simple_tag"><i class="fa fa-file-text-o"></i> Valider</button><span style="display: none">en attente</span>
                                         <?php }else{ ?>
                                             <span class="label label-warning">Pas encore validé<br> à la reception</span>

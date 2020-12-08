@@ -169,7 +169,7 @@
 						<div class="col-sm-6">
 							<label>Format emballage</label>
 							<select class="form-control select2" name="emballage_id" style="width: 100%">
-								<option value="">Emballage primaire</option>
+								<option value="0">Emballage primaire</option>
 								<?php foreach (Home\EMBALLAGE::findBy(["isActive ="=>Home\TABLE::OUI]) as $key => $item) { ?>
 									<option value="<?= $item->id ?>">de <?= $item->name() ?></option>
 								<?php } ?>
