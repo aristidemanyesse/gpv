@@ -22,6 +22,8 @@ class MOUVEMENT extends TABLE
 	public $numero;
 	public $employe_id;
 
+	public $transaction = TABLE::NON;
+
 
 
 	public function enregistre(){
@@ -52,7 +54,7 @@ class MOUVEMENT extends TABLE
 					$banque = $datas[0];
 					if (intval($this->montant) > 0) {
 						$this->reference = "MVT/".date('dmY')."-".strtoupper(substr(uniqid(), 5, 6));
-						if ($this->typemouvement_id == TYPEMOUVEMENT::DEPOT || ($this->typemouvement_id == TYPEMOUVEMENT::RETRAIT && $this->montant <= $banque->solde())) {
+						if ($this->typemouvement_id == TYPEMOUVEMENT::DEPOT || $this->transaction == TABLE::OUI || ($this->typemouvement_id == TYPEMOUVEMENT::RETRAIT && $this->montant <= $banque->solde())) {
 							$data = $this->save();
 						}else{
 							$data->status = false;
