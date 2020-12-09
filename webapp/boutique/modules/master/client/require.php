@@ -16,6 +16,16 @@ if ($this->id != null) {
 
 		$groupes = $client->fourni("groupecommande", ["etat_id !="=>ETAT::ENCOURS], [], ["created"=>"DESC"]);
 
+		$commandes = [];
+		foreach (COMMANDE::findBy(["boutique_id ="=> $boutique->id, "isRegle !="=>TABLE::OUI]) as $key => $comm) {
+			if ($comm->reste() > 0) {
+				$commandes[] = $comm;
+			}else{
+				$comm->isRegle = TABLE::OUI;
+				$comm->save();
+			}
+		}
+
 
 		$fluxcaisse = $client->fourni("reglementclient");
 		usort($fluxcaisse, "comparerDateCreated2");
