@@ -241,7 +241,7 @@ class CLIENT extends TABLE
 				$total += $commande->reste();
 			}		
 		}
-		return $total + $this->dette;
+		return $total;
 	}
 
 	///////////////////////////////////////////////////////////////////////////

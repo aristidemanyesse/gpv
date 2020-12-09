@@ -31,8 +31,14 @@ class TRANSFERTFOND extends TABLE
 				$source = $datas[0];
 				$datas = COMPTEBANQUE::findBy(["id ="=>$this->comptebanque_id_destination]);
 				if (count($datas) == 1) {
-					$this->employe_id = getSession("employe_connecte_id");
-					$data = $this->save() ;	
+					$destination = $datas[0];
+					if ($source->solde() >= $this->montant && $this->montant > 0) {
+						$this->employe_id = getSession("employe_connecte_id");
+						$data = $this->save() ;	
+					}else{
+						$data->status = false;
+						$data->message = "Le montant pour cette opération est incorrecte, veuillez recommencer !!";
+					}
 				}else{
 					$data->status = false;
 					$data->message = "Une erreur s'est produite lors de l'opération, veuillez recommencer !!";
