@@ -36,6 +36,7 @@ class LIGNEPAYEMENT extends TABLE
 				$this->reference = "PAYE/".date('dmY')."-".strtoupper(substr(uniqid(), 5, 6));
 				if (intval($this->montant) > 0) {
 					$mouvement = new MOUVEMENT();
+					$mouvement->name = "Paye du commercial";
 					$mouvement->montant = $this->montant;
 					$mouvement->comment = $this->comment;
 					$mouvement->comptebanque_id = $this->comptebanque_id;
