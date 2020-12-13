@@ -28,6 +28,7 @@ class PARAMS extends TABLE
 	public $image;
 
 	public $tva;
+	public $tvaActive = TABLE::OUI;
 	public $seuilCredit;
 	public $productionAuto;
 	public $prixParPalier = TABLE::OUI;

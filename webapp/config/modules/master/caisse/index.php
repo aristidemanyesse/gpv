@@ -81,38 +81,44 @@
                                     <div class="">
                                         <form method="POST" class="formShamman" classname="params" reload="false">
                                             <div class="row">
-                                                <div class="col-sm-8 text-center border-right">
-                                                    <div class="row">
-                                                        <div class="col-7 gras">Autoriser Versements en attente</div>
-                                                        <div class="offset-1"></div>
-                                                        <div class="col-4">
-                                                            <div class="switch d-block">
-                                                                <div class="onoffswitch">
-                                                                    <input type="checkbox" name="autoriserVersementAttente" <?= ($params->autoriserVersementAttente == "on")?"checked":""  ?> class="onoffswitch-checkbox" id="example2">
-                                                                    <label class="onoffswitch-label" for="example2">
-                                                                        <span class="onoffswitch-inner"></span>
-                                                                        <span class="onoffswitch-switch"></span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
+                                                <div class="col-8 gras">Autoriser Versements en attente</div>
+                                                <div class="offset-1"></div>
+                                                <div class="col-3">
+                                                    <div class="switch d-block">
+                                                        <div class="onoffswitch">
+                                                            <input type="checkbox" name="autoriserVersementAttente" <?= ($params->autoriserVersementAttente == "on")?"checked":""  ?> class="onoffswitch-checkbox" id="example2">
+                                                            <label class="onoffswitch-label" for="example2">
+                                                                <span class="onoffswitch-inner"></span>
+                                                                <span class="onoffswitch-switch"></span>
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div><br>
+
+                                            <div class="row">
                                                 <div class="col-sm-4">
-                                                    <div >
-                                                        <label>% tva sur les ventes</label>
-                                                        <input type="number" number class="form-control" name="tva" value="<?= $params->tva ?>">
-                                                    </div><br>
-                                                    <div>
-                                                        <label>Seuil de tolérance du crédit client </label>
-                                                        <input type="number" number class="form-control" name="seuilCredit" value="<?= $params->seuilCredit ?>">
-                                                    </div>
-                                                    <div>
-                                                        <br>
-                                                        <input type="hidden" name="id" value="<?= $params->id ?>">
-                                                        <button class="btn btn-primary dim "><i class="fa fa-check"></i> Mettre à jour</button>
-                                                    </div>
+                                                    <label>% tva sur les ventes</label>
+                                                    <input type="number" number class="form-control" name="tva" value="<?= $params->tva ?>">
                                                 </div>
+                                                <div class="col-sm-4">
+                                                    <label>Es-ce une TVA active ?</label>
+                                                    <select class="select2 form-control" name="tvaActive" style="width: 100%">
+                                                        <option <?= ($params->tvaActive ==  Home\TABLE::OUI)?"selected":"" ?> value="<?= Home\TABLE::OUI ?>">Oui, Tva active</option>
+                                                        <option <?= ($params->tvaActive ==  Home\TABLE::NON)?"selected":"" ?> value="<?= Home\TABLE::NON ?>">Non, Tva passive</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label>Seuil crédit client </label>
+                                                    <input type="number" number class="form-control" name="seuilCredit" value="<?= $params->seuilCredit ?>">
+                                                </div>
+                                            </div>
+
+
+                                            <div>
+                                                <br>
+                                                <input type="hidden" name="id" value="<?= $params->id ?>">
+                                                <button class="btn btn-primary dim "><i class="fa fa-check"></i> Mettre à jour</button>
                                             </div>
                                         </form>
                                     </div>

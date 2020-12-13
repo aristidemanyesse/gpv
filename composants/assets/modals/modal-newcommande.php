@@ -145,8 +145,7 @@
                             <div class="text-right">
                                 <label class="mp0">Total à payer</label>
                                 <h2 class="mp0 gras text-danger text-right total">0 Fcfa</h2>
-                            </div><br>
-                            <h2 class="font-bold total text-right total">0 Fcfa</h2>
+                            </div>
                             <hr/>
                             <button onclick="validerCommande()" class="btn btn-primary btn-block dim"><i class="fa fa-check"></i> Valider la commande</button>
                         </div>

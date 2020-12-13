@@ -199,7 +199,7 @@ if ($action == "supprimeProduit") {
 
 if ($action == "calcul") {
 	$params = PARAMS::findLastId();
-	$montant = 0;
+	$montant = $montant1 = 0;
 	$listeproduits = explode(",", $listeproduits);
 	foreach ($listeproduits as $key => $value) {
 		$data = explode("-", $value);
@@ -224,27 +224,37 @@ if ($action == "calcul") {
 		if (count($datas) == 1) {
 			$price = $datas[0];
 			if ($typebareme_id == TYPEBAREME::NORMAL) {
-				$montant += $price->prix * intval($qte);
+				$prix = $price->prix * intval($qte);
 
 			}elseif ($typebareme_id == TYPEBAREME::GROS){
-				$montant += $price->prix_gros * intval($qte);
+				$prix = $price->prix_gros * intval($qte);
 
 			}elseif ($typebareme_id == TYPEBAREME::SPECIAL){
-				$montant += $price->prix_special * intval($qte);
+				$prix = $price->prix_special * intval($qte);
 
 			}elseif ($typebareme_id == TYPEBAREME::AUTOSHIP){
-				$montant += $price->prix_autoship * intval($qte);
+				$prix = $price->prix_autoship * intval($qte);
 
 			}else{
-				$montant += $price->prix_inscription * intval($qte);
+				$prix = $price->prix_inscription * intval($qte);
 			}
+
+			$montant1 += $prix;
+			if ($sousTVA == TABLE::OUI) {
+				$tva = ($prix * $params->tva) / 100;
+				if ($params->tvaActive == TABLE::NON) {
+					$prix -= ($tva);
+				}
+			}
+			$montant += $prix;
+
 		}
 	}
 
 	$redis = 0;
 	if (!isset($typecommande_id) || (isset($typecommande_id) && $typebareme_id == TYPEBAREME::NORMAL)) {
 		if ($params->prixParPalier == TABLE::OUI) {
-			$datas = PALIER::findBy(["min <= "=>$montant], [], ["min"=>"DESC"]);
+			$datas = PALIER::findBy(["min <= "=>$montant1], [], ["min"=>"DESC"]);
 			if (count($datas) > 0) {
 				$palier = $datas[0];
 			}
@@ -273,7 +283,7 @@ if ($action == "calcul") {
 				if ($palier->typereduction_id == TYPEREDUCTION::BRUT) {
 					$redis = $palier->reduction;
 				}else{
-					$redis = ($palier->reduction * $montant) / 100;
+					$redis = ($palier->reduction * $montant1) / 100;
 				}
 			}
 		}
@@ -282,7 +292,11 @@ if ($action == "calcul") {
 
 	$total = $montant - $redis;
 
-	$tva = ($sousTVA == TABLE::OUI) ? ($total * $params->tva) / 100 : 0;
+	$tva = 0;
+	if ($sousTVA == TABLE::OUI) {
+		$tva = ceil(($montant1 * $params->tva) / 100);
+	}
+	
 	$total += $tva;
 
 
@@ -365,6 +379,13 @@ if ($action == "venteDirecte") {
 
 								}else{
 									$prix = $price->prix_inscription * intval($qte);
+								}
+
+								if ($sousTVA == TABLE::OUI) {
+									$tva = ($prix * $params->tva) / 100;
+									if ($params->tvaActive == TABLE::NON) {
+										$prix -= ceil($tva);
+									}
 								}
 
 								$lignedevente = new LIGNEDEVENTE;
@@ -464,6 +485,13 @@ if ($action == "validerPropection") {
 
 											}else{
 												$prix = $price->prix_inscription * intval($qte);
+											}
+
+											if ($sousTVA == TABLE::OUI) {
+												$tva = ($prix * $params->tva) / 100;
+												if ($params->tvaActive == TABLE::NON) {
+													$prix -= ceil($tva);
+												}
 											}
 
 											$ligneprospection = new LIGNEPROSPECTION;
@@ -588,6 +616,13 @@ if ($action == "validerCommande") {
 
 											}else{
 												$prix = $price->prix_inscription * intval($qte);
+											}
+
+											if ($sousTVA == TABLE::OUI) {
+												$tva = ($prix * $params->tva) / 100;
+												if ($params->tvaActive == TABLE::NON) {
+													$prix -= ceil($tva);
+												}
 											}
 
 											$lignecommande = new LIGNECOMMANDE;
