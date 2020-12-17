@@ -239,13 +239,7 @@ if ($action == "calcul") {
 				$prix = $price->prix_inscription * intval($qte);
 			}
 
-			$montant1 += $prix;
-			if ($sousTVA == TABLE::OUI) {
-				$tva = ($prix * $params->tva) / 100;
-				if ($params->tvaActive == TABLE::NON) {
-					$prix -= ($tva);
-				}
-			}
+			$prix = $prix / (1 + $params->tva / 100);
 			$montant += $prix;
 
 		}
@@ -294,7 +288,7 @@ if ($action == "calcul") {
 
 	$tva = 0;
 	if ($sousTVA == TABLE::OUI) {
-		$tva = ceil(($montant1 * $params->tva) / 100);
+		$tva = round(($montant * $params->tva) / 100);
 	}
 	
 	$total += $tva;
@@ -305,7 +299,7 @@ if ($action == "calcul") {
 	session("montant", $montant);
 	session("total", $total);
 	session("recu", $recu);
-	session("rendu", intval($recu) - $total);
+	session("rendu", intval($recu) - round($total));
 
 	$data = new \stdclass();
 	if ($sousTVA == TABLE::OUI) {
@@ -381,12 +375,7 @@ if ($action == "venteDirecte") {
 									$prix = $price->prix_inscription * intval($qte);
 								}
 
-								if ($sousTVA == TABLE::OUI) {
-									$tva = ($prix * $params->tva) / 100;
-									if ($params->tvaActive == TABLE::NON) {
-										$prix -= ceil($tva);
-									}
-								}
+									$prix = $prix / (1 + $params->tva / 100);
 
 								$lignedevente = new LIGNEDEVENTE;
 								$lignedevente->vente_id = $vente->id;
@@ -487,12 +476,7 @@ if ($action == "validerPropection") {
 												$prix = $price->prix_inscription * intval($qte);
 											}
 
-											if ($sousTVA == TABLE::OUI) {
-												$tva = ($prix * $params->tva) / 100;
-												if ($params->tvaActive == TABLE::NON) {
-													$prix -= ceil($tva);
-												}
-											}
+											$prix = $prix / (1 + $params->tva / 100);
 
 											$ligneprospection = new LIGNEPROSPECTION;
 											$ligneprospection->prospection_id = $prospection->id;
@@ -618,12 +602,7 @@ if ($action == "validerCommande") {
 												$prix = $price->prix_inscription * intval($qte);
 											}
 
-											if ($sousTVA == TABLE::OUI) {
-												$tva = ($prix * $params->tva) / 100;
-												if ($params->tvaActive == TABLE::NON) {
-													$prix -= ceil($tva);
-												}
-											}
+											$prix = $prix / (1 + $params->tva / 100);
 
 											$lignecommande = new LIGNECOMMANDE;
 											$lignecommande->commande_id = $commande->id;

@@ -56,15 +56,11 @@ class VENTE extends TABLE
 
 	public function payement(int $montant, Array $post){
 		$this->actualise();
-		$params = PARAMS::findLastId();
-		$tva = ($montant * $params->tva) / 100;
-		$total = $montant + $tva;
-
 		$payement = new REGLEMENTCLIENT();
 		$payement->hydrater($post);
 		$payement->name = "Réglement de vente";
-		$payement->montant = $total;
-		$payement->comment = "Réglement de la vente ".$this->typevente->name()." N°".$this->reference;
+		$payement->montant = ceil($montant);
+		$payement->comment = "Réglement de la ".$this->typevente->name()." N°".$this->reference;
 		$payement->files = [];
 		$payement->setId(null);
 		$data = $payement->enregistre();
