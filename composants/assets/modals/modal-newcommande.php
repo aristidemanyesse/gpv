@@ -71,8 +71,8 @@
                                         <label>Appliquer TVA <span style="color: red">*</span> </label>
                                         <div class="input-group">
                                             <select class="form-control select2" name="sousTVA" style="width: 100%">
-                                                <option value="<?= Home\TABLE::OUI ?>">Oui (<?= $params->tva ?>%)</option>
-                                                <option value="<?= Home\TABLE::NON ?>">Non</option>
+                                                <option value="<?= Home\TABLE::OUI ?>">Prix TTC (<?= $params->tva ?>%)</option>
+                                                <option value="<?= Home\TABLE::NON ?>">Prix Hors taxe</option>
                                             </select>
                                         </div>
                                     </div>
