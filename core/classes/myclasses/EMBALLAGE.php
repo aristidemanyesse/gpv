@@ -111,7 +111,7 @@ class EMBALLAGE extends TABLE
 
 
 	public function nombre(){
-		if ($this->emballage_id == null) {
+		if ($this->emballage_id == null || $this->emballage_id == 0 ) {
 			return $this->quantite;
 		}
 		$this->actualise();
