@@ -239,6 +239,7 @@ if ($action == "calcul") {
 				$prix = $price->prix_inscription * intval($qte);
 			}
 
+			$montant1 += $prix;
 			$prix = $prix / (1 + $params->tva / 100);
 			$montant += $prix;
 

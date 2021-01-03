@@ -86,39 +86,41 @@ if ($action == "validerConditionnement") {
 				$conditionnement->typeproduit_parfum_id = $produit->typeproduit_parfum_id;
 				$conditionnement->quantite = $quantite;
 				$data = $conditionnement->enregistre();
-				if (count($datas) > 0) {
-					foreach ($_POST as $key => $value) {
-						if (strpos($key, "-") !== false && $value > 0) {
-							$tab = explode("-", $key);
-							$datas = PRODUIT::findBy(["id ="=>$tab[0]]);
-							if (count($datas) == 1) {
-								$produit = $datas[0];
-								$datas = EMBALLAGE::findBy(["id ="=>$tab[1]]);
-								$emballage = $datas[0];
+				if ($data->status) {
+					if (count($datas) > 0) {
+						foreach ($_POST as $key => $value) {
+							if (strpos($key, "-") !== false && $value > 0) {
+								$tab = explode("-", $key);
+								$datas = PRODUIT::findBy(["id ="=>$tab[0]]);
 								if (count($datas) == 1) {
-									$ligne = new LIGNECONDITIONNEMENT;
-									$ligne->conditionnement_id = $conditionnement->id;
-									$ligne->produit_id = $produit->id;
-									$ligne->emballage_id = $emballage->id;
-									$ligne->quantite = $value;
-									$ligne->enregistre();
+									$produit = $datas[0];
+									$datas = EMBALLAGE::findBy(["id ="=>$tab[1]]);
+									$emballage = $datas[0];
+									if (count($datas) == 1) {
+										$ligne = new LIGNECONDITIONNEMENT;
+										$ligne->conditionnement_id = $conditionnement->id;
+										$ligne->produit_id = $produit->id;
+										$ligne->emballage_id = $emballage->id;
+										$ligne->quantite = $value;
+										$ligne->enregistre();
 
-									$emballage->packaging($value, $conditionnement->id);							
+										$emballage->packaging($value, $conditionnement->id);							
 
 
-									$ligne = new LIGNECONSOMMATIONETIQUETTE();
-									$etiquette = ($produit->fourni("etiquette"))[0];
+										$ligne = new LIGNECONSOMMATIONETIQUETTE();
+										$etiquette = ($produit->fourni("etiquette"))[0];
 
-									$ligne->conditionnement_id = $conditionnement->id;
-									$ligne->etiquette_id = $etiquette->id;
-									$ligne->quantite = $value * $emballage->nombre();
-									$ligne->price = $ligne->quantite * $emballage->nombre() * $etiquette->price();
-									$data = $ligne->enregistre();
+										$ligne->conditionnement_id = $conditionnement->id;
+										$ligne->etiquette_id = $etiquette->id;
+										$ligne->quantite = $value * $emballage->nombre();
+										$ligne->price = $ligne->quantite * $emballage->nombre() * $etiquette->price();
+										$data = $ligne->enregistre();
+									}
 								}
 							}
 						}
 					}
-				}
+				}				
 			}else{
 				$data->status = false;
 				$data->message = "La quantité (volume) totale contenues dans les emballages dépassent la quantité de production en stock, Veuillez vérifier les données !";
