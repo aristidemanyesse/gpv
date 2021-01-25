@@ -6,11 +6,11 @@
                 <div class="ibox-content">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <div class="text-center">
-                        <h1 class="title text-uppercase gras text-green">Validation de la mise en boutique </h1>
+                        <h1 class="title text-uppercase gras text-green">Validation1 de la mise en boutique </h1>
                         <small>Veuillez renseigner la quantité de chaque type de produit que vous voulez mettre en boutique !</small>
                     </div><hr>
 
-                    <form id="formValiderMiseenboutique" classname="miseenboutique">
+                    <form id="formValiderMiseenboutique">
                         <div class="row">
                             <div class="col-md-8">
                                 <table class="table  table-striped">

@@ -93,7 +93,7 @@
                                 </div>
                                 <input type="hidden" name="typeapprovisionnement_id" value="<?= Home\TYPEAPPROVISIONNEMENT::EMBALLAGE ?>">
                                 <hr/>
-                                <button onclick="validerApprovisionnement()" class="btn btn-success btn-block dim"><i class="fa fa-check"></i> Valider l'approvisionnement</button>
+                                <button onclick="validerApprovisionnement()" type="button" class="btn btn-success btn-block dim"><i class="fa fa-check"></i> Valider l'approvisionnement</button>
                             </div>
                         </div>
                     </form>

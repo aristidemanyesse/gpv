@@ -28,7 +28,7 @@
                 <div class="ibox-title">
                     <h5>Toutes les mises en boutique de la production</h5>
                     <div class="ibox-tools">
-                       <form id="formFiltrer" method="POST">
+                     <form id="formFiltrer" method="POST">
                         <div class="row" style="margin-top: -1%">
                             <div class="col-5">
                                 <input type="date" value="<?= $date1 ?>" class="form-control input-sm" name="date1">
@@ -59,7 +59,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                           <?php foreach ($encours as $key => $mise) {
+                         <?php foreach ($encours as $key => $mise) {
                             $mise->actualise(); 
                             $lots = $mise->fourni("lignemiseenboutique");
                             ?>
@@ -81,7 +81,7 @@
                                     <small>Emise <?= depuis($mise->created) ?></small>
                                 </td>
                                 <td class="border-right">
-                                 <table class="table table-bordered">
+                                   <table class="table table-bordered">
                                     <thead>
                                         <tr class="no">
                                             <th></th>
@@ -214,9 +214,7 @@
 
 <?php 
 foreach ($encours as $key => $mise) {
-    if ($mise->etat_id == Home\ETAT::ENCOURS) { 
-        include($this->rootPath("composants/assets/modals/modal-miseenboutique1.php"));
-    } 
+ include($this->rootPath("composants/assets/modals/modal-miseenboutique1.php"));
 } 
 ?>
 
@@ -225,7 +223,6 @@ foreach ($encours as $key => $mise) {
 
 
 <?php include($this->rootPath("webapp/boutique/elements/templates/script.php")); ?>
-<script type="text/javascript" src="<?= $this->relativePath("../../master/client/script.js") ?>"></script>
 
 
 </body>

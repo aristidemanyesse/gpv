@@ -98,7 +98,7 @@ $(function(){
     }
 
 
-    $("#formValiderMiseenboutique").submit(function(event) {
+    $("body").on("submit", "#formValiderMiseenboutique", function(event) {
         Loader.start();
         $(this).find("input.vendus").last().change();
         var url = "../../webapp/boutique/modules/production/miseenboutique/ajax.php";
