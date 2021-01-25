@@ -199,7 +199,7 @@ if ($action == "supprimeProduit") {
 
 if ($action == "calcul") {
 	$params = PARAMS::findLastId();
-	$montant = $montant1 = 0;
+	$montant = $montantBrut = 0;
 	$listeproduits = explode(",", $listeproduits);
 	foreach ($listeproduits as $key => $value) {
 		$data = explode("-", $value);
@@ -239,9 +239,7 @@ if ($action == "calcul") {
 				$prix = $price->prix_inscription * intval($qte);
 			}
 
-			$montant1 += $prix;
-			$prix = $prix / (1 + $params->tva / 100);
-			$montant += $prix;
+			$montantBrut += $prix;
 
 		}
 	}
@@ -249,7 +247,7 @@ if ($action == "calcul") {
 	$redis = 0;
 	if (!isset($typecommande_id) || (isset($typecommande_id) && $typebareme_id == TYPEBAREME::NORMAL)) {
 		if ($params->prixParPalier == TABLE::OUI) {
-			$datas = PALIER::findBy(["min <= "=>$montant1], [], ["min"=>"DESC"]);
+			$datas = PALIER::findBy(["min <= "=>$montantBrut], [], ["min"=>"DESC"]);
 			if (count($datas) > 0) {
 				$palier = $datas[0];
 			}
@@ -278,18 +276,20 @@ if ($action == "calcul") {
 				if ($palier->typereduction_id == TYPEREDUCTION::BRUT) {
 					$redis = $palier->reduction;
 				}else{
-					$redis = ($palier->reduction * $montant1) / 100;
+					$redis = ($palier->reduction * $montantBrut) / 100;
 				}
 			}
 		}
 	}
 
 
+	$montant = $montantBrut / (1 + $params->tva / 100);
+
 	$total = $montant - $redis;
 
 	$tva = 0;
 	if ($sousTVA == TABLE::OUI) {
-		$tva = round(($montant * $params->tva) / 100);
+		$tva = $montantBrut - $montant;
 	}
 	
 	$total += $tva;
@@ -376,7 +376,7 @@ if ($action == "venteDirecte") {
 									$prix = $price->prix_inscription * intval($qte);
 								}
 
-									$prix = $prix / (1 + $params->tva / 100);
+								$prix = $prix / (1 + $params->tva / 100);
 
 								$lignedevente = new LIGNEDEVENTE;
 								$lignedevente->vente_id = $vente->id;
