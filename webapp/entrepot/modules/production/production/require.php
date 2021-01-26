@@ -4,6 +4,7 @@ namespace Home;
 $title = "GPV | Toutes les productions";
 
 unset_session("produits");
+unset_session("emballage_id");
 
 $typeproduits = TYPEPRODUIT::findBy(["isActive ="=>TABLE::OUI]);
 
