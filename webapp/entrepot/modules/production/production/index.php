@@ -46,6 +46,7 @@
                 </div>
                 <div class="col-sm-5">
                     <button style="margin-top: 5%;" type="button" data-toggle=modal data-target='#modal-perteentrepot' class="btn btn-danger btn-xs dim float-right"><i class="fa fa-trash"></i> Enregistrer une perte </button>
+                    <button style="margin-top: 5%;" type="button" data-toggle=modal data-target='#modal-reconditionnement' class="btn btn-success btn-xs dim float-right"><i class="fa fa-refresh"></i> Reconditionner </button>
                 </div>
             </div>
 
@@ -54,7 +55,7 @@
                     <div class="ibox-title">
                         <h5>Toutes les mises en boutique de la production</h5>
                         <div class="ibox-tools">
-                         <form id="formFiltrer" method="POST">
+                           <form id="formFiltrer" method="POST">
                             <div class="row" style="margin-top: -1%">
                                 <div class="col-5">
                                     <input type="date" value="<?= $date1 ?>" class="form-control input-sm" name="date1">
@@ -84,7 +85,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                             <?php foreach ($encours as $key => $production) {
+                               <?php foreach ($encours as $key => $production) {
                                 $production->actualise(); 
                                 $lots = $production->fourni("ligneproduction");
                                 ?>
@@ -208,8 +209,10 @@
 
 <?php include($this->rootPath("webapp/entrepot/elements/templates/script.php")); ?>
 <script type="text/javascript" src="<?= $this->rootPath("webapp/boutique/modules/master/client/script.js") ?>"></script>
+<script type="text/javascript" src="<?= $this->relativePath("../reconditionnement/script.js") ?>"></script>
 
 
+<?php include($this->rootPath("composants/assets/modals/modal-reconditionnement.php")); ?>  
 
 
 <div class="modal inmodal fade" id="modal-perteentrepot">

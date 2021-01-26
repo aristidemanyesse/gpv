@@ -16,7 +16,7 @@
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-sm-9">
-                    <h2 class="text-uppercase text-blue gras">Les conversion de stock en entrepot</h2>
+                    <h2 class="text-uppercase text-blue gras">Les conversions de stock en entrepot</h2>
                     <div class="container">
                     </div>
                 </div>

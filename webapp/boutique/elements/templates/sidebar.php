@@ -63,6 +63,9 @@
                     <li class="" id="transfertboutique">
                         <a href="<?= $this->url($this->section, "production", "transfertboutique") ?>"><i class="fa fa-share"></i> <span class="nav-label">Transferts en boutique</span> <?php if (count($transferts__) > 0) { ?> <span class="label label-warning float-right"><?= count($transferts__) ?></span> <?php } ?></a>
                     </li>
+                    <li class="" id="changements">
+                        <a href="<?= $this->url($this->section, "production", "changements") ?>"><i class="fa fa-refresh"></i> <span class="nav-label">Changements / Retours</span></a>
+                    </li>
                     <li class="" id="transfertstock">
                         <a href="<?= $this->url($this->section, "production", "transfertstock") ?>"><i class="fa fa-refresh"></i> <span class="nav-label">Conversion de stock</span></a>
                     </li>
@@ -116,6 +119,6 @@
 
 <style type="text/css">
     li.dropdown-divider{
-     !important;
- }
+       !important;
+   }
 </style>

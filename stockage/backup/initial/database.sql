@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : Dim 13 déc. 2020 à 00:47
+-- Généré le : mar. 26 jan. 2021 à 11:31
 -- Version du serveur :  5.7.19
 -- Version de PHP : 7.1.20
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `payiel`
+-- Base de données : `senti`
 --
 
 -- --------------------------------------------------------
@@ -1474,6 +1474,27 @@ CREATE TABLE `quantite` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `reconditionnement`
+--
+
+CREATE TABLE `reconditionnement` (
+  `id` int(11) NOT NULL,
+  `produit_id` int(11) NOT NULL,
+  `emballage_id` int(11) NOT NULL,
+  `quantite` int(11) NOT NULL,
+  `entrepot_id` int(11) NOT NULL,
+  `employe_id` int(11) NOT NULL,
+  `etat_id` int(11) NOT NULL,
+  `comment` text COLLATE utf8_bin,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `protected` int(11) NOT NULL DEFAULT '0',
+  `valide` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `reglementclient`
 --
 
@@ -1553,6 +1574,55 @@ CREATE TABLE `ressource` (
   `protected` int(11) NOT NULL DEFAULT '0',
   `valide` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `retourstockboutique`
+--
+
+CREATE TABLE `retourstockboutique` (
+  `id` int(11) NOT NULL,
+  `produit_id_source` int(11) NOT NULL,
+  `emballage_id_source` int(11) NOT NULL,
+  `quantite` int(11) NOT NULL,
+  `produit_id_destination` int(11) NOT NULL,
+  `emballage_id_destination` int(11) NOT NULL,
+  `quantite1` int(11) NOT NULL,
+  `boutique_id` int(11) NOT NULL,
+  `employe_id` int(11) NOT NULL,
+  `etat_id` int(11) NOT NULL,
+  `comment` text COLLATE utf8_bin,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `protected` int(11) NOT NULL DEFAULT '0',
+  `valide` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `retourstockentrepot`
+--
+
+CREATE TABLE `retourstockentrepot` (
+  `id` int(11) NOT NULL,
+  `produit_id_source` int(11) NOT NULL,
+  `emballage_id_source` int(11) NOT NULL,
+  `quantite` int(11) NOT NULL,
+  `produit_id_destination` int(11) NOT NULL,
+  `emballage_id_destination` int(11) NOT NULL,
+  `quantite1` int(11) NOT NULL,
+  `boutique_id` int(11) NOT NULL,
+  `entrepot_id` int(11) NOT NULL,
+  `employe_id` int(11) NOT NULL,
+  `etat_id` int(11) NOT NULL,
+  `comment` text COLLATE utf8_bin,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `protected` int(11) NOT NULL DEFAULT '0',
+  `valide` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -2460,6 +2530,12 @@ ALTER TABLE `quantite`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `reconditionnement`
+--
+ALTER TABLE `reconditionnement`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `reglementclient`
 --
 ALTER TABLE `reglementclient`
@@ -2475,6 +2551,18 @@ ALTER TABLE `reglementfournisseur`
 -- Index pour la table `ressource`
 --
 ALTER TABLE `ressource`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `retourstockboutique`
+--
+ALTER TABLE `retourstockboutique`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `retourstockentrepot`
+--
+ALTER TABLE `retourstockentrepot`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -3058,6 +3146,12 @@ ALTER TABLE `quantite`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT pour la table `reconditionnement`
+--
+ALTER TABLE `reconditionnement`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `reglementclient`
 --
 ALTER TABLE `reglementclient`
@@ -3073,6 +3167,18 @@ ALTER TABLE `reglementfournisseur`
 -- AUTO_INCREMENT pour la table `ressource`
 --
 ALTER TABLE `ressource`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `retourstockboutique`
+--
+ALTER TABLE `retourstockboutique`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `retourstockentrepot`
+--
+ALTER TABLE `retourstockentrepot`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

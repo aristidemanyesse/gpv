@@ -211,7 +211,6 @@
 
 
 <?php include($this->rootPath("webapp/entrepot/elements/templates/script.php")); ?>
-<script type="text/javascript" src="<?= $this->relativePath("../client/script.js") ?>"></script>
 
 
 </body>

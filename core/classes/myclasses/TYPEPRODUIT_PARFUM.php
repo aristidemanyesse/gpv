@@ -81,6 +81,15 @@ class TYPEPRODUIT_PARFUM extends TABLE
 	}
 
 
+	public function reconditionner(string $date1, string $date2, int $entrepot_id = null){
+		$total = 0;
+		foreach ($this->fourni("produit") as $key => $produit) {
+			$total += $produit->Qtereconditionner($date1, $date2, $entrepot_id);
+		}
+		return $total;
+	}
+
+
 	public function conditionne(string $date1, string $date2, int $entrepot_id = null){
 		$paras = "";
 		if ($entrepot_id != null) {
@@ -113,7 +122,11 @@ class TYPEPRODUIT_PARFUM extends TABLE
 			$item = $this->fourni("initialtypeproduitentrepot");
 			$quantite = comptage($item, "quantite", "somme");
 		}
-		return $this->production($date1, $date2, $entrepot_id) - $this->conditionne($date1, $date2, $entrepot_id) - $this->perte($date1, $date2, $entrepot_id) + $quantite;
+		return $this->production($date1, $date2, $entrepot_id) 
+		- $this->conditionne($date1, $date2, $entrepot_id) 
+		- $this->perte($date1, $date2, $entrepot_id)
+		+ $this->reconditionner($date1, $date2, $entrepot_id) 
+		+ $quantite;
 	}
 
 

@@ -51,7 +51,10 @@ abstract class TABLE
         return static::findBy(["etat_id ="=>ETAT::ENCOURS]);
     }
 
-    
+    public static function Actives(){
+        return static::findBy(["isActive ="=>TABLE::OUI]);
+    }
+
     public function getProperties(){
         return get_object_vars($this);
     }
